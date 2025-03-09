@@ -10,4 +10,7 @@ public class DataModel {
 	private List<Person> persons;
 	private List<Firestation> firestations;
 	private List<MedicalRecord> medicalrecords;
+	
+	public DataModel() {}
+	
 }
