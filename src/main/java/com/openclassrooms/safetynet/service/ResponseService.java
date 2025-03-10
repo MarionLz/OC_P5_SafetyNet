@@ -7,6 +7,7 @@ import com.openclassrooms.safetynet.model.DataModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import DTO.PersonsByStationsDTO;
+import DTO.NbAdultAndChildrenDTO;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -64,16 +65,18 @@ public class ResponseService {
 		return birthdateLocalDate.plusYears(18).isAfter(LocalDate.now());
 	}
 		
-	private ArrayList addNbAdultAndChildrenToResponse(List<PersonsByStationsDTO> personByStation) {
+	private List<Object> addNbAdultAndChildrenToResponse(List<PersonsByStationsDTO> personsByStation) {
 		
-		ArrayList response = new ArrayList();
+		List<Object> response = new ArrayList<>();
 		
-		response.add(personByStation);
-		response.add("Child count = " + personByStation.stream().filter(this::isChild).count());
+		response.add(personsByStation);
+		int childCount = (int)personsByStation.stream().filter(this::isChild).count();
+		int adultCount = (int)personsByStation.size() - childCount;
+		response.add(new NbAdultAndChildrenDTO(adultCount, childCount));
 		return response;
 	}
 	
-	public ArrayList getPersonsByStations(String station) {
+	public List<Object> getPersonsByStations(String station) {
 			
 		List<String> stationAddresses = getFirestationAdresses(station);
 		List<PersonsByStationsDTO> personByStation = getPersonsList(stationAddresses);

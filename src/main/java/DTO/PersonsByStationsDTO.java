@@ -17,6 +17,5 @@ public class PersonsByStationsDTO {
         this.address = address;
         this.phone = phone;
     }
-        
 
 }

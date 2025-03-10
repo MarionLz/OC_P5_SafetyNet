@@ -31,7 +31,7 @@ public class ResponseController {
     }*/
 	
 	@GetMapping("/firestation")
-    public ArrayList getPersonsCoveredByStation(@RequestParam("stationNumber") String stationNumber) {
+    public List<Object> getPersonsCoveredByStation(@RequestParam("stationNumber") String stationNumber) {
         return service.getPersonsByStations(stationNumber);
     }
 }
