@@ -1,4 +1,4 @@
-package DTO;
+package com.openclassrooms.safetynet.DTO;
 
 import lombok.Data;
 

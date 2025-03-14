@@ -2,12 +2,14 @@ package com.openclassrooms.safetynet.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.openclassrooms.safetynet.DTO.NbAdultAndChildrenDTO;
+import com.openclassrooms.safetynet.DTO.PersonsByStationsDTO;
 import com.openclassrooms.safetynet.model.DataModel;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import DTO.PersonsByStationsDTO;
-import DTO.NbAdultAndChildrenDTO;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -20,24 +22,24 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class ResponseService {
+public class PersonsCoveredByStationService {
 
 	private final DataModel dataModel;
-	
+    private static final Logger logger = LogManager.getLogger("PersonsCoveredByStationService");	
+
 	@Autowired
-	public ResponseService(DataService dataService) {
+	public PersonsCoveredByStationService(DataService dataService) throws IOException  {
 		this.dataModel = dataService.getDataModel();
 	}
 	
 	private List<String> getFirestationAdresses(String station) {
+		
+		logger.debug("Début de la récupération des adresses des firestations pour la station {}.", station);
 		List<String> stationAddresses = dataModel.getFirestations().stream()
             .filter(firestation -> firestation.getStation().equals(station))
             .map(firestation -> firestation.getAddress())
             .collect(Collectors.toList());
-		if (stationAddresses.isEmpty()) {
-	        System.err.println("Aucune station trouvée pour le numéro " + station);
-	        return Collections.emptyList();
-	    }
+		logger.debug("Récupération réussie : {} adresses trouvées pour la station {}.", stationAddresses.size(), station);
 		return stationAddresses;
 	}
 	
@@ -46,7 +48,8 @@ public class ResponseService {
 		List<PersonsByStationsDTO> personByStation = dataModel.getPersons().stream()
             .filter(person -> stationAddresses.contains(person.getAddress()))
             .map(person -> new PersonsByStationsDTO(person.getFirstName(), person.getLastName(), person.getAddress(), person.getPhone()))
-            .collect(Collectors.toList()); 
+            .collect(Collectors.toList());
+		
 		return  personByStation;
 	}
 	
@@ -56,10 +59,6 @@ public class ResponseService {
 						&& personByStation.getLastName().equals(medicalRecord.getLastName()))
 				.map(medicalRecord -> medicalRecord.getBirthdate())
 				.findFirst().orElse("");
-		if (birthdate.isEmpty()) {
-	        System.err.println("Aucune date de naissance trouvée pour la personne " + personByStation.getFirstName() + personByStation.getLastName());
-	        return false;
-		}
 		
 		LocalDate birthdateLocalDate = LocalDate.parse(birthdate, DateTimeFormatter.ofPattern("MM/dd/yyyy"));
 		return birthdateLocalDate.plusYears(18).isAfter(LocalDate.now());
@@ -76,7 +75,7 @@ public class ResponseService {
 		return response;
 	}
 	
-	public List<Object> getPersonsByStations(String station) {
+	public List<Object> getPersonsByStations(String station) throws IOException {
 			
 		List<String> stationAddresses = getFirestationAdresses(station);
 		List<PersonsByStationsDTO> personByStation = getPersonsList(stationAddresses);
