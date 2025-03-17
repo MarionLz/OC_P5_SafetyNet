@@ -1,4 +1,4 @@
-package com.openclassrooms.safetynet.exceptions;
+/*package com.openclassrooms.safetynet.exceptions;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,4 +20,10 @@ public class GlobalExceptionHandler {
         logger.error("Erreur d'entrée/sortie: {}", ex.getMessage());
         return new ResponseEntity<>("Erreur de lecture du fichier JSON: " + ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
-}
+    
+    @ExceptionHandler(JsonFileException.class)
+    public ResponseEntity<Object> handleJsonFileException(JsonFileException ex) {
+		logger.error("Le fichier JSON n'a pas été trouvé.");
+        return new ResponseEntity<>("Le fichier JSON n'a pas été trouvé: " + ex.getMessage(), HttpStatus.NOT_FOUND);
+    }
+}*/

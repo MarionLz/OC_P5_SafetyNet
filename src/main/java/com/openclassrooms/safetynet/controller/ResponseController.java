@@ -1,11 +1,7 @@
 package com.openclassrooms.safetynet.controller;
 
-import com.openclassrooms.safetynet.DTO.PersonsByStationsDTO;
-import com.openclassrooms.safetynet.model.*;
 import com.openclassrooms.safetynet.service.*;
 
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
@@ -22,24 +18,13 @@ public class ResponseController {
 
 	@Autowired
 	private PersonsCoveredByStationService service;
-
-	/*@GetMapping("/persons")
-	public List<Person> getAllPersons() {
-		return service.getAllPersons();
-	}*/
-	
-	/*
-	@GetMapping("persons/dto")
-    public List<PersonDTO> getAllPersonDTOs() {
-        return service.getAllPersonDTOs();
-    }*/
 	
 	@GetMapping("/firestation")
-    public List<Object> getPersonsCoveredByStation(@RequestParam("stationNumber") String stationNumber) throws IOException {
+    public List<Object> getPersonsCoveredByStation(@RequestParam("stationNumber") String stationNumber) {
 
 		logger.info("Requête reçue pour /firestation avec stationNumber: {}", stationNumber);
 		List<Object> response = service.getPersonsByStations(stationNumber);
-		logger.info("Réponse réussie envoyée");
+		logger.info("Requête réussie, réponse envoyée");
         return response;
     }
 }
