@@ -1,5 +1,8 @@
 package com.openclassrooms.safetynet.repository;
 
-public class IDataReaderRepository {
+import com.openclassrooms.safetynet.model.DataModel;
 
+public interface IDataReaderRepository {
+
+	DataModel getDataModel();
 }
