@@ -25,6 +25,9 @@ public class ResponseController {
 		logger.info("Requête reçue pour /firestation avec stationNumber: {}", stationNumber);
 		List<Object> response = service.getPersonsByStations(stationNumber);
 		logger.info("Requête réussie, réponse envoyée");
+        logger.debug("Ceci est un log DEBUG");
+        logger.info("Ceci est un log INFO");
+        logger.error("Ceci est un log ERROR");
         return response;
     }
 }

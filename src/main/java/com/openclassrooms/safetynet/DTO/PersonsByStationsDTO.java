@@ -4,6 +4,7 @@ import lombok.Data;
 
 @Data
 public class PersonsByStationsDTO {
+	
 	private String firstName;
 	private String lastName;
 	private String address;

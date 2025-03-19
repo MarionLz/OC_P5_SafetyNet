@@ -22,7 +22,7 @@ public class PersonsCoveredByStationService {
     private static final Logger logger = LogManager.getLogger("PersonsCoveredByStationService");
     
 	@Autowired
-	public PersonsCoveredByStationService(DataService dataService) {
+	public PersonsCoveredByStationService(DataReaderService dataService) {
 		
 		this.dataModel = dataService.getDataModel();
 	}
