@@ -1,5 +1,6 @@
 package com.openclassrooms.safetynet.controller;
 
+import com.openclassrooms.safetynet.DTO.PersonsCoveredByStationResponseDTO;
 import com.openclassrooms.safetynet.service.*;
 
 import java.util.List;
@@ -20,10 +21,10 @@ public class ResponseController {
 	private PersonsCoveredByStationService service;
 	
 	@GetMapping("/firestation")
-    public List<Object> getPersonsCoveredByStation(@RequestParam("stationNumber") String stationNumber) {
+    public PersonsCoveredByStationResponseDTO getPersonsCoveredByStation(@RequestParam("stationNumber") String stationNumber) {
 
 		logger.info("Requête reçue pour /firestation avec stationNumber: {}", stationNumber);
-		List<Object> response = service.getPersonsByStations(stationNumber);
+		PersonsCoveredByStationResponseDTO response = service.getPersonsByStations(stationNumber);
 		logger.info("Requête réussie, réponse envoyée");
         logger.debug("Ceci est un log DEBUG");
         logger.info("Ceci est un log INFO");

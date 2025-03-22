@@ -2,6 +2,7 @@ package com.openclassrooms.safetynet.service;
 
 import com.openclassrooms.safetynet.DTO.NbAdultAndChildrenDTO;
 import com.openclassrooms.safetynet.DTO.PersonsByStationsDTO;
+import com.openclassrooms.safetynet.DTO.PersonsCoveredByStationResponseDTO;
 import com.openclassrooms.safetynet.model.DataModel;
 
 import org.apache.logging.log4j.LogManager;
@@ -11,7 +12,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 public class PersonsCoveredByStationService {
 	
 	private final DataModel dataModel;
-    private static final Logger logger = LogManager.getLogger("PersonsCoveredByStationService");
+    private static final Logger logger = LogManager.getLogger(PersonsCoveredByStationService.class);
     
 	@Autowired
 	public PersonsCoveredByStationService(DataReaderService dataService) {
@@ -61,25 +61,22 @@ public class PersonsCoveredByStationService {
 		return birthdateLocalDate.plusYears(18).isAfter(LocalDate.now());
 	}
 		
-	private List<Object> addNbAdultAndChildrenToResponse(List<PersonsByStationsDTO> personsByStation) {
+	private NbAdultAndChildrenDTO countNbAdultAndChildren(List<PersonsByStationsDTO> personsByStation) {
 		
-		logger.debug("Début de l'ajout du nombre d'adultes et d'enfants. Nombre de personnes reçu : {}", personsByStation.size());
-		List<Object> response = new ArrayList<>();
-		
-		response.add(personsByStation);
+		logger.debug("Début du calcul du nombre d'adultes et d'enfants. Nombre de personnes reçu : {}", personsByStation.size());
 		int childCount = (int)personsByStation.stream().filter(this::isChild).count();
 		int adultCount = (int)personsByStation.size() - childCount;
-		response.add(new NbAdultAndChildrenDTO(adultCount, childCount));
-		logger.debug("Ajout réussi : {} adultes et {} enfants ont été comptabilisés.", adultCount, childCount);
-		return response;
+		logger.debug("Calcul réussi : {} adultes et {} enfants ont été comptabilisés.", adultCount, childCount);
+		return new NbAdultAndChildrenDTO(adultCount, childCount);
 	}
 	
-	public List<Object> getPersonsByStations(String station) {
+	public PersonsCoveredByStationResponseDTO getPersonsByStations(String station) {
 		
 		logger.debug("Début de la récupération des données pour la station {}", station);
 		List<String> stationAddresses = getFirestationAdresses(station);
 		List<PersonsByStationsDTO> personByStation = getPersonsList(stationAddresses);
+		NbAdultAndChildrenDTO nbAdultAndChildren = countNbAdultAndChildren(personByStation);
 		logger.debug("Récupération réussie, les données sont prêtes à être envoyées.");
-		return addNbAdultAndChildrenToResponse(personByStation);
+		return new PersonsCoveredByStationResponseDTO(personByStation, nbAdultAndChildren);
     }
 }

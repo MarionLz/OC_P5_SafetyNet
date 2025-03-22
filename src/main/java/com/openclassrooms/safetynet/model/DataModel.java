@@ -13,4 +13,11 @@ public class DataModel {
 	
 	public DataModel() {}
 	
+	public DataModel(List<Person> persons, List<Firestation> firestations, List<MedicalRecord> medicalrecords) {
+		
+		this.persons = persons;
+		this.firestations = firestations;
+		this.medicalrecords = medicalrecords;
+	}
+	
 }

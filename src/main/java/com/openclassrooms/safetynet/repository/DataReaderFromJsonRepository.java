@@ -19,13 +19,11 @@ import jakarta.annotation.PostConstruct;
 public class DataReaderFromJsonRepository implements IDataReaderRepository {
 	
 	private DataModel dataModel;
-    private static final Logger logger = LogManager.getLogger("DataService");
+    private static final Logger logger = LogManager.getLogger("DataReaderFromJsonRepository");
     
     @Value("${data.file}")
     private Resource jsonFile;
-	
-	public DataReaderFromJsonRepository () {}
-	
+		
 	@PostConstruct
 	private void init() {
 		try {
