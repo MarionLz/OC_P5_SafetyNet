@@ -16,13 +16,17 @@ public class ResponseController {
     private static final Logger logger = LogManager.getLogger("ResponseController");	
 
 	@Autowired
-	private PersonsCoveredByStationService service;
+	private PersonsCoveredByStationService personsCoveredByStationService;
+	
+	public ResponseController(PersonsCoveredByStationService personsCoveredByStationService) {
+		this.personsCoveredByStationService = personsCoveredByStationService;
+	}
 	
 	@GetMapping("/firestation")
     public PersonsCoveredByStationResponseDTO getPersonsCoveredByStation(@RequestParam("stationNumber") String stationNumber) {
 
 		logger.info("Request received for /firestation with stationNumber: {}.", stationNumber);
-		PersonsCoveredByStationResponseDTO response = service.getPersonsByStations(stationNumber);
+		PersonsCoveredByStationResponseDTO response = personsCoveredByStationService.getPersonsByStations(stationNumber);
 		logger.info("Request successful, response sent.");
         return response;
     }

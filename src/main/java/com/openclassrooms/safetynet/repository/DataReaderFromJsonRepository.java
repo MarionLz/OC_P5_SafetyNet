@@ -43,7 +43,7 @@ public class DataReaderFromJsonRepository implements IDataReaderRepository {
 		try {
 	        loadDataFromJson();
 	    } catch (JsonFileException e) {
-	        logger.error("Critical error: Unable to load JSON data. Application stopping.", e);
+	        logger.error("Critical error: Unable to load JSON data. Application stopped.", e);
 	        throw e;
 	    }
 	}
