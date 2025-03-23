@@ -7,31 +7,32 @@ import static org.mockito.Mockito.when;
 import java.util.Arrays;
 import java.util.List;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.openclassrooms.safetynet.model.DataModel;
 import com.openclassrooms.safetynet.model.Firestation;
 import com.openclassrooms.safetynet.model.MedicalRecord;
 import com.openclassrooms.safetynet.model.Person;
 import com.openclassrooms.safetynet.repository.IDataReaderRepository;
+import com.openclassrooms.safetynet.service.DataReaderService;
 
+@ExtendWith(MockitoExtension.class)
 public class DataReaderServiceTest {
 	
 	@Mock
 	private IDataReaderRepository dataReaderRepository;
 	
-	@BeforeEach
-    void setUp() {
-        MockitoAnnotations.openMocks(this);
-    }
+	private DataReaderService dataReaderService;
 	
 	@Test
 	public void testThatGetDataModelReturnsDataModel() {
-				
+		
+		dataReaderService = new DataReaderService(dataReaderRepository);
+		
 		List<Person> persons = Arrays.asList(
 			new Person("John", "Boyd", "1509 Culver St", "Culver", "97451", "841-874-6512", "jaboyd@email.com"),
 			new Person("Jacob", "Boyd", "1509 Culver St", "Culver", "97451", "841-874-6513", "drk@email.com")
@@ -51,7 +52,7 @@ public class DataReaderServiceTest {
 		
 		when(dataReaderRepository.getDataModel()).thenReturn(testDataModel);
 		
-		DataModel result = dataReaderRepository.getDataModel();
+		DataModel result = dataReaderService.getDataModel();
 		
 		assertEquals(testDataModel, result);
 		verify(dataReaderRepository, Mockito.times(1)).getDataModel();

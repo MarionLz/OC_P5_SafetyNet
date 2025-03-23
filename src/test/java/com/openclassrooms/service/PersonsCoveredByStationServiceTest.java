@@ -65,7 +65,7 @@ public class PersonsCoveredByStationServiceTest {
 		
 		List<PersonsByStationsDTO> personByStation = result.getPersons();
 		NbAdultAndChildrenDTO nbAdultAndChildren = result.getNbAdultAndChildren();
-		
+
 		assertEquals(personByStation.size(), 2);
 		assertEquals(personByStation.get(0).getFirstName(), "John");
 		assertEquals(personByStation.get(1).getFirstName(), "Tenley");

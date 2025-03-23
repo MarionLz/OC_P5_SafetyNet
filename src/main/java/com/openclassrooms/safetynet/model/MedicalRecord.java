@@ -1,14 +1,26 @@
 package com.openclassrooms.safetynet.model;
 
 import lombok.Data;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
 
 @Data
 public class MedicalRecord {
 
+	@NotBlank(message = "FisrtName may not be empty.")
+	@Valid
 	private String firstName;
+	
+	@NotBlank(message = "LastName may not be empty.")
+	@Valid
 	private String lastName;
+	
+	@NotBlank(message = "Birthdate may not be empty.")
+	@Valid
 	private String birthdate;
+	
 	private String[] medications;
+	
 	private String[] allergies;
 	
 	public MedicalRecord() {}
