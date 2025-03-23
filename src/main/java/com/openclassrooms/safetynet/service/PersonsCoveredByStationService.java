@@ -29,23 +29,23 @@ public class PersonsCoveredByStationService {
 	
 	private List<String> getFirestationAdresses(String station) {
 		
-		logger.debug("Début de la récupération des adresses des firestations pour la station {}.", station);
+		logger.debug("Starting to retrieve firestation addresses for station {}.", station);
 		List<String> stationAddresses = dataModel.getFirestations().stream()
             .filter(firestation -> firestation.getStation().equals(station))
             .map(firestation -> firestation.getAddress())
             .collect(Collectors.toList());
-		logger.debug("Récupération réussie : {} adresses trouvées pour la station {}.", stationAddresses.size(), station);
+		logger.debug("Retrieval successful: {} addresses found for station {}.", stationAddresses.size(), station);
 		return stationAddresses;
 	}
 	
 	private List<PersonsByStationsDTO> getPersonsList(List<String> stationAddresses) {
 		
-	    logger.debug("Début de la récupération des personnes couvertes par les adresses des stations : {}", stationAddresses);
+	    logger.debug("Starting to retrieve persons covered by firestations adresses: {}.", stationAddresses);
 		List<PersonsByStationsDTO> personByStation = dataModel.getPersons().stream()
             .filter(person -> stationAddresses.contains(person.getAddress()))
             .map(person -> new PersonsByStationsDTO(person.getFirstName(), person.getLastName(), person.getAddress(), person.getPhone()))
             .collect(Collectors.toList());
-		logger.debug("Récupération réussi : {} personnes trouvées pour les stations correspondant aux adresses {}.", personByStation.size(), stationAddresses);
+		logger.debug("Retrieval successful: {} persons are covered by firestations matching adresses: {}.", personByStation.size(), stationAddresses);
 		return  personByStation;
 	}
 	
@@ -63,20 +63,20 @@ public class PersonsCoveredByStationService {
 		
 	private NbAdultAndChildrenDTO countNbAdultAndChildren(List<PersonsByStationsDTO> personsByStation) {
 		
-		logger.debug("Début du calcul du nombre d'adultes et d'enfants. Nombre de personnes reçu : {}", personsByStation.size());
+		logger.debug("Starting calculating the number of adults and children. Number of persons received: {}.", personsByStation.size());
 		int childCount = (int)personsByStation.stream().filter(this::isChild).count();
 		int adultCount = (int)personsByStation.size() - childCount;
-		logger.debug("Calcul réussi : {} adultes et {} enfants ont été comptabilisés.", adultCount, childCount);
+		logger.debug("Calculation successful: {} adults and {} children have been counted.", adultCount, childCount);
 		return new NbAdultAndChildrenDTO(adultCount, childCount);
 	}
 	
 	public PersonsCoveredByStationResponseDTO getPersonsByStations(String station) {
 		
-		logger.debug("Début de la récupération des données pour la station {}", station);
+		logger.debug("Starting to retrieve data for station {}.", station);
 		List<String> stationAddresses = getFirestationAdresses(station);
 		List<PersonsByStationsDTO> personByStation = getPersonsList(stationAddresses);
 		NbAdultAndChildrenDTO nbAdultAndChildren = countNbAdultAndChildren(personByStation);
-		logger.debug("Récupération réussie, les données sont prêtes à être envoyées.");
+		logger.debug("Retrieval successful: data is ready to be sent.");
 		return new PersonsCoveredByStationResponseDTO(personByStation, nbAdultAndChildren);
     }
 }

@@ -43,7 +43,7 @@ public class DataReaderFromJsonRepository implements IDataReaderRepository {
 		try {
 	        loadDataFromJson();
 	    } catch (JsonFileException e) {
-	        logger.error("Erreur critique : Impossible de charger les données JSON. Arrêt de l'application.", e);
+	        logger.error("Critical error: Unable to load JSON data. Application stopping.", e);
 	        throw e;
 	    }
 	}
@@ -54,14 +54,14 @@ public class DataReaderFromJsonRepository implements IDataReaderRepository {
 			InputStream inputStream = jsonFile.getInputStream();
 			
 			if (inputStream == null) {
-				throw new JsonFileException("Fichier JSON non trouvé.");
+				throw new JsonFileException("JSON not found.");
 			} else {
 				dataModel = objectMapper.readValue(inputStream, DataModel.class);
 				validateDataModel(dataModel);
 			}
 		} catch (IOException e) {
-			logger.error("Erreur lors du chargement des données JSON");
-			throw new JsonFileException("Fichier JSON vide ou illisible.");
+			logger.error("Error loading JSON data.");
+			throw new JsonFileException("JSON empty or unreadable.");
 		}
 	}
 	

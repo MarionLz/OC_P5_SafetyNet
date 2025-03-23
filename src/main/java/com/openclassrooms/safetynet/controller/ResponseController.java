@@ -21,9 +21,9 @@ public class ResponseController {
 	@GetMapping("/firestation")
     public PersonsCoveredByStationResponseDTO getPersonsCoveredByStation(@RequestParam("stationNumber") String stationNumber) {
 
-		logger.info("Requête reçue pour /firestation avec stationNumber: {}", stationNumber);
+		logger.info("Request received for /firestation with stationNumber: {}.", stationNumber);
 		PersonsCoveredByStationResponseDTO response = service.getPersonsByStations(stationNumber);
-		logger.info("Requête réussie, réponse envoyée");
+		logger.info("Request successful, response sent.");
         return response;
     }
 }
