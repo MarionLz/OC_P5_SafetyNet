@@ -2,7 +2,7 @@ package com.openclassrooms.safetynet.service;
 
 import com.openclassrooms.safetynet.DTO.firestation.NbAdultAndChildrenDTO;
 import com.openclassrooms.safetynet.DTO.firestation.PersonsByStationsDTO;
-import com.openclassrooms.safetynet.DTO.firestation.PersonsCoveredByStationResponseDTO;
+import com.openclassrooms.safetynet.DTO.firestation.FirestationResponseDTO;
 import com.openclassrooms.safetynet.model.DataModel;
 
 import org.apache.logging.log4j.LogManager;
@@ -16,13 +16,13 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class PersonsCoveredByStationService {
+public class FirestationService {
 	
 	private final DataModel dataModel;
-    private static final Logger logger = LogManager.getLogger(PersonsCoveredByStationService.class);
+    private static final Logger logger = LogManager.getLogger(FirestationService.class);
     
 	@Autowired
-	public PersonsCoveredByStationService(DataReaderService dataService) {
+	public FirestationService(DataReaderService dataService) {
 		
 		this.dataModel = dataService.getDataModel();
 	}
@@ -70,13 +70,13 @@ public class PersonsCoveredByStationService {
 		return new NbAdultAndChildrenDTO(adultCount, childCount);
 	}
 	
-	public PersonsCoveredByStationResponseDTO getPersonsByStations(String station) {
+	public FirestationResponseDTO getPersonsByStations(String station) {
 		
 		logger.debug("Starting to retrieve data for station {}.", station);
 		List<String> stationAddresses = getFirestationAdresses(station);
 		List<PersonsByStationsDTO> personByStation = getPersonsList(stationAddresses);
 		NbAdultAndChildrenDTO nbAdultAndChildren = countNbAdultAndChildren(personByStation);
 		logger.debug("Retrieval successful: data is ready to be sent.");
-		return new PersonsCoveredByStationResponseDTO(personByStation, nbAdultAndChildren);
+		return new FirestationResponseDTO(personByStation, nbAdultAndChildren);
     }
 }

@@ -19,25 +19,25 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.openclassrooms.safetynet.DTO.firestation.NbAdultAndChildrenDTO;
 import com.openclassrooms.safetynet.DTO.firestation.PersonsByStationsDTO;
-import com.openclassrooms.safetynet.DTO.firestation.PersonsCoveredByStationResponseDTO;
-import com.openclassrooms.safetynet.controller.ResponseController;
-import com.openclassrooms.safetynet.service.PersonsCoveredByStationService;
+import com.openclassrooms.safetynet.DTO.firestation.FirestationResponseDTO;
+import com.openclassrooms.safetynet.controller.FirestationController;
+import com.openclassrooms.safetynet.service.FirestationService;
 
 @ExtendWith(MockitoExtension.class)
 public class ResponseControllerTest {
 
 	@Mock
-	private PersonsCoveredByStationService personsCoveredByStationService;
+	private FirestationService personsCoveredByStationService;
 	
     @InjectMocks
-    private ResponseController responseController;
+    private FirestationController responseController;
     
     private MockMvc mockMvc;
 	
 	@Test
 	public void getPersonsCoveredByStationTest() throws Exception {
 		
-	    responseController = new ResponseController(personsCoveredByStationService);
+	    responseController = new FirestationController(personsCoveredByStationService);
 	    mockMvc = MockMvcBuilders.standaloneSetup(responseController).build();
 		
 		List<PersonsByStationsDTO> persons = Arrays.asList(
@@ -47,7 +47,7 @@ public class ResponseControllerTest {
 		
 		NbAdultAndChildrenDTO nbAdultAndChildren = new NbAdultAndChildrenDTO(1, 1);
 		
-		PersonsCoveredByStationResponseDTO mockResponse = new PersonsCoveredByStationResponseDTO(persons, nbAdultAndChildren);
+		FirestationResponseDTO mockResponse = new FirestationResponseDTO(persons, nbAdultAndChildren);
 		
         ObjectMapper objectMapper = new ObjectMapper();
         String expectedJson = objectMapper.writeValueAsString(mockResponse);
