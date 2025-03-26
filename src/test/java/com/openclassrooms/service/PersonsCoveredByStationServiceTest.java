@@ -16,13 +16,13 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.openclassrooms.safetynet.DTO.firestation.NbAdultAndChildrenDTO;
 import com.openclassrooms.safetynet.DTO.firestation.PersonsByStationsDTO;
-import com.openclassrooms.safetynet.DTO.firestation.PersonsCoveredByStationResponseDTO;
+import com.openclassrooms.safetynet.DTO.firestation.FirestationResponseDTO;
 import com.openclassrooms.safetynet.model.DataModel;
 import com.openclassrooms.safetynet.model.Firestation;
 import com.openclassrooms.safetynet.model.MedicalRecord;
 import com.openclassrooms.safetynet.model.Person;
 import com.openclassrooms.safetynet.service.DataReaderService;
-import com.openclassrooms.safetynet.service.PersonsCoveredByStationService;
+import com.openclassrooms.safetynet.service.FirestationService;
 
 @ExtendWith(MockitoExtension.class)
 public class PersonsCoveredByStationServiceTest {
@@ -32,14 +32,14 @@ public class PersonsCoveredByStationServiceTest {
 	
 	private DataModel dataModel;
 	
-	private PersonsCoveredByStationService personsCoveredByStation;
+	private FirestationService personsCoveredByStation;
 	
 	@BeforeEach
 	private void setUp() {
 		
 		dataModel = spy(new DataModel());
 		when(dataReaderService.getDataModel()).thenReturn(dataModel);
-        personsCoveredByStation = new PersonsCoveredByStationService(dataReaderService);
+        personsCoveredByStation = new FirestationService(dataReaderService);
 	}
 	
 	@Test
@@ -61,7 +61,7 @@ public class PersonsCoveredByStationServiceTest {
 		doReturn(persons).when(dataModel).getPersons();
 		doReturn(medicalrecords).when(dataModel).getMedicalrecords();
 		
-		PersonsCoveredByStationResponseDTO result = personsCoveredByStation.getPersonsByStations("3");
+		FirestationResponseDTO result = personsCoveredByStation.getPersonsByStations("3");
 		
 		List<PersonsByStationsDTO> personByStation = result.getPersons();
 		NbAdultAndChildrenDTO nbAdultAndChildren = result.getNbAdultAndChildren();

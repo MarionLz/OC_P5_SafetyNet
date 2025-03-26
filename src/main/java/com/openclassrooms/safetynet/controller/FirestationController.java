@@ -1,6 +1,6 @@
 package com.openclassrooms.safetynet.controller;
 
-import com.openclassrooms.safetynet.DTO.firestation.PersonsCoveredByStationResponseDTO;
+import com.openclassrooms.safetynet.DTO.firestation.FirestationResponseDTO;
 import com.openclassrooms.safetynet.service.*;
 
 import org.apache.logging.log4j.LogManager;
@@ -11,22 +11,22 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class ResponseController {
+public class FirestationController {
 	
     private static final Logger logger = LogManager.getLogger("ResponseController");	
 
 	@Autowired
-	private PersonsCoveredByStationService personsCoveredByStationService;
+	private FirestationService personsCoveredByStationService;
 	
-	public ResponseController(PersonsCoveredByStationService personsCoveredByStationService) {
+	public FirestationController(FirestationService personsCoveredByStationService) {
 		this.personsCoveredByStationService = personsCoveredByStationService;
 	}
 	
 	@GetMapping("/firestation")
-    public PersonsCoveredByStationResponseDTO getPersonsCoveredByStation(@RequestParam("stationNumber") String stationNumber) {
+    public FirestationResponseDTO getPersonsCoveredByStation(@RequestParam("stationNumber") String stationNumber) {
 
 		logger.info("Request received for /firestation with stationNumber: {}.", stationNumber);
-		PersonsCoveredByStationResponseDTO response = personsCoveredByStationService.getPersonsByStations(stationNumber);
+		FirestationResponseDTO response = personsCoveredByStationService.getPersonsByStations(stationNumber);
 		logger.info("Request successful, response sent.");
         return response;
     }
