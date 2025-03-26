@@ -1,4 +1,4 @@
-package com.openclassrooms.safetynet.DTO;
+package com.openclassrooms.safetynet.DTO.firestation;
 
 import lombok.Data;
 

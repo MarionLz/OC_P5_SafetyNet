@@ -1,6 +1,6 @@
 package com.openclassrooms.safetynet.controller;
 
-import com.openclassrooms.safetynet.DTO.PersonsCoveredByStationResponseDTO;
+import com.openclassrooms.safetynet.DTO.firestation.PersonsCoveredByStationResponseDTO;
 import com.openclassrooms.safetynet.service.*;
 
 import org.apache.logging.log4j.LogManager;
