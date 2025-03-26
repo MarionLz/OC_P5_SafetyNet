@@ -17,9 +17,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.openclassrooms.safetynet.DTO.NbAdultAndChildrenDTO;
-import com.openclassrooms.safetynet.DTO.PersonsByStationsDTO;
-import com.openclassrooms.safetynet.DTO.PersonsCoveredByStationResponseDTO;
+import com.openclassrooms.safetynet.DTO.firestation.NbAdultAndChildrenDTO;
+import com.openclassrooms.safetynet.DTO.firestation.PersonsByStationsDTO;
+import com.openclassrooms.safetynet.DTO.firestation.PersonsCoveredByStationResponseDTO;
 import com.openclassrooms.safetynet.controller.ResponseController;
 import com.openclassrooms.safetynet.service.PersonsCoveredByStationService;
 

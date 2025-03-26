@@ -14,9 +14,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.openclassrooms.safetynet.DTO.NbAdultAndChildrenDTO;
-import com.openclassrooms.safetynet.DTO.PersonsByStationsDTO;
-import com.openclassrooms.safetynet.DTO.PersonsCoveredByStationResponseDTO;
+import com.openclassrooms.safetynet.DTO.firestation.NbAdultAndChildrenDTO;
+import com.openclassrooms.safetynet.DTO.firestation.PersonsByStationsDTO;
+import com.openclassrooms.safetynet.DTO.firestation.PersonsCoveredByStationResponseDTO;
 import com.openclassrooms.safetynet.model.DataModel;
 import com.openclassrooms.safetynet.model.Firestation;
 import com.openclassrooms.safetynet.model.MedicalRecord;

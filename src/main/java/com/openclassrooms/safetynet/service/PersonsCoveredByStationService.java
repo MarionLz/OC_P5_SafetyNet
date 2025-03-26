@@ -1,8 +1,8 @@
 package com.openclassrooms.safetynet.service;
 
-import com.openclassrooms.safetynet.DTO.NbAdultAndChildrenDTO;
-import com.openclassrooms.safetynet.DTO.PersonsByStationsDTO;
-import com.openclassrooms.safetynet.DTO.PersonsCoveredByStationResponseDTO;
+import com.openclassrooms.safetynet.DTO.firestation.NbAdultAndChildrenDTO;
+import com.openclassrooms.safetynet.DTO.firestation.PersonsByStationsDTO;
+import com.openclassrooms.safetynet.DTO.firestation.PersonsCoveredByStationResponseDTO;
 import com.openclassrooms.safetynet.model.DataModel;
 
 import org.apache.logging.log4j.LogManager;
