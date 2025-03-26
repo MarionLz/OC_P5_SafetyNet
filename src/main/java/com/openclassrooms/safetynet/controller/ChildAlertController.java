@@ -26,7 +26,7 @@ public class ChildAlertController {
     public ChildAlertResponseDTO getChildAtAddress(@RequestParam("address") String address) {
 
 		logger.info("Request received for /childAlert with address: {}.", address);
-		ChildAlertResponseDTO response = childAlertService.getChildAtAddress(address);
+		ChildAlertResponseDTO response = childAlertService.getChildrenAtAddress(address);
 		logger.info("Request successful, response sent.");
         return response;
     }

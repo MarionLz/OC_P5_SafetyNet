@@ -56,7 +56,7 @@ public class ChildAlertControllerTest {
         ObjectMapper objectMapper = new ObjectMapper();
         String expectedJson = objectMapper.writeValueAsString(mockResponse);
 		
-		when(childAlertService.getChildAtAddress("1509 Culver St")).thenReturn(mockResponse);
+		when(childAlertService.getChildrenAtAddress("1509 Culver St")).thenReturn(mockResponse);
 		
 		mockMvc.perform(get("/childAlert")
 				.param("address", "1509 Culver St"))

@@ -43,7 +43,7 @@ public class ChildAlertService {
 		return Period.between(birthdateLocalDate, today).getYears();
 	}
 	
-	public ChildAlertResponseDTO getChildAtAddress(String address) {
+	public ChildAlertResponseDTO getChildrenAtAddress(String address) {
 		
 		List<PersonsAtAddressDTO> personsAtAddress = dataModel.getPersons().stream()
 				.filter(person -> address.equals(person.getAddress()))
@@ -63,6 +63,10 @@ public class ChildAlertService {
 			}
 		}
 		
+	    if (children.isEmpty()) {
+	        return new ChildAlertResponseDTO(new ArrayList<>(), new ArrayList<>());
+	    }
+	
 		ChildAlertResponseDTO response = new ChildAlertResponseDTO(children, otherFamilyMembers);
 		
 		return response;
