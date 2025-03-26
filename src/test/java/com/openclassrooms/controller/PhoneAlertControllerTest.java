@@ -33,7 +33,7 @@ public class PhoneAlertControllerTest {
     private MockMvc mockMvc;
 	
 	@Test
-	public void testGetPhoneNumbersCoveredByStation() throws Exception {
+	public void testGetPhoneNumbersCoveredByStation_Success() throws Exception {
 		
 		phoneAlertController = new PhoneAlertController(phoneAlertService);
 		mockMvc = MockMvcBuilders.standaloneSetup(phoneAlertController).build();
@@ -51,7 +51,7 @@ public class PhoneAlertControllerTest {
 		when(phoneAlertService.getPhoneNumbersCoveredByStation("1")).thenReturn(mockResponse);
 		
 		mockMvc.perform(get("/phoneAlert")
-				.param("firestationNumber", "1"))
+				.param("firestation", "1"))
 				.andExpect(status().isOk())
 				.andExpect(content().json(expectedJson));
 	}

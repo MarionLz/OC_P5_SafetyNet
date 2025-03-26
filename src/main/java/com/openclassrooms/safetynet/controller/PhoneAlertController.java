@@ -23,7 +23,7 @@ public class PhoneAlertController {
 		}
 		
 		@GetMapping("/phoneAlert")
-	    public PhoneAlertResponseDTO getPhoneNumbersCoveredByStation(@RequestParam("firestationNumber") String firestationNumber) {
+	    public PhoneAlertResponseDTO getPhoneNumbersCoveredByStation(@RequestParam("firestation") String firestationNumber) {
 
 			logger.info("Request received for /phoneAlert with firestationNumber: {}.", firestationNumber);
 			PhoneAlertResponseDTO response = phoneAlertService.getPhoneNumbersCoveredByStation(firestationNumber);
