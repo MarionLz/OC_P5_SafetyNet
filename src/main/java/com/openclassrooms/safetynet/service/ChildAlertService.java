@@ -21,7 +21,7 @@ import com.openclassrooms.safetynet.model.DataModel;
 public class ChildAlertService {
 
 	private final DataModel dataModel;
-    //private static final Logger logger = LogManager.getLogger(ChildAlertService.class);
+    private static final Logger logger = LogManager.getLogger(ChildAlertService.class);
     
 	@Autowired
 	public ChildAlertService(DataReaderService dataService) {
@@ -31,6 +31,8 @@ public class ChildAlertService {
 	
 	private int getAge(PersonsAtAddressDTO person) {
 		
+        logger.debug("Calculating age for person: {} {}", person.getFirstName(), person.getLastName());
+
 		String birthdate = dataModel.getMedicalrecords().stream()
 				.filter(medicalRecord -> person.getFirstName().equals(medicalRecord.getFirstName())
 						&& person.getLastName().equals(medicalRecord.getLastName()))
@@ -39,17 +41,32 @@ public class ChildAlertService {
 		
 		LocalDate birthdateLocalDate = LocalDate.parse(birthdate, DateTimeFormatter.ofPattern("MM/dd/yyyy"));
 	    LocalDate today = LocalDate.now();
+	    int age = Period.between(birthdateLocalDate, today).getYears();
 	    
-		return Period.between(birthdateLocalDate, today).getYears();
+        logger.debug("Age calculated for {} {}: {} years", person.getFirstName(), person.getLastName(), age);
+
+		return age;
 	}
 	
-	public ChildAlertResponseDTO getChildrenAtAddress(String address) {
+	public List<PersonsAtAddressDTO> getPersonsAtAddress(String address) {
 		
+        logger.debug("Retrieving persons at address: {}", address);
+        
 		List<PersonsAtAddressDTO> personsAtAddress = dataModel.getPersons().stream()
 				.filter(person -> address.equals(person.getAddress()))
 				.map(person -> new PersonsAtAddressDTO(person.getFirstName(), person.getLastName()))
 				.collect(Collectors.toList());
 		
+        logger.debug("{} persons found at address: {}", personsAtAddress.size(), address);
+        
+		return personsAtAddress;
+	}
+	
+	public ChildAlertResponseDTO getChildrenAtAddress(String address) {
+		
+        logger.debug("Retrieving children and family members at address: {}", address);
+
+		List<PersonsAtAddressDTO> personsAtAddress = getPersonsAtAddress(address);
 		List<ChildDTO> children = new ArrayList<>();
 		List<PersonsAtAddressDTO> otherFamilyMembers = new ArrayList<>();
 		
@@ -66,9 +83,9 @@ public class ChildAlertService {
 	    if (children.isEmpty()) {
 	        return new ChildAlertResponseDTO(new ArrayList<>(), new ArrayList<>());
 	    }
-	
-		ChildAlertResponseDTO response = new ChildAlertResponseDTO(children, otherFamilyMembers);
-		
-		return response;
+	    
+        logger.debug("Child retrieval completed: {} children and {} other family members found.", children.size(), otherFamilyMembers.size());
+        
+		return new ChildAlertResponseDTO(children, otherFamilyMembers);
 	}
 }
