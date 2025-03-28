@@ -17,9 +17,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.openclassrooms.safetynet.DTO.PersonIdentityDTO;
 import com.openclassrooms.safetynet.DTO.childAlert.ChildAlertResponseDTO;
 import com.openclassrooms.safetynet.DTO.childAlert.ChildDTO;
-import com.openclassrooms.safetynet.DTO.childAlert.PersonsAtAddressDTO;
 import com.openclassrooms.safetynet.controller.ChildAlertController;
 import com.openclassrooms.safetynet.service.ChildAlertService;
 
@@ -45,10 +45,10 @@ public class ChildAlertControllerTest {
 				new ChildDTO("Roger", "Boyd", "09/06/2017")
 		);
 		
-		List<PersonsAtAddressDTO> otherFamilyMembers = Arrays.asList(
-				new PersonsAtAddressDTO("John", "Boyd"),
-				new PersonsAtAddressDTO("Jacob", "Boyd"),
-				new PersonsAtAddressDTO("Felicia", "Boyd")
+		List<PersonIdentityDTO> otherFamilyMembers = Arrays.asList(
+				new PersonIdentityDTO("John", "Boyd"),
+				new PersonIdentityDTO("Jacob", "Boyd"),
+				new PersonIdentityDTO("Felicia", "Boyd")
 		);
 		
 		ChildAlertResponseDTO mockResponse = new ChildAlertResponseDTO(children, otherFamilyMembers);

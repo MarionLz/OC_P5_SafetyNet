@@ -7,13 +7,13 @@ import lombok.Data;
 @Data
 public class FireResponseDTO {
 
-	private List<FirePersonsAtAddressDTO> habitants;
+	private List<FirePersonsAtAddressDTO> personsLivingAtGivenAddress;
 	private String stationNumber;
 	
 	public FireResponseDTO() {}
 	
-	public FireResponseDTO(List<FirePersonsAtAddressDTO> habitants, String stationNumber) {
-		this.habitants = habitants;
+	public FireResponseDTO(List<FirePersonsAtAddressDTO> persons, String stationNumber) {
+		this.personsLivingAtGivenAddress = persons;
 		this.stationNumber = stationNumber;
 	}
 }

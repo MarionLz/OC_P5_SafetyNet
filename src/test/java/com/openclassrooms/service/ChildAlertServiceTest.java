@@ -14,9 +14,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import com.openclassrooms.safetynet.DTO.PersonIdentityDTO;
 import com.openclassrooms.safetynet.DTO.childAlert.ChildAlertResponseDTO;
 import com.openclassrooms.safetynet.DTO.childAlert.ChildDTO;
-import com.openclassrooms.safetynet.DTO.childAlert.PersonsAtAddressDTO;
 import com.openclassrooms.safetynet.model.DataModel;
 import com.openclassrooms.safetynet.model.MedicalRecord;
 import com.openclassrooms.safetynet.model.Person;
@@ -62,7 +62,7 @@ public class ChildAlertServiceTest {
 		
 		ChildAlertResponseDTO result = childAlert.getChildrenAtAddress("1509 Culver St");
 		List<ChildDTO> children = result.getChildren();
-		List<PersonsAtAddressDTO> otherFamilyMembers = result.getOtherFamilyMembers();
+		List<PersonIdentityDTO> otherFamilyMembers = result.getOtherFamilyMembers();
 		
 		assertEquals(children.size(), 1);
 		assertEquals(otherFamilyMembers.size(), 1);
