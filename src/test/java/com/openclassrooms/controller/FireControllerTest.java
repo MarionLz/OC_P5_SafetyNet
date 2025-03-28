@@ -17,7 +17,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.openclassrooms.safetynet.DTO.fire.FirePersonsAtAddressDTO;
+import com.openclassrooms.safetynet.DTO.ResidentDTO;
 import com.openclassrooms.safetynet.DTO.fire.FireResponseDTO;
 import com.openclassrooms.safetynet.controller.FireController;
 import com.openclassrooms.safetynet.service.FireService;
@@ -39,9 +39,9 @@ public class FireControllerTest {
     	fireController = new FireController(fireService);
 		mockMvc = MockMvcBuilders.standaloneSetup(fireController).build();
 		
-		List<FirePersonsAtAddressDTO> persons = Arrays.asList(
-				new FirePersonsAtAddressDTO("Boyd", "841-874-6512", "42", new String[]{"aznol:350mg", "hydrapermazol:100mg"}, new String[]{"nillacilan"}),
-				new FirePersonsAtAddressDTO("Boyd", "841-874-6513", "12", new String[] {}, new String[]{"peanut"})
+		List<ResidentDTO> persons = Arrays.asList(
+				new ResidentDTO("Boyd", "841-874-6512", "42", new String[]{"aznol:350mg", "hydrapermazol:100mg"}, new String[]{"nillacilan"}),
+				new ResidentDTO("Boyd", "841-874-6513", "12", new String[] {}, new String[]{"peanut"})
 		);
 		
 		FireResponseDTO mockResponse = new FireResponseDTO(persons, "3");

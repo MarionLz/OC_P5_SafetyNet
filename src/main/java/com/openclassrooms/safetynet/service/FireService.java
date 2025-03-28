@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 
 import com.openclassrooms.safetynet.DTO.MedicalHistoryDTO;
 import com.openclassrooms.safetynet.DTO.PersonIdentityDTO;
-import com.openclassrooms.safetynet.DTO.fire.FirePersonsAtAddressDTO;
+import com.openclassrooms.safetynet.DTO.ResidentDTO;
 import com.openclassrooms.safetynet.DTO.fire.FireResponseDTO;
 import com.openclassrooms.safetynet.model.DataModel;
 
@@ -82,7 +82,7 @@ public class FireService {
     	
         logger.debug("Starting to retrieve persons who lived at this address : ", address);
 
-    	List<FirePersonsAtAddressDTO> personsResult = new ArrayList<>();
+    	List<ResidentDTO> personsResult = new ArrayList<>();
     	
     	List<PersonIdentityDTO> personsIdentity = getPersonsIdentity(address);
     	
@@ -90,7 +90,7 @@ public class FireService {
     		
     		int age = getAge(personIdentity);
     		MedicalHistoryDTO medicalHistory = getMedicalHistory(personIdentity);
-    		personsResult.add(new FirePersonsAtAddressDTO(personIdentity.getLastName(), personIdentity.getPhone(),
+    		personsResult.add(new ResidentDTO(personIdentity.getLastName(), personIdentity.getPhone(),
     						String.valueOf(age), medicalHistory.getMedications(), medicalHistory.getAllergies()));
     	}
     	

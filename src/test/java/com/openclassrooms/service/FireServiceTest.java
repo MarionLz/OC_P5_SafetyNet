@@ -14,7 +14,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.openclassrooms.safetynet.DTO.fire.FirePersonsAtAddressDTO;
+import com.openclassrooms.safetynet.DTO.ResidentDTO;
 import com.openclassrooms.safetynet.DTO.fire.FireResponseDTO;
 import com.openclassrooms.safetynet.model.DataModel;
 import com.openclassrooms.safetynet.model.Firestation;
@@ -66,7 +66,7 @@ public class FireServiceTest {
 		doReturn(firestations).when(dataModel).getFirestations();
 		
 		FireResponseDTO result = fireService.getPersonsAtAddress("1509 Culver St");
-		List<FirePersonsAtAddressDTO> personsLivingAtAddress = result.getPersonsLivingAtGivenAddress();
+		List<ResidentDTO> personsLivingAtAddress = result.getPersonsLivingAtGivenAddress();
 		String stationNumber = result.getStationNumber();
 		
 		assertEquals(2, personsLivingAtAddress.size());
