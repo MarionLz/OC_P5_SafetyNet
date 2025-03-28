@@ -14,35 +14,35 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.openclassrooms.safetynet.DTO.PersonIdentityDTO;
-import com.openclassrooms.safetynet.DTO.childAlert.ChildAlertResponseDTO;
-import com.openclassrooms.safetynet.DTO.childAlert.ChildDTO;
+import com.openclassrooms.safetynet.DTO.fire.FirePersonsAtAddressDTO;
+import com.openclassrooms.safetynet.DTO.fire.FireResponseDTO;
 import com.openclassrooms.safetynet.model.DataModel;
+import com.openclassrooms.safetynet.model.Firestation;
 import com.openclassrooms.safetynet.model.MedicalRecord;
 import com.openclassrooms.safetynet.model.Person;
-import com.openclassrooms.safetynet.service.ChildAlertService;
 import com.openclassrooms.safetynet.service.DataReaderService;
+import com.openclassrooms.safetynet.service.FireService;
 
 @ExtendWith(MockitoExtension.class)
-public class ChildAlertServiceTest {
-	
+public class FireServiceTest {
+
 	@Mock
 	private DataReaderService dataReaderService;
 	
 	private DataModel dataModel;
 	
-	ChildAlertService childAlert;
+	FireService fireService;
 	
 	@BeforeEach
 	private void setUp() {
 		
 		dataModel = spy(new DataModel());
 		when(dataReaderService.getDataModel()).thenReturn(dataModel);
-		childAlert = new ChildAlertService(dataReaderService);
+		fireService = new FireService(dataReaderService);
 	}
 	
 	@Test
-	public void testGetChildAtAlert_Success() {
+	public void testGetPersonsAtAddress_Success() {
 		
 		List<Person> persons = Arrays.asList(
 				new Person("John", "Boyd", "1509 Culver St", "Culver", "97451", "841-874-6512", "jaboyd@email.com"),
@@ -56,17 +56,24 @@ public class ChildAlertServiceTest {
 		        new MedicalRecord("Tony","Cooper", "03/06/1994", new String []{"hydrapermazol:300mg", "dodoxadin:30mg"}, new String[]{"shellfish"}),
 		        new MedicalRecord("Clive", "Ferguson", "03/06/1994", new String[]{}, new String[]{"allergies"})
 		);
+		List<Firestation> firestations = Arrays.asList(
+				new Firestation("1509 Culver St", "3"),
+				new Firestation("112 Steppes Pl", "3")
+		);
 		
 		doReturn(persons).when(dataModel).getPersons();
 		doReturn(medicalrecords).when(dataModel).getMedicalrecords();
+		doReturn(firestations).when(dataModel).getFirestations();
 		
-		ChildAlertResponseDTO result = childAlert.getChildrenAtAddress("1509 Culver St");
-		List<ChildDTO> children = result.getChildren();
-		List<PersonIdentityDTO> otherFamilyMembers = result.getOtherFamilyMembers();
+		FireResponseDTO result = fireService.getPersonsAtAddress("1509 Culver St");
+		List<FirePersonsAtAddressDTO> personsLivingAtAddress = result.getPersonsLivingAtGivenAddress();
+		String stationNumber = result.getStationNumber();
 		
-		assertEquals(children.size(), 1);
-		assertEquals(otherFamilyMembers.size(), 1);
-		assertEquals(children.get(0).getFirstName(), "Tenley");
-		assertEquals(otherFamilyMembers.get(0).getFirstName(), "John");
+		assertEquals(2, personsLivingAtAddress.size());
+		assertEquals("Boyd", personsLivingAtAddress.get(0).getLastName());
+		assertEquals("41", personsLivingAtAddress.get(0).getAge());
+		assertEquals("Boyd", personsLivingAtAddress.get(1).getLastName());
+		assertEquals("13", personsLivingAtAddress.get(1).getAge());
+		assertEquals("3", stationNumber);
 	}
 }
