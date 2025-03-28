@@ -23,7 +23,7 @@ import com.openclassrooms.safetynet.model.Firestation;
 import com.openclassrooms.safetynet.model.MedicalRecord;
 import com.openclassrooms.safetynet.model.Person;
 import com.openclassrooms.safetynet.service.DataReaderService;
-import com.openclassrooms.safetynet.service.FireService;
+import com.openclassrooms.safetynet.service.FloodService;
 
 @ExtendWith(MockitoExtension.class)
 public class FloodServiceTest {
@@ -67,7 +67,7 @@ public class FloodServiceTest {
 		doReturn(medicalrecords).when(dataModel).getMedicalrecords();
 		doReturn(firestations).when(dataModel).getFirestations();
 		
-		FloodResponseDTO result = floodService.getHouseholds_Success("3");
+		FloodResponseDTO result = floodService.getHouseholds(Arrays.asList("3"));
 		List<StationDTO> stationsSearched = result.getStationsSearched();
 		String stationNumber = stationsSearched.get(0).getStationNumber();
 		List<HouseholdDTO> households = stationsSearched.get(0).getHouseholds();

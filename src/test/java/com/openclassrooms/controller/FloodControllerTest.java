@@ -25,7 +25,9 @@ import com.openclassrooms.safetynet.DTO.flood.FloodResponseDTO;
 import com.openclassrooms.safetynet.DTO.flood.HouseholdDTO;
 import com.openclassrooms.safetynet.DTO.flood.StationDTO;
 import com.openclassrooms.safetynet.controller.ChildAlertController;
+import com.openclassrooms.safetynet.controller.FloodController;
 import com.openclassrooms.safetynet.service.ChildAlertService;
+import com.openclassrooms.safetynet.service.FloodService;
 
 @ExtendWith(MockitoExtension.class)
 public class FloodControllerTest {
@@ -62,7 +64,8 @@ public class FloodControllerTest {
         ObjectMapper objectMapper = new ObjectMapper();
         String expectedJson = objectMapper.writeValueAsString(mockResponse);
 		
-		when(floodService.getHouseholdsServedByStation("3")).thenReturn(mockResponse);
+        
+		when(floodService.getHouseholds(Arrays.asList("3"))).thenReturn(mockResponse);
 		
 		mockMvc.perform(get("/flood/stations")
 				.param("stations", "3"))
