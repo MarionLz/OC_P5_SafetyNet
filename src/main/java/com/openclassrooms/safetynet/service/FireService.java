@@ -4,7 +4,6 @@ import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -66,17 +65,23 @@ public class FireService {
 	
 	private MedicalHistoryDTO getMedicalHistory(PersonIdentityDTO person) {
 		
+        logger.debug("Retrieving medicalHistory for person : {}", person);
+
 		MedicalHistoryDTO medicalHistory = dataModel.getMedicalrecords().stream()
 				.filter(medicalRecord -> person.getFirstName().equals(medicalRecord.getFirstName())
 						&& person.getLastName().equals(medicalRecord.getLastName()))
 				.map(medicalRecord -> new MedicalHistoryDTO(medicalRecord.getMedications(), medicalRecord.getAllergies()))
 				.findFirst().orElse(new MedicalHistoryDTO(new String[0], new String[0]));
 		
+        logger.debug("Medical history retrieved for {}", person);
+
 		return medicalHistory;
 	}
     
     public FireResponseDTO getPersonsAtAddress(String address) {
     	
+        logger.debug("Starting to retrieve persons who lived at this address : ", address);
+
     	List<FirePersonsAtAddressDTO> personsResult = new ArrayList<>();
     	
     	List<PersonIdentityDTO> personsIdentity = getPersonsIdentity(address);
@@ -95,6 +100,8 @@ public class FireService {
     			.findFirst().orElse("");
     	
     	FireResponseDTO response = new FireResponseDTO(personsResult, stationNumber);
+		
+    	logger.debug("Retrieval successful: data is ready to be sent.");
     	
     	return response;
     }
