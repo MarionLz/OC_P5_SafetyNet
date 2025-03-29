@@ -1,9 +1,9 @@
-package com.openclassrooms.safetynet.DTO.fire;
+package com.openclassrooms.safetynet.DTO;
 
 import lombok.Data;
 
 @Data
-public class FirePersonsAtAddressDTO {
+public class ResidentDTO {
 
 	private String lastName;
 	private String phone;
@@ -11,9 +11,9 @@ public class FirePersonsAtAddressDTO {
 	private String[] medications;
 	private String[] allergies;
 	
-	public FirePersonsAtAddressDTO() {}
+	public ResidentDTO() {}
 	
-	public FirePersonsAtAddressDTO(String lastName, String phone, String age, String[] medications, String[] allergies) {
+	public ResidentDTO(String lastName, String phone, String age, String[] medications, String[] allergies) {
 		this.lastName = lastName;
 		this.phone = phone;
 		this.age = age;

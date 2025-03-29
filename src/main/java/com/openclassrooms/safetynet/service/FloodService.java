@@ -15,19 +15,33 @@ import org.springframework.stereotype.Service;
 import com.openclassrooms.safetynet.DTO.MedicalHistoryDTO;
 import com.openclassrooms.safetynet.DTO.PersonIdentityDTO;
 import com.openclassrooms.safetynet.DTO.ResidentDTO;
-import com.openclassrooms.safetynet.DTO.fire.FireResponseDTO;
+import com.openclassrooms.safetynet.DTO.flood.FloodResponseDTO;
+import com.openclassrooms.safetynet.DTO.flood.HouseholdDTO;
+import com.openclassrooms.safetynet.DTO.flood.StationDTO;
 import com.openclassrooms.safetynet.model.DataModel;
 
 @Service
-public class FireService {
+public class FloodService {
 
 	private final DataModel dataModel;
-    private static final Logger logger = LogManager.getLogger(FireService.class);
+    private static final Logger logger = LogManager.getLogger(FloodService.class);
+    
     
     @Autowired
-	public FireService(DataReaderService dataService) {
+	public FloodService(DataReaderService dataService) {
 		
 		this.dataModel = dataService.getDataModel();
+	}
+    
+    private List<String> getFirestationAdresses(String station) {
+		
+		logger.debug("Starting to retrieve firestation addresses for station {}.", station);
+		List<String> stationAddresses = dataModel.getFirestations().stream()
+            .filter(firestation -> firestation.getStation().equals(station))
+            .map(firestation -> firestation.getAddress())
+            .collect(Collectors.toList());
+		logger.debug("Retrieval successful: {} addresses found for station {}.", stationAddresses.size(), station);
+		return stationAddresses;
 	}
     
     private List<PersonIdentityDTO> getPersonsIdentity(String address) {
@@ -78,30 +92,35 @@ public class FireService {
 		return medicalHistory;
 	}
     
-    public FireResponseDTO getPersonsAtAddress(String address) {
+    public FloodResponseDTO getHouseholds(List<String> stationNumbers) {
     	
-        logger.debug("Starting to retrieve persons who lived at this address : ", address);
-
-    	List<ResidentDTO> personsResult = new ArrayList<>();
+    	List<StationDTO> stations = new ArrayList<>();
     	
-    	List<PersonIdentityDTO> personsIdentity = getPersonsIdentity(address);
-    	
-    	for (PersonIdentityDTO personIdentity : personsIdentity) {
+    	for(String stationNumber : stationNumbers) {
     		
-    		int age = getAge(personIdentity);
-    		MedicalHistoryDTO medicalHistory = getMedicalHistory(personIdentity);
-    		personsResult.add(new ResidentDTO(personIdentity.getLastName(), personIdentity.getPhone(),
-    						String.valueOf(age), medicalHistory.getMedications(), medicalHistory.getAllergies()));
+    		List<HouseholdDTO> households = new ArrayList<>();
+    		List<String> addresses = getFirestationAdresses(stationNumber);
+    		
+    		for(String address : addresses) {
+    			
+    			List<ResidentDTO> residents = new ArrayList<>();
+    	    	List<PersonIdentityDTO> personsIdentity = getPersonsIdentity(address);
+   
+    	    	for (PersonIdentityDTO personIdentity : personsIdentity) {
+    	    		
+    	    		int age = getAge(personIdentity);
+    	    		MedicalHistoryDTO medicalHistory = getMedicalHistory(personIdentity);
+    	    		residents.add(new ResidentDTO(personIdentity.getLastName(), personIdentity.getPhone(),
+    	    						String.valueOf(age), medicalHistory.getMedications(), medicalHistory.getAllergies()));
+    	    	}
+    	    	
+    	    	households.add(new HouseholdDTO(address, residents));
+    		}
+    		
+    		stations.add(new StationDTO(stationNumber, households));
     	}
     	
-    	String stationNumber = dataModel.getFirestations().stream()
-    			.filter(firestation -> address.equals(firestation.getAddress()))
-    			.map(firestation -> firestation.getStation())
-    			.findFirst().orElse("");
-    	
-    	FireResponseDTO response = new FireResponseDTO(personsResult, stationNumber);
-		
-    	logger.debug("Retrieval successful: data is ready to be sent.");
+    	FloodResponseDTO response = new FloodResponseDTO(stations);
     	
     	return response;
     }

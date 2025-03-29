@@ -15,35 +15,37 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.openclassrooms.safetynet.DTO.ResidentDTO;
-import com.openclassrooms.safetynet.DTO.fire.FireResponseDTO;
+import com.openclassrooms.safetynet.DTO.flood.FloodResponseDTO;
+import com.openclassrooms.safetynet.DTO.flood.HouseholdDTO;
+import com.openclassrooms.safetynet.DTO.flood.StationDTO;
 import com.openclassrooms.safetynet.model.DataModel;
 import com.openclassrooms.safetynet.model.Firestation;
 import com.openclassrooms.safetynet.model.MedicalRecord;
 import com.openclassrooms.safetynet.model.Person;
 import com.openclassrooms.safetynet.service.DataReaderService;
-import com.openclassrooms.safetynet.service.FireService;
+import com.openclassrooms.safetynet.service.FloodService;
 
 @ExtendWith(MockitoExtension.class)
-public class FireServiceTest {
+public class FloodServiceTest {
 
 	@Mock
 	private DataReaderService dataReaderService;
 	
 	private DataModel dataModel;
 	
-	FireService fireService;
+	FloodService floodService;
 	
 	@BeforeEach
 	private void setUp() {
 		
 		dataModel = spy(new DataModel());
 		when(dataReaderService.getDataModel()).thenReturn(dataModel);
-		fireService = new FireService(dataReaderService);
+		floodService = new FloodService(dataReaderService);
 	}
 	
 	@Test
-	public void testGetPersonsAtAddress_Success() {
-		
+	public void testGetHouseholds_Success() {
+	
 		List<Person> persons = Arrays.asList(
 				new Person("John", "Boyd", "1509 Culver St", "Culver", "97451", "841-874-6512", "jaboyd@email.com"),
 			    new Person("Tenley", "Boyd", "1509 Culver St", "Culver", "97451", "841-874-6512", "tenz@email.com"),
@@ -65,15 +67,19 @@ public class FireServiceTest {
 		doReturn(medicalrecords).when(dataModel).getMedicalrecords();
 		doReturn(firestations).when(dataModel).getFirestations();
 		
-		FireResponseDTO result = fireService.getPersonsAtAddress("1509 Culver St");
-		List<ResidentDTO> personsLivingAtAddress = result.getPersonsLivingAtGivenAddress();
-		String stationNumber = result.getStationNumber();
+		FloodResponseDTO result = floodService.getHouseholds(Arrays.asList("3"));
+		List<StationDTO> stationsSearched = result.getStationsSearched();
+		String stationNumber = stationsSearched.get(0).getStationNumber();
+		List<HouseholdDTO> households = stationsSearched.get(0).getHouseholds();
+		List<ResidentDTO> residents = households.get(0).getResidents();
 		
-		assertEquals(2, personsLivingAtAddress.size());
-		assertEquals("Boyd", personsLivingAtAddress.get(0).getLastName());
-		assertEquals("41", personsLivingAtAddress.get(0).getAge());
-		assertEquals("Boyd", personsLivingAtAddress.get(1).getLastName());
-		assertEquals("13", personsLivingAtAddress.get(1).getAge());
+
+		assertEquals(1, stationsSearched.size());
 		assertEquals("3", stationNumber);
+		assertEquals(2, households.size());
+		assertEquals("1509 Culver St", households.get(0).getAddress());
+		assertEquals("112 Steppes Pl", households.get(1).getAddress());
+		assertEquals(2, residents.size());
+		assertEquals("Boyd", residents.get(1).getLastName());
 	}
 }
