@@ -20,9 +20,12 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.openclassrooms.safetynet.DTO.ResidentDTO;
 import com.openclassrooms.safetynet.DTO.childAlert.ChildDTO;
+import com.openclassrooms.safetynet.DTO.personInfo.PersonInfoPersonIdentityDTO;
 import com.openclassrooms.safetynet.DTO.personInfo.PersonInfoResponseDTO;
 import com.openclassrooms.safetynet.controller.ChildAlertController;
+import com.openclassrooms.safetynet.controller.PersonInfoController;
 import com.openclassrooms.safetynet.service.ChildAlertService;
+import com.openclassrooms.safetynet.service.PersonInfoService;
 
 @ExtendWith(MockitoExtension.class)
 public class PersonInfoControllerTest {
@@ -36,23 +39,23 @@ public class PersonInfoControllerTest {
     private MockMvc mockMvc;
     
     @Test
-    public void testGetPersonInfo_Success() {
+    public void testGetPersonInfo_Success() throws Exception {
     	
     	personInfoController = new PersonInfoController(personInfoService);
 		mockMvc = MockMvcBuilders.standaloneSetup(personInfoController).build();
 
-		List<ResidentDTO> residents = Arrays.asList(
-				new ResidentDTO("Boyd", "1509 Culver St", "42", "jaboyd@email.com", new String[]{"aznol:350mg", "hydrapermazol:100mg"}, new String[]{"nillacilan"}),
-				new ResidentDTO("Boyd", "1509 Culver St", "12", "tenz@email.com", new String[] {}, new String[]{"peanut"})
+		List<PersonInfoPersonIdentityDTO> personsWithSameLastName = Arrays.asList(
+				new PersonInfoPersonIdentityDTO("Boyd", "1509 Culver St", "42", "jaboyd@email.com", new String[]{"aznol:350mg", "hydrapermazol:100mg"}, new String[]{"nillacilan"}),
+				new PersonInfoPersonIdentityDTO("Boyd", "1509 Culver St", "12", "tenz@email.com", new String[] {}, new String[]{"peanut"})
 		);
 		
-		PersonInfoResponseDTO mockResponse = new PersonInfoResponseDTO(residents);
+		PersonInfoResponseDTO mockResponse = new PersonInfoResponseDTO(personsWithSameLastName);
 		
 		ObjectMapper objectMapper = new ObjectMapper();
         String expectedJson = objectMapper.writeValueAsString(mockResponse);
 		
         
-		when(personInfoService.getPersonInfo(Arrays.asList("Boyd"))).thenReturn(mockResponse);
+		when(personInfoService.getPersonInfoWithLastName("Boyd")).thenReturn(mockResponse);
 		
 		mockMvc.perform(get("/personInfo")
 				.param("lastName", "Boyd"))

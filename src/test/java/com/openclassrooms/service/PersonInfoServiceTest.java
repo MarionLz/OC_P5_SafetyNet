@@ -14,14 +14,13 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.openclassrooms.controller.PersonInfoService;
-import com.openclassrooms.safetynet.DTO.ResidentDTO;
+import com.openclassrooms.safetynet.DTO.personInfo.PersonInfoPersonIdentityDTO;
 import com.openclassrooms.safetynet.DTO.personInfo.PersonInfoResponseDTO;
 import com.openclassrooms.safetynet.model.DataModel;
-import com.openclassrooms.safetynet.model.Firestation;
 import com.openclassrooms.safetynet.model.MedicalRecord;
 import com.openclassrooms.safetynet.model.Person;
 import com.openclassrooms.safetynet.service.DataReaderService;
+import com.openclassrooms.safetynet.service.PersonInfoService;
 
 @ExtendWith(MockitoExtension.class)
 public class PersonInfoServiceTest {
@@ -56,22 +55,17 @@ public class PersonInfoServiceTest {
 		        new MedicalRecord("Tony","Cooper", "03/06/1994", new String []{"hydrapermazol:300mg", "dodoxadin:30mg"}, new String[]{"shellfish"}),
 		        new MedicalRecord("Clive", "Ferguson", "03/06/1994", new String[]{}, new String[]{"allergies"})
 		);
-		/*List<Firestation> firestations = Arrays.asList(
-				new Firestation("1509 Culver St", "3"),
-				new Firestation("112 Steppes Pl", "3")
-		);*/
 		
 		doReturn(persons).when(dataModel).getPersons();
 		doReturn(medicalrecords).when(dataModel).getMedicalrecords();
-		//doReturn(firestations).when(dataModel).getFirestations();
 		
-		PersonInfoResponseDTO result = personInfoService.getPersonInfoByLastName("Boyd");
-		List<ResidentDTO> residents = result.getResidents();
+		PersonInfoResponseDTO result = personInfoService.getPersonInfoWithLastName("Boyd");
+		List<PersonInfoPersonIdentityDTO> personsWithSameLastName = result.getPersonsWithSameLastName();
 		
-		assertEquals(2, residents.size());
-		assertEquals("Boyd", residents.get(0).getLastName());
-		assertEquals("Boyd", residents.get(1).getLastName());
-		assertEquals("jaboyd@email.com", residents.get(0).getEmail());
-		assertEquals("tenz@email.com", residents.get(1).getEmail());
+		assertEquals(2, personsWithSameLastName.size());
+		assertEquals("Boyd", personsWithSameLastName.get(0).getLastName());
+		assertEquals("Boyd", personsWithSameLastName.get(1).getLastName());
+		assertEquals("jaboyd@email.com", personsWithSameLastName.get(0).getEmail());
+		assertEquals("tenz@email.com", personsWithSameLastName.get(1).getEmail());
 	}
 }

@@ -9,9 +9,9 @@ import lombok.Data;
 @Data
 public class PersonInfoResponseDTO {
 
-	List<ResidentDTO> residents;
+	List<PersonInfoPersonIdentityDTO> personsWithSameLastName;
 	
-	public PersonInfoResponseDTO(List<ResidentDTO> residents) {
-		this.residents = residents;
+	public PersonInfoResponseDTO(List<PersonInfoPersonIdentityDTO> persons) {
+		this.personsWithSameLastName = persons;
 	}
 }
