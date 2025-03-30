@@ -26,7 +26,7 @@ public class ResidentDTO {
 		this.allergies = allergies;
 	}
 	
-	private ResidentDTO(String lastName, String address, String age, String email, String[] medications, String[] allergies) {
+	public ResidentDTO(String lastName, String address, String age, String email, String[] medications, String[] allergies) {
 		this.lastName = lastName;
 		this.address = address;
 		this.age = age;
