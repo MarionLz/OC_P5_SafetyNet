@@ -14,13 +14,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.openclassrooms.safetynet.DTO.PersonIdentityDTO;
-import com.openclassrooms.safetynet.DTO.childAlert.ChildAlertResponseDTO;
-import com.openclassrooms.safetynet.DTO.childAlert.ChildDTO;
 import com.openclassrooms.safetynet.model.DataModel;
-import com.openclassrooms.safetynet.model.MedicalRecord;
 import com.openclassrooms.safetynet.model.Person;
-import com.openclassrooms.safetynet.service.ChildAlertService;
+import com.openclassrooms.safetynet.service.CommunityEmailService;
 import com.openclassrooms.safetynet.service.DataReaderService;
 
 @ExtendWith(MockitoExtension.class)

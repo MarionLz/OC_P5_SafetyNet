@@ -17,6 +17,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.openclassrooms.safetynet.controller.CommunityEmailController;
+import com.openclassrooms.safetynet.service.CommunityEmailService;
 
 @ExtendWith(MockitoExtension.class)
 public class CommunityEmailControllerTest {
