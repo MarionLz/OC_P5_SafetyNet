@@ -39,14 +39,14 @@ public class DataReaderFromJsonRepository implements IDataReaderRepository {
 	@PostConstruct
 	private void init() {
 		try {
-	        loadDataFromJson();
+	        loadData();
 	    } catch (JsonFileException e) {
 	        logger.error("Critical error: Unable to load JSON data. Application stopped.", e);
 	        throw e;
 	    }
 	}
 	
-	public void loadDataFromJson() {
+	public void loadData() {
 		try {
 			ObjectMapper objectMapper = new ObjectMapper();
 			InputStream inputStream = jsonFile.getInputStream();

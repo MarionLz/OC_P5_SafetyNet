@@ -52,7 +52,7 @@ public class DataReaderFromJsonRepositoryTest {
         
         when(jsonFile.getInputStream()).thenReturn(inputStream);
         
-        repository.loadDataFromJson();
+        repository.loadData();
         
         assertNotNull(repository.getDataModel());
         assertEquals(2, repository.getDataModel().getPersons().size());
@@ -68,7 +68,7 @@ public class DataReaderFromJsonRepositoryTest {
 		
         when(jsonFile.getInputStream()).thenReturn(null);
         
-        JsonFileException exception = assertThrows(JsonFileException.class, repository::loadDataFromJson);
+        JsonFileException exception = assertThrows(JsonFileException.class, repository::loadData);
         assertEquals("JSON not found.", exception.getMessage());
 	}
 	
@@ -95,7 +95,7 @@ public class DataReaderFromJsonRepositoryTest {
         
         when(jsonFile.getInputStream()).thenReturn(inputStream);
         
-        JsonFileException exception = assertThrows(JsonFileException.class, repository::loadDataFromJson);
+        JsonFileException exception = assertThrows(JsonFileException.class, repository::loadData);
         assertEquals("JSON empty or unreadable.", exception.getMessage());
 	}
 	
@@ -124,7 +124,7 @@ public class DataReaderFromJsonRepositoryTest {
 		when(jsonFile.getInputStream()).thenReturn(inputStream);
 		
 		
-        JsonFileException exception = assertThrows(JsonFileException.class, repository::loadDataFromJson);
+        JsonFileException exception = assertThrows(JsonFileException.class, repository::loadData);
         assertEquals("JSON validation error :\n- persons[0].firstName : FisrtName may not be empty.\n", exception.getMessage());
 	}
 }

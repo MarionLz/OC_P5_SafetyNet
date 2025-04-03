@@ -32,21 +32,21 @@ public class FireService {
     
     private List<PersonIdentityDTO> getPersonsIdentity(String address) {
     	
-        logger.debug("Retrieving persons at address: {}", address);
+        logger.info("Retrieving persons at address: {}", address);
         
 		List<PersonIdentityDTO> personsIdentity = dataModel.getPersons().stream()
 				.filter(person -> address.equals(person.getAddress()))
 				.map(person -> new PersonIdentityDTO(person.getFirstName(), person.getLastName(), person.getPhone()))
 				.collect(Collectors.toList());
 		
-        logger.debug("{} persons found at address: {}", personsIdentity.size(), address);
+        logger.info("{} persons found at address: {}", personsIdentity.size(), address);
         
 		return personsIdentity;
 	}
     
 	private int getAge(PersonIdentityDTO person) {
 			
-        logger.debug("Calculating age for person: {} {}", person.getFirstName(), person.getLastName());
+        logger.info("Calculating age for person: {} {}", person.getFirstName(), person.getLastName());
 
 		String birthdate = dataModel.getMedicalrecords().stream()
 				.filter(medicalRecord -> person.getFirstName().equals(medicalRecord.getFirstName())
@@ -58,14 +58,14 @@ public class FireService {
 	    LocalDate today = LocalDate.now();
 	    int age = Period.between(birthdateLocalDate, today).getYears();
 	    
-        logger.debug("Age calculated for {} {}: {} years", person.getFirstName(), person.getLastName(), age);
+        logger.info("Age calculated for {} {}: {} years", person.getFirstName(), person.getLastName(), age);
 
 		return age;
 	}
 	
 	private MedicalHistoryDTO getMedicalHistory(PersonIdentityDTO person) {
 		
-        logger.debug("Retrieving medicalHistory for person : {}", person);
+        logger.info("Retrieving medicalHistory for person : {}", person);
 
 		MedicalHistoryDTO medicalHistory = dataModel.getMedicalrecords().stream()
 				.filter(medicalRecord -> person.getFirstName().equals(medicalRecord.getFirstName())
@@ -73,14 +73,14 @@ public class FireService {
 				.map(medicalRecord -> new MedicalHistoryDTO(medicalRecord.getMedications(), medicalRecord.getAllergies()))
 				.findFirst().orElse(new MedicalHistoryDTO(new String[0], new String[0]));
 		
-        logger.debug("Medical history retrieved for {}", person);
+        logger.info("Medical history retrieved for {}", person);
 
 		return medicalHistory;
 	}
     
     public FireResponseDTO getPersonsAtAddress(String address) {
     	
-        logger.debug("Starting to retrieve persons who lived at this address : ", address);
+        logger.info("Starting to retrieve persons who lived at this address : ", address);
 
     	List<ResidentDTO> personsResult = new ArrayList<>();
     	
@@ -101,7 +101,7 @@ public class FireService {
     	
     	FireResponseDTO response = new FireResponseDTO(personsResult, stationNumber);
 		
-    	logger.debug("Retrieval successful: data is ready to be sent.");
+    	logger.info("Retrieval successful: data is ready to be sent.");
     	
     	return response;
     }
