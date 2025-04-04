@@ -184,21 +184,13 @@
     "phone" : "841-874-7458",
     "email" : "gramps@email.com"
   }, {
-    "firstName" : "MARION",
-    "lastName" : "LAUZIER",
-    "address" : "allée des chats",
-    "city" : "Toulouse",
-    "zip" : "97451",
-    "phone" : "0687728789",
-    "email" : "marion.molky@gmail.com"
-  }, {
     "firstName" : "Xavier",
     "lastName" : "Petit",
-    "address" : "allée des chats",
+    "address" : "allée des chiens",
     "city" : "Toulouse",
     "zip" : "97451",
     "phone" : "0687728789",
-    "email" : "marion.molky@gmail.com"
+    "email" : "xavier@gmail.com"
   } ],
   "firestations" : [ {
     "address" : "1509 Culver St",
