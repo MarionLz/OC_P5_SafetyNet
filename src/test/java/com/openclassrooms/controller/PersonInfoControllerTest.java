@@ -18,13 +18,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.openclassrooms.safetynet.DTO.ResidentDTO;
-import com.openclassrooms.safetynet.DTO.childAlert.ChildDTO;
 import com.openclassrooms.safetynet.DTO.personInfo.PersonInfoPersonIdentityDTO;
 import com.openclassrooms.safetynet.DTO.personInfo.PersonInfoResponseDTO;
-import com.openclassrooms.safetynet.controller.ChildAlertController;
 import com.openclassrooms.safetynet.controller.PersonInfoController;
-import com.openclassrooms.safetynet.service.ChildAlertService;
 import com.openclassrooms.safetynet.service.PersonInfoService;
 
 @ExtendWith(MockitoExtension.class)
