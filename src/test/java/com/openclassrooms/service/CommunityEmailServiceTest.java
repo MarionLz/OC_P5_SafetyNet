@@ -17,13 +17,13 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import com.openclassrooms.safetynet.model.DataModel;
 import com.openclassrooms.safetynet.model.Person;
 import com.openclassrooms.safetynet.service.CommunityEmailService;
-import com.openclassrooms.safetynet.service.DataReaderService;
+import com.openclassrooms.safetynet.service.DataModelService;
 
 @ExtendWith(MockitoExtension.class)
 public class CommunityEmailServiceTest {
 	
 	@Mock
-	private DataReaderService dataReaderService;
+	private DataModelService dataModelService;
 	
 	private DataModel dataModel;
 	
@@ -33,8 +33,8 @@ public class CommunityEmailServiceTest {
 	private void setUp() {
 		
 		dataModel = spy(new DataModel());
-		when(dataReaderService.getDataModel()).thenReturn(dataModel);
-		communityEmailService = new CommunityEmailService(dataReaderService);
+		when(dataModelService.getDataModel()).thenReturn(dataModel);
+		communityEmailService = new CommunityEmailService(dataModelService);
 	}
 	
 	@Test

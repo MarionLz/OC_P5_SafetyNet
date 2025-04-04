@@ -22,9 +22,9 @@ public class FirestationService {
     private static final Logger logger = LogManager.getLogger(FirestationService.class);
     
 	@Autowired
-	public FirestationService(DataReaderService dataService) {
+	public FirestationService(DataModelService dataModelService) {
 		
-		this.dataModel = dataService.getDataModel();
+		this.dataModel = dataModelService.getDataModel();
 	}
 	
 	private List<String> getFirestationAdresses(String station) {

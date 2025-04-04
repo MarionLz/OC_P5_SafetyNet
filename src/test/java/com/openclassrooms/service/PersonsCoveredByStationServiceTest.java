@@ -21,14 +21,14 @@ import com.openclassrooms.safetynet.model.DataModel;
 import com.openclassrooms.safetynet.model.Firestation;
 import com.openclassrooms.safetynet.model.MedicalRecord;
 import com.openclassrooms.safetynet.model.Person;
-import com.openclassrooms.safetynet.service.DataReaderService;
+import com.openclassrooms.safetynet.service.DataModelService;
 import com.openclassrooms.safetynet.service.FirestationService;
 
 @ExtendWith(MockitoExtension.class)
 public class PersonsCoveredByStationServiceTest {
 		
 	@Mock
-	private DataReaderService dataReaderService;
+	private DataModelService dataModelService;
 	
 	private DataModel dataModel;
 	
@@ -38,8 +38,8 @@ public class PersonsCoveredByStationServiceTest {
 	private void setUp() {
 		
 		dataModel = spy(new DataModel());
-		when(dataReaderService.getDataModel()).thenReturn(dataModel);
-        personsCoveredByStation = new FirestationService(dataReaderService);
+		when(dataModelService.getDataModel()).thenReturn(dataModel);
+        personsCoveredByStation = new FirestationService(dataModelService);
 	}
 	
 	@Test

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.openclassrooms.safetynet.DTO.childAlert.ChildAlertResponseDTO;
 import com.openclassrooms.safetynet.service.ChildAlertService;
 import com.openclassrooms.safetynet.service.CommunityEmailService;
+import com.openclassrooms.safetynet.service.DataModelService;
 
 @RestController
 public class CommunityEmailController {
@@ -21,8 +22,12 @@ public class CommunityEmailController {
 	@Autowired
 	private CommunityEmailService communityEmailService;
 	
-	public CommunityEmailController(CommunityEmailService communityEmailService) {
+	private DataModelService dataModelService;
+	
+	public CommunityEmailController(CommunityEmailService communityEmailService, DataModelService dataModelService) {
+		
 		this.communityEmailService = communityEmailService;
+		this.dataModelService = dataModelService;
 	}
 	
 	@GetMapping("/communityEmail")
@@ -30,6 +35,7 @@ public class CommunityEmailController {
 
 		logger.info("Request received for /communityEmail with city: {}.", city);
 		List<String> response = communityEmailService.getCommunityEmails(city);
+	    logger.info("getCommunityEmails() - AFTER LOAD, DATA MODEL: " + System.identityHashCode(dataModelService.getDataModel()));
 		logger.info("Request successful, response sent.");
         return response;
     }

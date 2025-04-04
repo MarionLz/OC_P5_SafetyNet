@@ -21,20 +21,24 @@ import com.openclassrooms.safetynet.model.DataModel;
 @Service
 public class FireService {
 
-	private final DataModel dataModel;
+	private final DataModelService dataModelService;
     private static final Logger logger = LogManager.getLogger(FireService.class);
     
     @Autowired
-	public FireService(DataReaderService dataService) {
+	public FireService(DataModelService dataModelService) {
 		
-		this.dataModel = dataService.getDataModel();
+		this.dataModelService = dataModelService;
 	}
+    
+    private DataModel getDataModel() {
+        return dataModelService.getDataModel();
+    }
     
     private List<PersonIdentityDTO> getPersonsIdentity(String address) {
     	
         logger.info("Retrieving persons at address: {}", address);
         
-		List<PersonIdentityDTO> personsIdentity = dataModel.getPersons().stream()
+		List<PersonIdentityDTO> personsIdentity = getDataModel().getPersons().stream()
 				.filter(person -> address.equals(person.getAddress()))
 				.map(person -> new PersonIdentityDTO(person.getFirstName(), person.getLastName(), person.getPhone()))
 				.collect(Collectors.toList());
@@ -48,7 +52,7 @@ public class FireService {
 			
         logger.info("Calculating age for person: {} {}", person.getFirstName(), person.getLastName());
 
-		String birthdate = dataModel.getMedicalrecords().stream()
+		String birthdate = getDataModel().getMedicalrecords().stream()
 				.filter(medicalRecord -> person.getFirstName().equals(medicalRecord.getFirstName())
 						&& person.getLastName().equals(medicalRecord.getLastName()))
 				.map(medicalRecord -> medicalRecord.getBirthdate())
@@ -67,7 +71,7 @@ public class FireService {
 		
         logger.info("Retrieving medicalHistory for person : {}", person);
 
-		MedicalHistoryDTO medicalHistory = dataModel.getMedicalrecords().stream()
+		MedicalHistoryDTO medicalHistory = getDataModel().getMedicalrecords().stream()
 				.filter(medicalRecord -> person.getFirstName().equals(medicalRecord.getFirstName())
 						&& person.getLastName().equals(medicalRecord.getLastName()))
 				.map(medicalRecord -> new MedicalHistoryDTO(medicalRecord.getMedications(), medicalRecord.getAllergies()))
@@ -94,7 +98,7 @@ public class FireService {
     						String.valueOf(age), medicalHistory.getMedications(), medicalHistory.getAllergies()));
     	}
     	
-    	String stationNumber = dataModel.getFirestations().stream()
+    	String stationNumber = getDataModel().getFirestations().stream()
     			.filter(firestation -> address.equals(firestation.getAddress()))
     			.map(firestation -> firestation.getStation())
     			.findFirst().orElse("");

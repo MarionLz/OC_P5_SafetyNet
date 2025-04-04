@@ -1,42 +1,36 @@
 package com.openclassrooms.safetynet.service;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
+import com.openclassrooms.safetynet.model.DataModel;
 import com.openclassrooms.safetynet.model.Person;
-import com.openclassrooms.safetynet.repository.IDataReaderRepository;
 import com.openclassrooms.safetynet.repository.IDataWriterRepository;
 
 @Service
 public class PersonService {
 
+	private final DataModelService dataModelService;
+    private static final Logger logger = LogManager.getLogger(PersonService.class);	
+	
 	private IDataWriterRepository writerRepository;
-	private IDataReaderRepository readerRepository;
-    private ObjectMapper objectMapper;
-
+    
     @Autowired
-    public PersonService(IDataWriterRepository writerRepository, IDataReaderRepository readerRepository) {
-        this.writerRepository = writerRepository;
-        this.readerRepository = readerRepository;
-        this.objectMapper = new ObjectMapper();
+	public PersonService(IDataWriterRepository writerRepository, DataModelService dataModelService) {
+		
+    	this.writerRepository = writerRepository;
+		this.dataModelService = dataModelService;
+	}
+    
+    private DataModel getDataModel() {
+        return dataModelService.getDataModel();
     }
 
-    public void addPerson(String collectionName, Person person) {
+    public void addPerson(Person person) {
     	
-        ObjectNode personNode = objectMapper.valueToTree(person);
-        
-        writerRepository.add(collectionName, personNode);
-        readerRepository.loadData();
+    	getDataModel().getPersons().add(person);
+    	writerRepository.saveData();
     }
-
-//    public void updatePerson(Person person) {
-//        return writerRepository.update();
-//    }
-//
-//    public void deletePerson(String firstName, String lastName) {
-//        return writerRepository.delete();
-//    }
 }

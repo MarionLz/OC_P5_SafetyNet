@@ -29,5 +29,4 @@ public class DataModel {
 		this.firestations = firestations;
 		this.medicalrecords = medicalrecords;
 	}
-	
 }

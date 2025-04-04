@@ -18,9 +18,9 @@ public class PhoneAlertService {
     private static final Logger logger = LogManager.getLogger(PhoneAlertService.class);
 
     @Autowired
-	public PhoneAlertService(DataReaderService dataService) {
+	public PhoneAlertService(DataModelService dataModelService) {
 		
-		this.dataModel = dataService.getDataModel();
+		this.dataModel = dataModelService.getDataModel();
 	}
     
 	private List<String> getFirestationAdresses(String firestationNumber) {

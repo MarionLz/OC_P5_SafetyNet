@@ -6,6 +6,7 @@ import java.util.Set;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Repository;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Repository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.openclassrooms.safetynet.exceptions.JsonFileException;
 import com.openclassrooms.safetynet.model.DataModel;
+import com.openclassrooms.safetynet.service.DataModelService;
 
 import jakarta.annotation.PostConstruct;
 import jakarta.validation.ConstraintViolation;
@@ -23,15 +25,16 @@ import jakarta.validation.ValidatorFactory;
 @Repository
 public class DataReaderFromJsonRepository implements IDataReaderRepository {
 	
-	private DataModel dataModel;	
     private static final Logger logger = LogManager.getLogger("DataReaderFromJsonRepository");
     
     @Value("${data.file}")
     private Resource jsonFile;
     
 	private final Validator validator;
+	private final DataModelService dataModelService;
 
-	public DataReaderFromJsonRepository() {
+	public DataReaderFromJsonRepository(DataModelService dataModelService) {
+		this.dataModelService = dataModelService;
 		ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
 		this.validator = factory.getValidator();
 	}
@@ -50,12 +53,13 @@ public class DataReaderFromJsonRepository implements IDataReaderRepository {
 		try {
 			ObjectMapper objectMapper = new ObjectMapper();
 			InputStream inputStream = jsonFile.getInputStream();
-			
+						
 			if (inputStream == null) {
 				throw new JsonFileException("JSON not found.");
 			} else {
-				dataModel = objectMapper.readValue(inputStream, DataModel.class);
+				DataModel dataModel = objectMapper.readValue(inputStream, DataModel.class);
 				validateDataModel(dataModel);
+				dataModelService.setDataModel(dataModel);
 			}
 		} catch (IOException e) {
 			logger.error("Error loading JSON data.");
@@ -76,9 +80,5 @@ public class DataReaderFromJsonRepository implements IDataReaderRepository {
 			logger.error(errorMessage.toString());
 			throw new JsonFileException(errorMessage.toString());
 		}
-	}
-	
-	public DataModel getDataModel() {
-		return dataModel;
 	}
 }
