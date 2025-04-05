@@ -8,6 +8,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.openclassrooms.safetynet.exceptions.ResourceAlreadyExistsException;
 import com.openclassrooms.safetynet.model.DataModel;
 import com.openclassrooms.safetynet.model.Person;
 import com.openclassrooms.safetynet.repository.IDataWriterRepository;
@@ -33,8 +34,19 @@ public class PersonService {
 
     public void addPerson(Person person) {
     	
-    	getDataModel().getPersons().add(person);
-    	writerRepository.saveData();
+    	List<Person> persons = getDataModel().getPersons();
+
+        boolean exists = persons.stream()
+            .anyMatch(p -> p.getFirstName().equalsIgnoreCase(person.getFirstName())
+                        && p.getLastName().equalsIgnoreCase(person.getLastName()));
+
+        if (exists) {
+            throw new ResourceAlreadyExistsException("Person already exists : " 
+                + person.getFirstName() + " " + person.getLastName());
+        }
+
+        persons.add(person);
+        writerRepository.saveData();
     }
     
     public void updatePerson(Person updatedPerson) {
@@ -58,5 +70,6 @@ public class PersonService {
             .collect(Collectors.toList());
 
         getDataModel().setPersons(updatedPersons);
-        writerRepository.saveData();    }
+        writerRepository.saveData();
+    }
 }
