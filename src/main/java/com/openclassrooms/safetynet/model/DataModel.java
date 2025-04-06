@@ -22,12 +22,11 @@ public class DataModel {
 	private List<MedicalRecord> medicalrecords;
 	
 	public DataModel() {}
-	
+		
 	public DataModel(List<Person> persons, List<Firestation> firestations, List<MedicalRecord> medicalrecords) {
 		
 		this.persons = persons;
 		this.firestations = firestations;
 		this.medicalrecords = medicalrecords;
 	}
-	
 }

@@ -17,16 +17,11 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.openclassrooms.safetynet.DTO.PersonIdentityDTO;
 import com.openclassrooms.safetynet.DTO.ResidentDTO;
-import com.openclassrooms.safetynet.DTO.childAlert.ChildAlertResponseDTO;
-import com.openclassrooms.safetynet.DTO.childAlert.ChildDTO;
 import com.openclassrooms.safetynet.DTO.flood.FloodResponseDTO;
 import com.openclassrooms.safetynet.DTO.flood.HouseholdDTO;
 import com.openclassrooms.safetynet.DTO.flood.StationDTO;
-import com.openclassrooms.safetynet.controller.ChildAlertController;
 import com.openclassrooms.safetynet.controller.FloodController;
-import com.openclassrooms.safetynet.service.ChildAlertService;
 import com.openclassrooms.safetynet.service.FloodService;
 
 @ExtendWith(MockitoExtension.class)

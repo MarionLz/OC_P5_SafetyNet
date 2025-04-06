@@ -19,14 +19,14 @@ import com.openclassrooms.safetynet.DTO.personInfo.PersonInfoResponseDTO;
 import com.openclassrooms.safetynet.model.DataModel;
 import com.openclassrooms.safetynet.model.MedicalRecord;
 import com.openclassrooms.safetynet.model.Person;
-import com.openclassrooms.safetynet.service.DataReaderService;
+import com.openclassrooms.safetynet.service.DataModelService;
 import com.openclassrooms.safetynet.service.PersonInfoService;
 
 @ExtendWith(MockitoExtension.class)
 public class PersonInfoServiceTest {
 
 	@Mock
-	private DataReaderService dataReaderService;
+	private DataModelService dataModelService;
 	
 	private DataModel dataModel;
 	
@@ -36,8 +36,8 @@ public class PersonInfoServiceTest {
 	private void setUp() {
 		
 		dataModel = spy(new DataModel());
-		when(dataReaderService.getDataModel()).thenReturn(dataModel);
-		personInfoService = new PersonInfoService(dataReaderService);
+		when(dataModelService.getDataModel()).thenReturn(dataModel);
+		personInfoService = new PersonInfoService(dataModelService);
 	}
 	
 	@Test

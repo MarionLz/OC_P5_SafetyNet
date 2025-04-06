@@ -9,8 +9,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.openclassrooms.safetynet.DTO.childAlert.ChildAlertResponseDTO;
-import com.openclassrooms.safetynet.service.ChildAlertService;
 import com.openclassrooms.safetynet.service.CommunityEmailService;
 
 @RestController
@@ -20,8 +18,9 @@ public class CommunityEmailController {
 
 	@Autowired
 	private CommunityEmailService communityEmailService;
-	
+		
 	public CommunityEmailController(CommunityEmailService communityEmailService) {
+		
 		this.communityEmailService = communityEmailService;
 	}
 	

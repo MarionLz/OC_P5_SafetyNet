@@ -28,9 +28,9 @@ public class FloodService {
     
     
     @Autowired
-	public FloodService(DataReaderService dataService) {
+	public FloodService(DataModelService dataModelService) {
 		
-		this.dataModel = dataService.getDataModel();
+		this.dataModel = dataModelService.getDataModel();
 	}
     
     private List<String> getFirestationAdresses(String station) {

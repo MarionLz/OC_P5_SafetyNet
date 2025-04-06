@@ -8,7 +8,6 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.openclassrooms.safetynet.DTO.PersonIdentityDTO;
 import com.openclassrooms.safetynet.model.DataModel;
 
 @Service
@@ -18,9 +17,9 @@ public class CommunityEmailService {
     private static final Logger logger = LogManager.getLogger(CommunityEmailService.class);
     
 	@Autowired
-	public CommunityEmailService(DataReaderService dataService) {
+	public CommunityEmailService(DataModelService dataModelService) {
 		
-		this.dataModel = dataService.getDataModel();
+		this.dataModel = dataModelService.getDataModel();
 	}
 	
 	public List<String> getCommunityEmails(String city) {
@@ -32,5 +31,4 @@ public class CommunityEmailService {
 		
 		return result;
 	}
-	
 }

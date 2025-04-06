@@ -21,13 +21,13 @@ import com.openclassrooms.safetynet.model.DataModel;
 import com.openclassrooms.safetynet.model.MedicalRecord;
 import com.openclassrooms.safetynet.model.Person;
 import com.openclassrooms.safetynet.service.ChildAlertService;
-import com.openclassrooms.safetynet.service.DataReaderService;
+import com.openclassrooms.safetynet.service.DataModelService;
 
 @ExtendWith(MockitoExtension.class)
 public class ChildAlertServiceTest {
 	
 	@Mock
-	private DataReaderService dataReaderService;
+	private DataModelService dataModelService;
 	
 	private DataModel dataModel;
 	
@@ -37,8 +37,8 @@ public class ChildAlertServiceTest {
 	private void setUp() {
 		
 		dataModel = spy(new DataModel());
-		when(dataReaderService.getDataModel()).thenReturn(dataModel);
-		childAlert = new ChildAlertService(dataReaderService);
+		when(dataModelService.getDataModel()).thenReturn(dataModel);
+		childAlert = new ChildAlertService(dataModelService);
 	}
 	
 	@Test

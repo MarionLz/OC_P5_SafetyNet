@@ -24,9 +24,9 @@ public class ChildAlertService {
     private static final Logger logger = LogManager.getLogger(ChildAlertService.class);
     
 	@Autowired
-	public ChildAlertService(DataReaderService dataService) {
+	public ChildAlertService(DataModelService dataModelService) {
 		
-		this.dataModel = dataService.getDataModel();
+		this.dataModel = dataModelService.getDataModel();
 	}	
 	
 	private int getAge(PersonIdentityDTO person) {

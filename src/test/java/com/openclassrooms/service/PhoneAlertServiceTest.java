@@ -18,14 +18,14 @@ import com.openclassrooms.safetynet.DTO.phoneAlert.PhoneAlertResponseDTO;
 import com.openclassrooms.safetynet.model.DataModel;
 import com.openclassrooms.safetynet.model.Firestation;
 import com.openclassrooms.safetynet.model.Person;
-import com.openclassrooms.safetynet.service.DataReaderService;
+import com.openclassrooms.safetynet.service.DataModelService;
 import com.openclassrooms.safetynet.service.PhoneAlertService;
 
 @ExtendWith(MockitoExtension.class)
 public class PhoneAlertServiceTest {
 
 	@Mock
-	private DataReaderService dataReaderService;
+	private DataModelService dataModelService;
 	
 	private DataModel dataModel;
 	
@@ -35,8 +35,8 @@ public class PhoneAlertServiceTest {
 	private void setUp() {
 		
 		dataModel = spy(new DataModel());
-		when(dataReaderService.getDataModel()).thenReturn(dataModel);
-		phoneAlertService = new PhoneAlertService(dataReaderService);
+		when(dataModelService.getDataModel()).thenReturn(dataModel);
+		phoneAlertService = new PhoneAlertService(dataModelService);
 	}
 	
 	@Test

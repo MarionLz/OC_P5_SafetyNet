@@ -5,7 +5,6 @@ import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -26,9 +25,9 @@ public class PersonInfoService {
     
     
     @Autowired
-	public PersonInfoService(DataReaderService dataService) {
+	public PersonInfoService(DataModelService dataModelService) {
 		
-		this.dataModel = dataService.getDataModel();
+		this.dataModel = dataModelService.getDataModel();
 	}
     
 	private int getAge(String firstName, String lastName) {
