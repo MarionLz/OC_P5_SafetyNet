@@ -21,8 +21,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import com.openclassrooms.safetynet.exceptions.ResourceAlreadyExistsException;
 import com.openclassrooms.safetynet.exceptions.ResourceNotFoundException;
 import com.openclassrooms.safetynet.model.DataModel;
-import com.openclassrooms.safetynet.model.Firestation;
-import com.openclassrooms.safetynet.model.MedicalRecord;
 import com.openclassrooms.safetynet.model.Person;
 import com.openclassrooms.safetynet.repository.IDataWriterRepository;
 import com.openclassrooms.safetynet.service.DataModelService;
