@@ -45,7 +45,7 @@ public class PersonServiceTest {
 		persons = new ArrayList<>(Arrays.asList(
 				new Person("John", "Boyd", "1509 Culver St", "Culver", "97451", "841-874-6512", "jaboyd@email.com"),
 			    new Person("Tenley", "Boyd", "1509 Culver St", "Culver", "97451", "841-874-6512", "tenz@email.com")
-				));
+		));
 		dataModel = new DataModel();
 		dataModel.setPersons(persons);
 		
@@ -107,7 +107,7 @@ public class PersonServiceTest {
     }
 	
 	@Test
-    public void testDeletePerson() {
+    public void testDeletePerson_Success() {
 
         personService.deletePerson("John", "Boyd");
 

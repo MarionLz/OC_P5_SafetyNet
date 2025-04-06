@@ -2,7 +2,6 @@ package com.openclassrooms.safetynet.controller;
 
 import com.openclassrooms.safetynet.DTO.firestation.FirestationResponseDTO;
 import com.openclassrooms.safetynet.model.Firestation;
-import com.openclassrooms.safetynet.model.Person;
 import com.openclassrooms.safetynet.service.*;
 
 import org.apache.logging.log4j.LogManager;
@@ -43,7 +42,7 @@ public class FirestationController {
     public void addFirestation(@RequestBody Firestation firestation) {
     	
 		logger.info("Request POST received for /firestation with new Firestation : {}", firestation);
-		firestationService.addPerson(firestation);
+		firestationService.addFirestation(firestation);
 		logger.info("Request POST successful, a new firestation has been added.");
     }
     
@@ -51,17 +50,16 @@ public class FirestationController {
     public void updateFirestation(@RequestBody Firestation firestation) {
     	
 		logger.info("Request PUT received for /firestation with updated Firestation : {}", firestation);
-		firestationService.updatePerson(firestation);
+		firestationService.updateFirestation(firestation);
 		logger.info("Request PUT successful, the firestation has been updated.");
     }
     
     @DeleteMapping
-    public void deleteFirestation(@RequestParam Firestation firestation) {
+    public void deleteFirestation(@RequestParam String address) {
     	
-		logger.info("Request DELETE received for /firestation : {}.", firestation);
-		firestationService.deletePerson(firestation);
+		logger.info("Request DELETE received for /firestation at address : {}.", address);
+		firestationService.deleteFirestation(address);
 		logger.info("Request DELETE successful, the firestation has been deleted.");
     }
-
 }
 

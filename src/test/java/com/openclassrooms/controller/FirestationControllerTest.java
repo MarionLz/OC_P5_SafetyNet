@@ -26,13 +26,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.openclassrooms.safetynet.DTO.firestation.FirestationResponseDTO;
 import com.openclassrooms.safetynet.DTO.firestation.NbAdultAndChildrenDTO;
 import com.openclassrooms.safetynet.DTO.firestation.PersonsByStationsDTO;
-import com.openclassrooms.safetynet.DTO.firestation.FirestationResponseDTO;
 import com.openclassrooms.safetynet.controller.FirestationController;
-import com.openclassrooms.safetynet.controller.PersonController;
 import com.openclassrooms.safetynet.model.Firestation;
-import com.openclassrooms.safetynet.model.Person;
 import com.openclassrooms.safetynet.service.FirestationService;
 
 @ExtendWith(MockitoExtension.class)
@@ -77,7 +75,7 @@ public class FirestationControllerTest {
 	}
 	
 	@Test
-	public void testAddFirestation_Success() {
+	public void testAddFirestation_Success() throws Exception {
 		
 		Firestation firestation = new Firestation("14 rue des Geeks", "2");
 		
@@ -86,7 +84,7 @@ public class FirestationControllerTest {
                 .content(new ObjectMapper().writeValueAsString(firestation)))
                 .andExpect(status().isOk());
 
-        verify(firestationService, times(1)).addFirestation(any(Person.class));
+        verify(firestationService, times(1)).addFirestation(any(Firestation.class));
 	}
 	
 	@Test
@@ -99,19 +97,16 @@ public class FirestationControllerTest {
                 .content(new ObjectMapper().writeValueAsString(firestation)))
                 .andExpect(status().isOk());
 
-        verify(firestationService, times(1)).updateFirestation(any(Person.class));
+        verify(firestationService, times(1)).updateFirestation(any(Firestation.class));
 	}
 	
 	@Test
 	public void testDeleteFirestation_Success() throws Exception {
 						
-		Firestation firestation = new Firestation("14 rue des Geeks", "2");
-
 		mockMvc.perform(delete("/firestation")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(new ObjectMapper().writeValueAsString(firestation)))
+                .param("address", "14 rue des Geeks"))
                 .andExpect(status().isOk());
 
-        verify(firestationService, times(1)).deletePerson(any(Person.class));
+        verify(firestationService, times(1)).deleteFirestation("14 rue des Geeks");
 	}
 }

@@ -2,8 +2,12 @@ package com.openclassrooms.safetynet.service;
 
 import com.openclassrooms.safetynet.DTO.firestation.NbAdultAndChildrenDTO;
 import com.openclassrooms.safetynet.DTO.firestation.PersonsByStationsDTO;
+import com.openclassrooms.safetynet.exceptions.ResourceAlreadyExistsException;
+import com.openclassrooms.safetynet.exceptions.ResourceNotFoundException;
 import com.openclassrooms.safetynet.DTO.firestation.FirestationResponseDTO;
 import com.openclassrooms.safetynet.model.DataModel;
+import com.openclassrooms.safetynet.model.Firestation;
+import com.openclassrooms.safetynet.repository.IDataWriterRepository;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -18,19 +22,25 @@ import java.util.stream.Collectors;
 @Service
 public class FirestationService {
 	
-	private final DataModel dataModel;
+	private final DataModelService dataModelService;
+	private IDataWriterRepository writerRepository;
     private static final Logger logger = LogManager.getLogger(FirestationService.class);
     
 	@Autowired
-	public FirestationService(DataModelService dataModelService) {
+	public FirestationService(IDataWriterRepository writerRepository, DataModelService dataModelService) {
 		
-		this.dataModel = dataModelService.getDataModel();
+		this.writerRepository = writerRepository;
+		this.dataModelService = dataModelService;
 	}
+	
+    private DataModel getDataModel() {
+        return dataModelService.getDataModel();
+    }
 	
 	private List<String> getFirestationAdresses(String station) {
 		
 		logger.debug("Starting to retrieve firestation addresses for station {}.", station);
-		List<String> stationAddresses = dataModel.getFirestations().stream()
+		List<String> stationAddresses = getDataModel().getFirestations().stream()
             .filter(firestation -> firestation.getStation().equals(station))
             .map(firestation -> firestation.getAddress())
             .collect(Collectors.toList());
@@ -41,7 +51,7 @@ public class FirestationService {
 	private List<PersonsByStationsDTO> getPersonsList(List<String> stationAddresses) {
 		
 	    logger.debug("Starting to retrieve persons covered by firestations adresses: {}.", stationAddresses);
-		List<PersonsByStationsDTO> personByStation = dataModel.getPersons().stream()
+		List<PersonsByStationsDTO> personByStation = getDataModel().getPersons().stream()
             .filter(person -> stationAddresses.contains(person.getAddress()))
             .map(person -> new PersonsByStationsDTO(person.getFirstName(), person.getLastName(), person.getAddress(), person.getPhone()))
             .collect(Collectors.toList());
@@ -51,7 +61,7 @@ public class FirestationService {
 	
 	private boolean isChild(PersonsByStationsDTO personByStation) {
 		
-		String birthdate = dataModel.getMedicalrecords().stream()
+		String birthdate = getDataModel().getMedicalrecords().stream()
 				.filter(medicalRecord -> personByStation.getFirstName().equals(medicalRecord.getFirstName())
 						&& personByStation.getLastName().equals(medicalRecord.getLastName()))
 				.map(medicalRecord -> medicalRecord.getBirthdate())
@@ -78,5 +88,63 @@ public class FirestationService {
 		NbAdultAndChildrenDTO nbAdultAndChildren = countNbAdultAndChildren(personByStation);
 		logger.debug("Retrieval successful: data is ready to be sent.");
 		return new FirestationResponseDTO(personByStation, nbAdultAndChildren);
+    }
+
+    public void addFirestation(Firestation firestation) {
+    	
+    	List<Firestation> firestations = getDataModel().getFirestations();
+
+        boolean exists = firestations.stream()
+            .anyMatch(f -> f.getAddress().equalsIgnoreCase(firestation.getAddress())
+                        && f.getStation().equalsIgnoreCase(firestation.getStation()));
+
+        if (exists) {
+        	logger.error("Firestation already exists with adress: " + firestation.getAddress() + " & station: " + firestation.getStation());
+            throw new ResourceAlreadyExistsException("Firestation already exists with adress: " + firestation.getAddress() + " & station: " + firestation.getStation());
+        }
+
+        firestations.add(firestation);
+        writerRepository.saveData();
+    }
+    
+    public void updateFirestation(Firestation updatedFirestation) {
+    	
+        List<Firestation> firestations = getDataModel().getFirestations();
+
+        boolean exists = false;
+        for (int i = 0; i < firestations.size(); i++) {
+            Firestation current = firestations.get(i);
+            if (current.getAddress().equals(updatedFirestation.getAddress())) {
+            	firestations.set(i, updatedFirestation);
+                exists = true;
+                break;
+            }
+        }
+        
+        if (!exists) {
+        	logger.error("Firestation not found : " + updatedFirestation.getAddress());
+        	throw new ResourceNotFoundException("Firestation not found : " + updatedFirestation.getAddress());
+        }
+    	writerRepository.saveData();
+    }
+    
+    public void deleteFirestation(String address) {
+    	
+        List<Firestation> firestations = getDataModel().getFirestations();
+
+        boolean exists = firestations.stream()
+            .anyMatch(f -> f.getAddress().equalsIgnoreCase(address));
+        
+        if (!exists) {
+        	logger.error("Firestation not found : " + address);
+        	throw new ResourceNotFoundException("Firestation not found : " + address);
+        }
+        
+    	List<Firestation> updatedFirestations = getDataModel().getFirestations().stream()
+            .filter(firestation -> !(firestation.getAddress().equals(address)))
+            .collect(Collectors.toList());
+
+        getDataModel().setFirestations(updatedFirestations);
+        writerRepository.saveData();
     }
 }
