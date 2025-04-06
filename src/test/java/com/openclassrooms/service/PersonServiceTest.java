@@ -1,5 +1,6 @@
 package com.openclassrooms.service;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.never;
@@ -18,6 +19,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.openclassrooms.safetynet.exceptions.ResourceAlreadyExistsException;
+import com.openclassrooms.safetynet.exceptions.ResourceNotFoundException;
 import com.openclassrooms.safetynet.model.DataModel;
 import com.openclassrooms.safetynet.model.Firestation;
 import com.openclassrooms.safetynet.model.MedicalRecord;
@@ -37,17 +39,17 @@ public class PersonServiceTest {
 	
 	private PersonService personService;
 	private List<Person> persons;
-	private List<Firestation> firestations;
-	private List<MedicalRecord> medicalRecords;
 	private DataModel dataModel;
 	
 	@BeforeEach
 	void setUp() {
 		personService = new PersonService(writerRepository, dataModelService);
-		persons = new ArrayList<>(Arrays.asList(new Person("John", "Boyd", "1509 Culver St", "Culver", "97451", "841-874-6512", "jaboyd@email.com")));
-		firestations = Arrays.asList(new Firestation("1509 Culver St", "3"));
-		medicalRecords = Arrays.asList(new MedicalRecord("John", "Boyd", "03/06/1984", new String[]{"aznol:350mg", "hydrapermazol:100mg"}, new String[]{"nillacilan"}));
-		dataModel = new DataModel(persons, firestations, medicalRecords);
+		persons = new ArrayList<>(Arrays.asList(
+				new Person("John", "Boyd", "1509 Culver St", "Culver", "97451", "841-874-6512", "jaboyd@email.com"),
+			    new Person("Tenley", "Boyd", "1509 Culver St", "Culver", "97451", "841-874-6512", "tenz@email.com")
+				));
+		dataModel = new DataModel();
+		dataModel.setPersons(persons);
 		
         when(dataModelService.getDataModel()).thenReturn(dataModel);
 	}
@@ -65,10 +67,10 @@ public class PersonServiceTest {
 	
     @Test
     public void testAddPerson_WhenPersonAlreadyExists_ShouldThrowException() {
-
+    	
     	Person duplicate = new Person("John", "Boyd", "1509 Culver St", "Culver", "97451", "841-874-6512", "jaboyd@email.com");
-
-       ResourceAlreadyExistsException exception = assertThrows(
+    	
+    	ResourceAlreadyExistsException exception = assertThrows(
     		   ResourceAlreadyExistsException.class,
             () -> personService.addPerson(duplicate)
         );
@@ -78,17 +80,54 @@ public class PersonServiceTest {
 
         verify(writerRepository, never()).saveData();
     }
-//	
-//	@Test
-////	public void testUpdatePerson_Success() {
-////		
-////		
-////	}
-////	
-//	@Test
-////	public void testDeletePerson_Success() {
-////		
-////	}
 	
+	@Test
+	public void testUpdatePerson_Success() {
+		
+    	Person updatedPerson = new Person("John", "Boyd", "1509 Culver St", "Toulouse", "97451", "841-874-6512", "john.boyd@email.com");
+    	
+    	personService.updatePerson(updatedPerson);
+    	
+        assertEquals("Toulouse", dataModel.getPersons().get(0).getCity());
+        assertEquals("john.boyd@email.com", dataModel.getPersons().get(0).getEmail());
+		verify(writerRepository, times(1)).saveData();
+	}
+	
+	@Test
+    public void testUpdatePerson_WhenPersonNotFound_ShouldThrowException() {
 
+		Person nonExistentPerson = new Person("Unknown", "Anonyme", "1 rue des platanes", "Toulouse", "31000", "01010101", "nonexistent@email.com");
+
+		ResourceNotFoundException exception = assertThrows(
+				ResourceNotFoundException.class,
+            () -> personService.updatePerson(nonExistentPerson)
+        );
+
+        assertTrue(exception.getMessage().contains("Unknown"));
+        assertTrue(exception.getMessage().contains("Anonyme"));
+        verify(writerRepository, never()).saveData();
+    }
+	
+	@Test
+    public void testDeletePerson() {
+
+        personService.deletePerson("John", "Boyd");
+
+        assertEquals(1, dataModel.getPersons().size());
+        assertEquals("Tenley", dataModel.getPersons().get(0).getFirstName());
+        verify(writerRepository).saveData();
+    }
+	
+	@Test
+	public void testDeletePerson_WhenPersonNotFound_ShouldThrowException() {
+		
+		ResourceNotFoundException exception = assertThrows(
+				ResourceNotFoundException.class,
+            () -> personService.deletePerson("Unknown", "Anonyme")
+        );
+
+        assertTrue(exception.getMessage().contains("Unknown"));
+        assertTrue(exception.getMessage().contains("Anonyme"));
+        verify(writerRepository, never()).saveData();
+	}
 }

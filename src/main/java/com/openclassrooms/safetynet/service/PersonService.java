@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.openclassrooms.safetynet.exceptions.ResourceAlreadyExistsException;
+import com.openclassrooms.safetynet.exceptions.ResourceNotFoundException;
 import com.openclassrooms.safetynet.model.DataModel;
 import com.openclassrooms.safetynet.model.Person;
 import com.openclassrooms.safetynet.repository.IDataWriterRepository;
@@ -41,8 +42,8 @@ public class PersonService {
                         && p.getLastName().equalsIgnoreCase(person.getLastName()));
 
         if (exists) {
-            throw new ResourceAlreadyExistsException("Person already exists : " 
-                + person.getFirstName() + " " + person.getLastName());
+        	logger.error("Person already exists : " + person.getFirstName() + " " + person.getLastName());
+            throw new ResourceAlreadyExistsException("Person already exists : " + person.getFirstName() + " " + person.getLastName());
         }
 
         persons.add(person);
@@ -53,19 +54,37 @@ public class PersonService {
     	
         List<Person> persons = getDataModel().getPersons();
 
+        boolean exists = false;
         for (int i = 0; i < persons.size(); i++) {
             Person current = persons.get(i);
             if (current.getFirstName().equals(updatedPerson.getFirstName()) && current.getLastName().equals(updatedPerson.getLastName())) {
                 persons.set(i, updatedPerson);
+                exists = true;
                 break;
             }
+        }
+        
+        if (!exists) {
+        	logger.error("Person not found : " + updatedPerson.getFirstName() + " " + updatedPerson.getLastName());
+        	throw new ResourceNotFoundException("Person not found : " + updatedPerson.getFirstName() + " " + updatedPerson.getLastName());
         }
     	writerRepository.saveData();
     }
     
     public void deletePerson(String firstName, String lastName) {
     	
-        List<Person> updatedPersons =  getDataModel().getPersons().stream()
+    	List<Person> persons = getDataModel().getPersons();
+
+        boolean exists = persons.stream()
+            .anyMatch(p -> p.getFirstName().equalsIgnoreCase(firstName)
+                        && p.getLastName().equalsIgnoreCase(lastName));
+        
+        if (!exists) {
+        	logger.error("Person not found : " + firstName + " " + lastName);
+        	throw new ResourceNotFoundException("Person not found : " + firstName + " " + lastName);
+        }
+        
+    	List<Person> updatedPersons =  getDataModel().getPersons().stream()
             .filter(person -> !(person.getFirstName().equals(firstName) && person.getLastName().equals(lastName)))
             .collect(Collectors.toList());
 
