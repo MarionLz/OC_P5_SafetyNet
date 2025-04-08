@@ -1,5 +1,6 @@
 package com.openclassrooms.service;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -24,6 +25,7 @@ import com.openclassrooms.safetynet.model.DataModel;
 import com.openclassrooms.safetynet.model.MedicalRecord;
 import com.openclassrooms.safetynet.repository.IDataWriterRepository;
 import com.openclassrooms.safetynet.service.DataModelService;
+import com.openclassrooms.safetynet.service.MedicalRecordService;
 
 @ExtendWith(MockitoExtension.class)
 public class MedicalRecordServiceTest {
@@ -83,7 +85,7 @@ public class MedicalRecordServiceTest {
     	
 		medicalRecordService.updateMedicalRecord(updatedMedicalRecord);
     	
-        assertEquals("peanuts", dataModel.getMedicalrecords().get(0).getAllergies());
+        assertArrayEquals(new String[]{"peanuts"}, dataModel.getMedicalrecords().get(0).getAllergies());
 		verify(writerRepository, times(1)).saveData();
 	}
 	

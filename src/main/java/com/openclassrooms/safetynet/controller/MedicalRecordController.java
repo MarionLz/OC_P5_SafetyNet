@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.openclassrooms.safetynet.model.MedicalRecord;
+import com.openclassrooms.safetynet.service.MedicalRecordService;
 
 @RestController
 @RequestMapping("/medicalRecord")
@@ -39,7 +40,7 @@ public class MedicalRecordController {
     public void updateMedicalRecord(@RequestBody MedicalRecord medicalRecord) {
     	
 		logger.info("Request PUT received for /medicalRecord with updated MedicalRecord : {}", medicalRecord);
-		medicalRecordService.updatePerson(medicalRecord);
+		medicalRecordService.updateMedicalRecord(medicalRecord);
 		logger.info("Request PUT successful, the medicalRecord has been updated.");
     }
     

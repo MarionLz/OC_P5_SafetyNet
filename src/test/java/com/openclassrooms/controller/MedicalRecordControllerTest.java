@@ -19,7 +19,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.openclassrooms.safetynet.controller.MedicalRecordController;
 import com.openclassrooms.safetynet.model.MedicalRecord;
+import com.openclassrooms.safetynet.service.MedicalRecordService;
 
 @ExtendWith(MockitoExtension.class)
 public class MedicalRecordControllerTest {
