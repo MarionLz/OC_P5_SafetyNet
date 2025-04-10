@@ -48,6 +48,10 @@ public class DataReaderFromJsonRepository implements IDataReaderRepository {
 	    }
 	}
 	
+	public void setJsonFile(Resource jsonFile) {
+	    this.jsonFile = jsonFile;
+	}
+	
 	public void loadData() {
 		try {
 			ObjectMapper objectMapper = new ObjectMapper();
