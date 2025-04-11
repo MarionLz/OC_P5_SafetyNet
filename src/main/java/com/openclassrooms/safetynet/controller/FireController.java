@@ -25,9 +25,9 @@ public class FireController {
 	@GetMapping("/fire")
     public FireResponseDTO getPersonsAtAddress(@RequestParam("address") String address) {
 
-		logger.info("Request received for /fire with address: {}.", address);
+		logger.info("Request GET received for /fire with address: {}.", address);
 		FireResponseDTO response = fireService.getPersonsAtAddress(address);
-		logger.info("Request successful, response sent.");
+		logger.info("Request GET successful, response sent.");
         return response;
     }
 }

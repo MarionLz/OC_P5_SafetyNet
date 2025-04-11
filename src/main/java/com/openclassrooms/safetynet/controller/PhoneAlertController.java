@@ -25,9 +25,9 @@ public class PhoneAlertController {
 		@GetMapping("/phoneAlert")
 	    public PhoneAlertResponseDTO getPhoneNumbersCoveredByStation(@RequestParam("firestation") String firestationNumber) {
 
-			logger.info("Request received for /phoneAlert with firestationNumber: {}.", firestationNumber);
+			logger.info("Request GET received for /phoneAlert with firestationNumber: {}.", firestationNumber);
 			PhoneAlertResponseDTO response = phoneAlertService.getPhoneNumbersCoveredByStation(firestationNumber);
-			logger.info("Request successful, response sent.");
+			logger.info("Request GET successful, response sent.");
 	        return response;
 	    }
 }

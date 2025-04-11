@@ -27,9 +27,9 @@ public class FloodController {
 	@GetMapping("/flood/stations")
     public FloodResponseDTO getHouseholdsServedByStation(@RequestParam("stations") List<String> stationNumbers) {
 
-		logger.info("Request received for /flood/station with stations : {}.", stationNumbers);
+		logger.info("Request GET received for /flood/station with stations : {}.", stationNumbers);
 		FloodResponseDTO response = floodService.getHouseholds(stationNumbers);
-		logger.info("Request successful, response sent.");
+		logger.info("Request GET successful, response sent.");
         return response;
     }
 }

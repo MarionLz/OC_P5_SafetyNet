@@ -32,9 +32,9 @@ public class FirestationController {
 	@GetMapping
     public FirestationResponseDTO getPersonsCoveredByStation(@RequestParam("stationNumber") String stationNumber) {
 
-		logger.info("Request received for /firestation with stationNumber: {}.", stationNumber);
+		logger.info("Request GET received for /firestation with stationNumber: {}.", stationNumber);
 		FirestationResponseDTO response = firestationService.getPersonsByStations(stationNumber);
-		logger.info("Request successful, response sent.");
+		logger.info("Request GET successful, response sent.");
         return response;
     }
 	

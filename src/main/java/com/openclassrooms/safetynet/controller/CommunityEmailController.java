@@ -27,9 +27,9 @@ public class CommunityEmailController {
 	@GetMapping("/communityEmail")
     public List<String> getCommunityEmails(@RequestParam("city") String city) {
 
-		logger.info("Request received for /communityEmail with city: {}.", city);
+		logger.info("Request GET received for /communityEmail with city: {}.", city);
 		List<String> response = communityEmailService.getCommunityEmails(city);
-		logger.info("Request successful, response sent.");
+		logger.info("Request GET successful, response sent.");
         return response;
     }
 }

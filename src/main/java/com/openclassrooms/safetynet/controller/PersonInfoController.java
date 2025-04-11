@@ -25,9 +25,9 @@ public class PersonInfoController {
 	@GetMapping("/personInfo")
     public PersonInfoResponseDTO getPersonInfo(@RequestParam("lastName") String lastName) {
 
-		logger.info("Request received for /personInfo with lastName : {}.", lastName);
+		logger.info("Request GET received for /personInfo with lastName : {}.", lastName);
 		PersonInfoResponseDTO response = personInfoService.getPersonInfoWithLastName(lastName);
-		logger.info("Request successful, response sent.");
+		logger.info("Request GET successful, response sent.");
         return response;
     }
 }

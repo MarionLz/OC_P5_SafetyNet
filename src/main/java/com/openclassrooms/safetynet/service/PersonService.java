@@ -35,6 +35,7 @@ public class PersonService {
 
     public void addPerson(Person person) {
     	
+    	logger.debug("Starting to add person: {}", person);
     	List<Person> persons = getDataModel().getPersons();
 
         boolean exists = persons.stream()
@@ -48,10 +49,12 @@ public class PersonService {
 
         persons.add(person);
         writerRepository.saveData();
+    	logger.debug("New person added: {}.", person);
     }
     
     public void updatePerson(Person updatedPerson) {
     	
+    	logger.debug("Starting to update person: {}", updatedPerson);
         List<Person> persons = getDataModel().getPersons();
 
         boolean exists = false;
@@ -69,10 +72,12 @@ public class PersonService {
         	throw new ResourceNotFoundException("Person not found : " + updatedPerson.getFirstName() + " " + updatedPerson.getLastName());
         }
     	writerRepository.saveData();
+    	logger.debug("Person updated: {}.", updatedPerson);
     }
     
     public void deletePerson(String firstName, String lastName) {
     	
+    	logger.debug("Starting to delete person: {} {}.", firstName, lastName);
     	List<Person> persons = getDataModel().getPersons();
 
         boolean exists = persons.stream()
@@ -90,5 +95,6 @@ public class PersonService {
 
         getDataModel().setPersons(updatedPersons);
         writerRepository.saveData();
+    	logger.debug("Person deleted: {} {}.", firstName, lastName);
     }
 }

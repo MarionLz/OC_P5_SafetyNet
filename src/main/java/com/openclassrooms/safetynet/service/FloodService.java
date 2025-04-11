@@ -47,6 +47,8 @@ public class FloodService {
     
     public FloodResponseDTO getHouseholds(List<String> stationNumbers) {
     	
+		logger.debug("Starting to retrieve households for stations {}.", stationNumbers);
+
     	DataModel dataModel = getDataModel();
     	List<StationDTO> stations = new ArrayList<>();
     	
@@ -75,7 +77,8 @@ public class FloodService {
     	}
     	
     	FloodResponseDTO response = new FloodResponseDTO(stations);
-    	
+		logger.debug("Retrieval successful for households covered by stations {}.", stationNumbers);
+
     	return response;
     }
 }

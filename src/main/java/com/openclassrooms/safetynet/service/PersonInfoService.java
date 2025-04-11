@@ -32,6 +32,7 @@ public class PersonInfoService {
 	
     public PersonInfoResponseDTO getPersonInfoWithLastName(String lastName) {
     	
+        logger.debug("Retrieving persons with lastName: {}", lastName);
     	DataModel dataModel = getDataModel();
     	List<Person> persons = dataModel.getPersons();
     	List<PersonInfoPersonIdentityDTO> personsWithSameLastName = new ArrayList<>();
@@ -55,7 +56,7 @@ public class PersonInfoService {
     	}
     	
     	PersonInfoResponseDTO response = new PersonInfoResponseDTO(personsWithSameLastName);
-    	
+    	logger.debug("Retrieval successful: {} persons found with lastName: {}.", personsWithSameLastName.size(), lastName);
     	return response;
     }
 }

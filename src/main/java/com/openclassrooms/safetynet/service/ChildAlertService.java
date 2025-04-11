@@ -47,7 +47,6 @@ public class ChildAlertService {
 	public ChildAlertResponseDTO getChildrenAtAddress(String address) {
 		
         logger.debug("Retrieving children and family members at address: {}", address);
-
 		List<PersonIdentityDTO> personsAtAddress = getPersonsAtAddress(address);
 		List<ChildDTO> children = new ArrayList<>();
 		List<PersonIdentityDTO> otherFamilyMembers = new ArrayList<>();
@@ -67,7 +66,6 @@ public class ChildAlertService {
 	    }
 	    
         logger.debug("Child retrieval completed: {} children and {} other family members found.", children.size(), otherFamilyMembers.size());
-        
 		return new ChildAlertResponseDTO(children, otherFamilyMembers);
 	}
 }

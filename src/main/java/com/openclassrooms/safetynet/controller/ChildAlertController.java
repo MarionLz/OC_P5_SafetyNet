@@ -25,9 +25,9 @@ public class ChildAlertController {
 	@GetMapping("/childAlert")
     public ChildAlertResponseDTO getChildAtAddress(@RequestParam("address") String address) {
 
-		logger.info("Request received for /childAlert with address: {}.", address);
+		logger.info("Request GET received for /childAlert with address: {}.", address);
 		ChildAlertResponseDTO response = childAlertService.getChildrenAtAddress(address);
-		logger.info("Request successful, response sent.");
+		logger.info("Request GET successful, response sent.");
         return response;
     }
 }

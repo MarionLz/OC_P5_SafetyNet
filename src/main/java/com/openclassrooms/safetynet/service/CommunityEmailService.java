@@ -28,11 +28,15 @@ public class CommunityEmailService {
 	
 	public List<String> getCommunityEmails(String city) {
 		
+        logger.debug("Retrieving emails for city: {}", city);
+
 		List<String> result = getDataModel().getPersons().stream()
 		.filter(person -> city.equals(person.getCity()))
 		.map(person -> new String(person.getEmail()))
 		.collect(Collectors.toList());
 		
+        logger.debug("{} emails found for city: {}", result.size(), city);
+
 		return result;
 	}
 }

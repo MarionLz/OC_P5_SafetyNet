@@ -63,6 +63,7 @@ public class DataReaderFromJsonRepository implements IDataReaderRepository {
 				DataModel dataModel = objectMapper.readValue(inputStream, DataModel.class);
 				validateDataModel(dataModel);
 				dataModelService.setDataModel(dataModel);
+	            logger.debug("Data successfully loaded in DataModel.");
 			}
 		} catch (IOException e) {
 			logger.error("Error loading JSON data.");

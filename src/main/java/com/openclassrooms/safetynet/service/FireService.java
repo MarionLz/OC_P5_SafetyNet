@@ -32,10 +32,8 @@ public class FireService {
     
     public FireResponseDTO getPersonsAtAddress(String address) {
     	
-        logger.info("Starting to retrieve persons who lived at this address : ", address);
-
+        logger.debug("Starting to retrieve persons who lived at this address : ", address);
     	List<ResidentDTO> personsResult = new ArrayList<>();
-    	
     	List<PersonIdentityDTO> personsIdentity = ServiceUtils.getPersonsIdentity(address, getDataModel().getPersons());
     	
     	for (PersonIdentityDTO personIdentity : personsIdentity) {
@@ -53,8 +51,7 @@ public class FireService {
     	
     	FireResponseDTO response = new FireResponseDTO(personsResult, stationNumber);
 		
-    	logger.info("Retrieval successful: data is ready to be sent.");
-    	
+    	logger.debug("Retrieval successful: {} persons found at adress: {}.", personsResult.size(), address);
     	return response;
     }
 }

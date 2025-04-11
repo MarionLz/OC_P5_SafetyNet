@@ -35,6 +35,7 @@ public class MedicalRecordService {
     
     public void addMedicalRecord(MedicalRecord medicalRecord) {
     	
+    	logger.debug("Starting to add medicalRecord: {}", medicalRecord);
     	List<MedicalRecord> medicalRecords = getDataModel().getMedicalrecords();
 
         boolean exists = medicalRecords.stream()
@@ -48,10 +49,12 @@ public class MedicalRecordService {
 
         medicalRecords.add(medicalRecord);
         writerRepository.saveData();
+    	logger.debug("New medicalRecord added: {}.", medicalRecord);
     }
     
     public void updateMedicalRecord(MedicalRecord updatedMedicalRecord) {
     	
+    	logger.debug("Starting to update medicalRecord: {}", updatedMedicalRecord);
     	List<MedicalRecord> medicalRecords = getDataModel().getMedicalrecords();
 
         boolean exists = false;
@@ -69,10 +72,12 @@ public class MedicalRecordService {
         	throw new ResourceNotFoundException("MedicalRecord not found : " + updatedMedicalRecord.getFirstName() + " " + updatedMedicalRecord.getLastName());
         }
     	writerRepository.saveData();
+    	logger.debug("MedicalRecord updated: {}.", updatedMedicalRecord);
     }
     
     public void deleteMedicalRecord(String firstName, String lastName) {
     	
+    	logger.debug("Starting to delete medicalRecord for: {} {}.", firstName, lastName);
     	List<MedicalRecord> medicalRecords = getDataModel().getMedicalrecords();
 
         boolean exists = medicalRecords.stream()
@@ -90,5 +95,6 @@ public class MedicalRecordService {
 
         getDataModel().setMedicalrecords(updatedMedicalRecords);
         writerRepository.saveData();
+    	logger.debug("MedicalRecord deleted for: {} {}.", firstName, lastName);
     }
 }

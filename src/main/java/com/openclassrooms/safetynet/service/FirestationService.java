@@ -54,6 +54,7 @@ public class FirestationService {
 
     public void addFirestation(Firestation firestation) {
     	
+    	logger.debug("Starting to add firestation: {}", firestation);
     	List<Firestation> firestations = getDataModel().getFirestations();
 
         boolean exists = firestations.stream()
@@ -67,10 +68,12 @@ public class FirestationService {
 
         firestations.add(firestation);
         writerRepository.saveData();
+    	logger.debug("New firestation added: {}.", firestation);
     }
     
     public void updateFirestation(Firestation updatedFirestation) {
     	
+    	logger.debug("Starting to update firestation: {}", updatedFirestation);
         List<Firestation> firestations = getDataModel().getFirestations();
 
         boolean exists = false;
@@ -88,10 +91,12 @@ public class FirestationService {
         	throw new ResourceNotFoundException("Firestation not found : " + updatedFirestation.getAddress());
         }
     	writerRepository.saveData();
+    	logger.debug("Firestation updated: {}.", updatedFirestation);
     }
     
     public void deleteFirestation(String address) {
     	
+    	logger.debug("Starting to delete firestation at address: {}", address);
         List<Firestation> firestations = getDataModel().getFirestations();
 
         boolean exists = firestations.stream()
@@ -108,5 +113,6 @@ public class FirestationService {
 
         getDataModel().setFirestations(updatedFirestations);
         writerRepository.saveData();
+    	logger.debug("Firestation deleted at address: {}.", address);
     }
 }
