@@ -1,6 +1,5 @@
 package com.openclassrooms.safetynet.service;
 
-import com.openclassrooms.safetynet.DTO.firestation.NbAdultAndChildrenDTO;
 import com.openclassrooms.safetynet.DTO.firestation.PersonsByStationsDTO;
 import com.openclassrooms.safetynet.exceptions.ResourceAlreadyExistsException;
 import com.openclassrooms.safetynet.exceptions.ResourceNotFoundException;
@@ -14,8 +13,6 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -37,57 +34,22 @@ public class FirestationService {
         return dataModelService.getDataModel();
     }
 	
-	private List<String> getFirestationAdresses(String station) {
-		
-		logger.debug("Starting to retrieve firestation addresses for station {}.", station);
-		List<String> stationAddresses = getDataModel().getFirestations().stream()
-            .filter(firestation -> firestation.getStation().equals(station))
-            .map(firestation -> firestation.getAddress())
-            .collect(Collectors.toList());
-		logger.debug("Retrieval successful: {} addresses found for station {}.", stationAddresses.size(), station);
-		return stationAddresses;
-	}
-	
-	private List<PersonsByStationsDTO> getPersonsList(List<String> stationAddresses) {
-		
-	    logger.debug("Starting to retrieve persons covered by firestations adresses: {}.", stationAddresses);
-		List<PersonsByStationsDTO> personByStation = getDataModel().getPersons().stream()
-            .filter(person -> stationAddresses.contains(person.getAddress()))
-            .map(person -> new PersonsByStationsDTO(person.getFirstName(), person.getLastName(), person.getAddress(), person.getPhone()))
-            .collect(Collectors.toList());
-		logger.debug("Retrieval successful: {} persons are covered by firestations matching adresses: {}.", personByStation.size(), stationAddresses);
-		return  personByStation;
-	}
-	
-	private boolean isChild(PersonsByStationsDTO personByStation) {
-		
-		String birthdate = getDataModel().getMedicalrecords().stream()
-				.filter(medicalRecord -> personByStation.getFirstName().equals(medicalRecord.getFirstName())
-						&& personByStation.getLastName().equals(medicalRecord.getLastName()))
-				.map(medicalRecord -> medicalRecord.getBirthdate())
-				.findFirst().orElse("");
-		
-		LocalDate birthdateLocalDate = LocalDate.parse(birthdate, DateTimeFormatter.ofPattern("MM/dd/yyyy"));
-		return birthdateLocalDate.plusYears(18).isAfter(LocalDate.now());
-	}
-		
-	private NbAdultAndChildrenDTO countNbAdultAndChildren(List<PersonsByStationsDTO> personsByStation) {
-		
-		logger.debug("Starting calculating the number of adults and children. Number of persons received: {}.", personsByStation.size());
-		int childCount = (int)personsByStation.stream().filter(this::isChild).count();
-		int adultCount = (int)personsByStation.size() - childCount;
-		logger.debug("Calculation successful: {} adults and {} children have been counted.", adultCount, childCount);
-		return new NbAdultAndChildrenDTO(adultCount, childCount);
-	}
-	
 	public FirestationResponseDTO getPersonsByStations(String station) {
 		
 		logger.debug("Starting to retrieve data for station {}.", station);
-		List<String> stationAddresses = getFirestationAdresses(station);
-		List<PersonsByStationsDTO> personByStation = getPersonsList(stationAddresses);
-		NbAdultAndChildrenDTO nbAdultAndChildren = countNbAdultAndChildren(personByStation);
+		
+		List<String> stationAddresses = ServiceUtils.getFirestationAdresses(station, getDataModel().getFirestations());
+		
+		List<PersonsByStationsDTO> personsByStation = getDataModel().getPersons().stream()
+	            .filter(person -> stationAddresses.contains(person.getAddress()))
+	            .map(person -> new PersonsByStationsDTO(person.getFirstName(), person.getLastName(), person.getAddress(), person.getPhone()))
+	            .collect(Collectors.toList());
+		
+		int childCount = (int)personsByStation.stream().filter(person -> ServiceUtils.isChild(person, getDataModel().getMedicalrecords())).count();
+		int adultCount = (int)personsByStation.size() - childCount;
+		
 		logger.debug("Retrieval successful: data is ready to be sent.");
-		return new FirestationResponseDTO(personByStation, nbAdultAndChildren);
+		return new FirestationResponseDTO(personsByStation, childCount, adultCount);
     }
 
     public void addFirestation(Firestation firestation) {

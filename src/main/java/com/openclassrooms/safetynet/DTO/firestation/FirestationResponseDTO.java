@@ -8,10 +8,12 @@ import lombok.Data;
 public class FirestationResponseDTO {
 
     private List<PersonsByStationsDTO> persons;
-    private NbAdultAndChildrenDTO nbAdultAndChildren;
+	private int nbAdult;
+	private int nbChildren;
     
-    public FirestationResponseDTO(List<PersonsByStationsDTO> persons, NbAdultAndChildrenDTO nbAdultAndChildren) {
+    public FirestationResponseDTO(List<PersonsByStationsDTO> persons, int nbAdult, int nbChildren) {
         this.persons = persons;
-        this.nbAdultAndChildren = nbAdultAndChildren;
+		this.nbAdult = nbAdult;
+		this.nbChildren = nbChildren;
     }
 }

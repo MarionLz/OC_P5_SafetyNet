@@ -1,8 +1,5 @@
 package com.openclassrooms.safetynet.service;
 
-import java.time.LocalDate;
-import java.time.Period;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -27,25 +24,6 @@ public class ChildAlertService {
 	public ChildAlertService(DataModelService dataModelService) {
 		
 		this.dataModel = dataModelService.getDataModel();
-	}	
-	
-	private int getAge(PersonIdentityDTO person) {
-		
-        logger.debug("Calculating age for person: {} {}", person.getFirstName(), person.getLastName());
-
-		String birthdate = dataModel.getMedicalrecords().stream()
-				.filter(medicalRecord -> person.getFirstName().equals(medicalRecord.getFirstName())
-						&& person.getLastName().equals(medicalRecord.getLastName()))
-				.map(medicalRecord -> medicalRecord.getBirthdate())
-				.findFirst().orElse("");
-		
-		LocalDate birthdateLocalDate = LocalDate.parse(birthdate, DateTimeFormatter.ofPattern("MM/dd/yyyy"));
-	    LocalDate today = LocalDate.now();
-	    int age = Period.between(birthdateLocalDate, today).getYears();
-	    
-        logger.debug("Age calculated for {} {}: {} years", person.getFirstName(), person.getLastName(), age);
-
-		return age;
 	}
 	
 	public List<PersonIdentityDTO> getPersonsAtAddress(String address) {
@@ -71,7 +49,7 @@ public class ChildAlertService {
 		List<PersonIdentityDTO> otherFamilyMembers = new ArrayList<>();
 		
 		for (PersonIdentityDTO person : personsAtAddress) {
-			int age = getAge(person);
+			int age = ServiceUtils.getAge(person.getFirstName(), person.getLastName(), dataModel.getMedicalrecords());
 			if (age < 18) {
 				children.add(new ChildDTO(person.getFirstName(), person.getLastName(), String.valueOf(age)));
 			}

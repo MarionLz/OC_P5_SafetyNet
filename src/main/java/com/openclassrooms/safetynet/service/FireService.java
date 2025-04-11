@@ -1,11 +1,7 @@
 package com.openclassrooms.safetynet.service;
 
-import java.time.LocalDate;
-import java.time.Period;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -34,66 +30,18 @@ public class FireService {
         return dataModelService.getDataModel();
     }
     
-    private List<PersonIdentityDTO> getPersonsIdentity(String address) {
-    	
-        logger.info("Retrieving persons at address: {}", address);
-        
-		List<PersonIdentityDTO> personsIdentity = getDataModel().getPersons().stream()
-				.filter(person -> address.equals(person.getAddress()))
-				.map(person -> new PersonIdentityDTO(person.getFirstName(), person.getLastName(), person.getPhone()))
-				.collect(Collectors.toList());
-		
-        logger.info("{} persons found at address: {}", personsIdentity.size(), address);
-        
-		return personsIdentity;
-	}
-    
-	private int getAge(PersonIdentityDTO person) {
-			
-        logger.info("Calculating age for person: {} {}", person.getFirstName(), person.getLastName());
-
-		String birthdate = getDataModel().getMedicalrecords().stream()
-				.filter(medicalRecord -> person.getFirstName().equals(medicalRecord.getFirstName())
-						&& person.getLastName().equals(medicalRecord.getLastName()))
-				.map(medicalRecord -> medicalRecord.getBirthdate())
-				.findFirst().orElse("");
-		
-		LocalDate birthdateLocalDate = LocalDate.parse(birthdate, DateTimeFormatter.ofPattern("MM/dd/yyyy"));
-	    LocalDate today = LocalDate.now();
-	    int age = Period.between(birthdateLocalDate, today).getYears();
-	    
-        logger.info("Age calculated for {} {}: {} years", person.getFirstName(), person.getLastName(), age);
-
-		return age;
-	}
-	
-	private MedicalHistoryDTO getMedicalHistory(PersonIdentityDTO person) {
-		
-        logger.info("Retrieving medicalHistory for person : {}", person);
-
-		MedicalHistoryDTO medicalHistory = getDataModel().getMedicalrecords().stream()
-				.filter(medicalRecord -> person.getFirstName().equals(medicalRecord.getFirstName())
-						&& person.getLastName().equals(medicalRecord.getLastName()))
-				.map(medicalRecord -> new MedicalHistoryDTO(medicalRecord.getMedications(), medicalRecord.getAllergies()))
-				.findFirst().orElse(new MedicalHistoryDTO(new String[0], new String[0]));
-		
-        logger.info("Medical history retrieved for {}", person);
-
-		return medicalHistory;
-	}
-    
     public FireResponseDTO getPersonsAtAddress(String address) {
     	
         logger.info("Starting to retrieve persons who lived at this address : ", address);
 
     	List<ResidentDTO> personsResult = new ArrayList<>();
     	
-    	List<PersonIdentityDTO> personsIdentity = getPersonsIdentity(address);
+    	List<PersonIdentityDTO> personsIdentity = ServiceUtils.getPersonsIdentity(address, getDataModel().getPersons());
     	
     	for (PersonIdentityDTO personIdentity : personsIdentity) {
     		
-    		int age = getAge(personIdentity);
-    		MedicalHistoryDTO medicalHistory = getMedicalHistory(personIdentity);
+    		int age = ServiceUtils.getAge(personIdentity.getFirstName(), personIdentity.getLastName(), getDataModel().getMedicalrecords());
+    		MedicalHistoryDTO medicalHistory = ServiceUtils.getMedicalHistory(personIdentity.getFirstName(), personIdentity.getLastName(), getDataModel().getMedicalrecords());
     		personsResult.add(new ResidentDTO(personIdentity.getLastName(), personIdentity.getPhone(),
     						String.valueOf(age), medicalHistory.getMedications(), medicalHistory.getAllergies()));
     	}

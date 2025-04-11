@@ -2,8 +2,6 @@ package com.openclassrooms.safetynet.DTO.personInfo;
 
 import java.util.List;
 
-import com.openclassrooms.safetynet.DTO.ResidentDTO;
-
 import lombok.Data;
 
 @Data

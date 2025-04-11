@@ -18,7 +18,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.openclassrooms.safetynet.DTO.firestation.NbAdultAndChildrenDTO;
 import com.openclassrooms.safetynet.DTO.firestation.PersonsByStationsDTO;
 import com.openclassrooms.safetynet.exceptions.ResourceAlreadyExistsException;
 import com.openclassrooms.safetynet.exceptions.ResourceNotFoundException;
@@ -74,13 +73,12 @@ public class FirestationServiceTest {
 		FirestationResponseDTO result = firestationService.getPersonsByStations("3");
 		
 		List<PersonsByStationsDTO> personByStation = result.getPersons();
-		NbAdultAndChildrenDTO nbAdultAndChildren = result.getNbAdultAndChildren();
 
 		assertEquals(personByStation.size(), 2);
 		assertEquals(personByStation.get(0).getFirstName(), "John");
 		assertEquals(personByStation.get(1).getFirstName(), "Tenley");
-		assertEquals(nbAdultAndChildren.getNbAdult(), 1);
-		assertEquals(nbAdultAndChildren.getNbChildren(), 1);
+		assertEquals(result.getNbAdult(), 1);
+		assertEquals(result.getNbChildren(), 1);
 	}
 	
 	@Test

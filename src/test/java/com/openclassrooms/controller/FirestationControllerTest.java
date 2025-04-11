@@ -27,7 +27,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.openclassrooms.safetynet.DTO.firestation.FirestationResponseDTO;
-import com.openclassrooms.safetynet.DTO.firestation.NbAdultAndChildrenDTO;
 import com.openclassrooms.safetynet.DTO.firestation.PersonsByStationsDTO;
 import com.openclassrooms.safetynet.controller.FirestationController;
 import com.openclassrooms.safetynet.model.Firestation;
@@ -58,10 +57,8 @@ public class FirestationControllerTest {
 				new PersonsByStationsDTO("John", "Boyd", "1509 Culver St", "841-874-6512"),
 				new PersonsByStationsDTO("Tenley", "Boyd", "1509 Culver St", "841-874-6512")
 		);
-		
-		NbAdultAndChildrenDTO nbAdultAndChildren = new NbAdultAndChildrenDTO(1, 1);
-		
-		FirestationResponseDTO mockResponse = new FirestationResponseDTO(persons, nbAdultAndChildren);
+				
+		FirestationResponseDTO mockResponse = new FirestationResponseDTO(persons, 1, 1);
 		
         ObjectMapper objectMapper = new ObjectMapper();
         String expectedJson = objectMapper.writeValueAsString(mockResponse);

@@ -22,23 +22,12 @@ public class PhoneAlertService {
 		
 		this.dataModel = dataModelService.getDataModel();
 	}
-    
-	private List<String> getFirestationAdresses(String firestationNumber) {
-		
-		logger.debug("Starting to retrieve firestation addresses for station {}.", firestationNumber);
-		List<String> stationAddresses = dataModel.getFirestations().stream()
-            .filter(firestation -> firestation.getStation().equals(firestationNumber))
-            .map(firestation -> firestation.getAddress())
-            .collect(Collectors.toList());
-		logger.debug("Retrieval successful: {} addresses found for station {}.", stationAddresses.size(), firestationNumber);
-		return stationAddresses;
-	}
 	
 	public PhoneAlertResponseDTO getPhoneNumbersCoveredByStation(String firestationNumber) {
 		
 		logger.debug("Starting to retrieve phone numbers for station {}.", firestationNumber);
 		
-		List<String> stationAddresses = getFirestationAdresses(firestationNumber);
+		List<String> stationAddresses = ServiceUtils.getFirestationAdresses(firestationNumber, dataModel.getFirestations());
 		List<String> response = dataModel.getPersons().stream()
 	            .filter(person -> stationAddresses.contains(person.getAddress()))
 	            .map(person -> person.getPhone())
