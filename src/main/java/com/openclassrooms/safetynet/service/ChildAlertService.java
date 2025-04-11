@@ -17,20 +17,24 @@ import com.openclassrooms.safetynet.model.DataModel;
 @Service
 public class ChildAlertService {
 
-	private final DataModel dataModel;
+	private final DataModelService dataModelService;
     private static final Logger logger = LogManager.getLogger(ChildAlertService.class);
     
 	@Autowired
 	public ChildAlertService(DataModelService dataModelService) {
 		
-		this.dataModel = dataModelService.getDataModel();
+		this.dataModelService = dataModelService;
 	}
 	
+    private DataModel getDataModel() {
+        return dataModelService.getDataModel();
+    }
+    
 	public List<PersonIdentityDTO> getPersonsAtAddress(String address) {
 		
         logger.debug("Retrieving persons at address: {}", address);
         
-		List<PersonIdentityDTO> personsAtAddress = dataModel.getPersons().stream()
+		List<PersonIdentityDTO> personsAtAddress = getDataModel().getPersons().stream()
 				.filter(person -> address.equals(person.getAddress()))
 				.map(person -> new PersonIdentityDTO(person.getFirstName(), person.getLastName()))
 				.collect(Collectors.toList());
@@ -49,7 +53,7 @@ public class ChildAlertService {
 		List<PersonIdentityDTO> otherFamilyMembers = new ArrayList<>();
 		
 		for (PersonIdentityDTO person : personsAtAddress) {
-			int age = ServiceUtils.getAge(person.getFirstName(), person.getLastName(), dataModel.getMedicalrecords());
+			int age = ServiceUtils.getAge(person.getFirstName(), person.getLastName(), getDataModel().getMedicalrecords());
 			if (age < 18) {
 				children.add(new ChildDTO(person.getFirstName(), person.getLastName(), String.valueOf(age)));
 			}

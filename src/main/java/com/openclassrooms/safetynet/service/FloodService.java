@@ -20,20 +20,24 @@ import com.openclassrooms.safetynet.model.DataModel;
 @Service
 public class FloodService {
 
-	private final DataModel dataModel;
+	private final DataModelService dataModelService;
     private static final Logger logger = LogManager.getLogger(FloodService.class);
     
     
     @Autowired
 	public FloodService(DataModelService dataModelService) {
 		
-		this.dataModel = dataModelService.getDataModel();
+		this.dataModelService = dataModelService;
 	}
+    
+    private DataModel getDataModel() {
+        return dataModelService.getDataModel();
+    }
     
     private List<String> getFirestationAdresses(String station) {
 		
 		logger.debug("Starting to retrieve firestation addresses for station {}.", station);
-		List<String> stationAddresses = dataModel.getFirestations().stream()
+		List<String> stationAddresses = getDataModel().getFirestations().stream()
             .filter(firestation -> firestation.getStation().equals(station))
             .map(firestation -> firestation.getAddress())
             .collect(Collectors.toList());
@@ -43,6 +47,7 @@ public class FloodService {
     
     public FloodResponseDTO getHouseholds(List<String> stationNumbers) {
     	
+    	DataModel dataModel = getDataModel();
     	List<StationDTO> stations = new ArrayList<>();
     	
     	for(String stationNumber : stationNumbers) {

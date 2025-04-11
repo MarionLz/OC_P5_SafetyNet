@@ -13,18 +13,22 @@ import com.openclassrooms.safetynet.model.DataModel;
 @Service
 public class CommunityEmailService {
 
-	private final DataModel dataModel;
+	private final DataModelService dataModelService;
     private static final Logger logger = LogManager.getLogger(CommunityEmailService.class);
     
 	@Autowired
 	public CommunityEmailService(DataModelService dataModelService) {
 		
-		this.dataModel = dataModelService.getDataModel();
+		this.dataModelService = dataModelService;
 	}
+	
+    private DataModel getDataModel() {
+        return dataModelService.getDataModel();
+    }
 	
 	public List<String> getCommunityEmails(String city) {
 		
-		List<String> result = dataModel.getPersons().stream()
+		List<String> result = getDataModel().getPersons().stream()
 		.filter(person -> city.equals(person.getCity()))
 		.map(person -> new String(person.getEmail()))
 		.collect(Collectors.toList());

@@ -14,19 +14,24 @@ import com.openclassrooms.safetynet.model.DataModel;
 @Service
 public class PhoneAlertService {
 	
-	private final DataModel dataModel;
+	private final DataModelService dataModelService;
     private static final Logger logger = LogManager.getLogger(PhoneAlertService.class);
 
     @Autowired
 	public PhoneAlertService(DataModelService dataModelService) {
 		
-		this.dataModel = dataModelService.getDataModel();
+		this.dataModelService = dataModelService;
 	}
+    
+    private DataModel getDataModel() {
+        return dataModelService.getDataModel();
+    }
 	
 	public PhoneAlertResponseDTO getPhoneNumbersCoveredByStation(String firestationNumber) {
 		
 		logger.debug("Starting to retrieve phone numbers for station {}.", firestationNumber);
 		
+		DataModel dataModel = getDataModel();
 		List<String> stationAddresses = ServiceUtils.getFirestationAdresses(firestationNumber, dataModel.getFirestations());
 		List<String> response = dataModel.getPersons().stream()
 	            .filter(person -> stationAddresses.contains(person.getAddress()))

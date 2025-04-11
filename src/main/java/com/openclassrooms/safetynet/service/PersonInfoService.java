@@ -17,17 +17,22 @@ import com.openclassrooms.safetynet.model.Person;
 @Service
 public class PersonInfoService {
 
-	private final DataModel dataModel;
+	private final DataModelService dataModelService;
     private static final Logger logger = LogManager.getLogger(PersonInfoService.class);
     
     @Autowired
 	public PersonInfoService(DataModelService dataModelService) {
 		
-		this.dataModel = dataModelService.getDataModel();
+		this.dataModelService = dataModelService;
 	}
+    
+    private DataModel getDataModel() {
+        return dataModelService.getDataModel();
+    }
 	
     public PersonInfoResponseDTO getPersonInfoWithLastName(String lastName) {
     	
+    	DataModel dataModel = getDataModel();
     	List<Person> persons = dataModel.getPersons();
     	List<PersonInfoPersonIdentityDTO> personsWithSameLastName = new ArrayList<>();
     	
