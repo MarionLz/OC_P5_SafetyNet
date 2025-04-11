@@ -38,7 +38,7 @@ public class DataWriterToJsonRepository implements IDataWriterRepository {
             File file = jsonFile.getFile();
             objectMapper.writerWithDefaultPrettyPrinter().writeValue(file, dataModelService.getDataModel());
 
-            logger.info("Data successfully saved to JSON file: " + file.getAbsolutePath());
+            logger.debug("Data successfully saved to JSON file: " + file.getAbsolutePath());
         } catch (IOException e) {
         	
             logger.error("Error saving data to JSON.", e);

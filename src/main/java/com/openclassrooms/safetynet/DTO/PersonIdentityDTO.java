@@ -1,8 +1,11 @@
 package com.openclassrooms.safetynet.DTO;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import lombok.Data;
 
 @Data
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class PersonIdentityDTO {
 	
 	private String firstName;

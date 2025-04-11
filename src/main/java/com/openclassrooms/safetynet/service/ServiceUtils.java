@@ -22,7 +22,7 @@ public class ServiceUtils {
 
     public static int getAge(String firstName, String lastName, List<MedicalRecord> medicalRecords) {
 		
-        logger.info("Calculating age for person: {} {}", firstName, lastName);
+        logger.debug("Calculating age for person: {} {}", firstName, lastName);
 
 		String birthdate = medicalRecords.stream()
 				.filter(medicalRecord -> firstName.equals(medicalRecord.getFirstName())
@@ -34,7 +34,7 @@ public class ServiceUtils {
 	    LocalDate today = LocalDate.now();
 	    int age = Period.between(birthdateLocalDate, today).getYears();
 	    
-        logger.info("Age calculated for {} {}: {} years", firstName, lastName, age);
+        logger.debug("Age calculated for {} {}: {} years", firstName, lastName, age);
 
 		return age;
 	}
