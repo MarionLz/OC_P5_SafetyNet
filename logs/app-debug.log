@@ -1,0 +1,76 @@
+2025-04-11 17:09:52 [main] INFO  com.openclassrooms.safetynet.SafetynetApplication - Starting SafetynetApplication using Java 21.0.5 with PID 16680 (C:\Workspace\eclipse-workspace\Openclassrooms_Java\Projet_5_safetynet\target\classes started by Cy in C:\Workspace\eclipse-workspace\Openclassrooms_Java\Projet_5_safetynet)
+2025-04-11 17:09:52 [main] DEBUG com.openclassrooms.safetynet.SafetynetApplication - Running with Spring Boot v3.4.3, Spring v6.2.3
+2025-04-11 17:09:52 [main] INFO  com.openclassrooms.safetynet.SafetynetApplication - No active profile set, falling back to 1 default profile: "default"
+2025-04-11 17:09:55 [main] INFO  com.openclassrooms.safetynet.SafetynetApplication - Started SafetynetApplication in 3.172 seconds (process running for 4.194)
+2025-04-11 17:11:17 [http-nio-8080-exec-3] INFO  com.openclassrooms.safetynet.controller.FireController - Request received for /fire with address: 951 LoneTree Rd.
+2025-04-11 17:11:17 [http-nio-8080-exec-3] INFO  com.openclassrooms.safetynet.service.FireService - Starting to retrieve persons who lived at this address : 
+2025-04-11 17:11:17 [http-nio-8080-exec-3] DEBUG com.openclassrooms.safetynet.service.ServiceUtils - Retrieving persons at address: 951 LoneTree Rd
+2025-04-11 17:11:17 [http-nio-8080-exec-3] DEBUG com.openclassrooms.safetynet.service.ServiceUtils - 1 persons found at address: 951 LoneTree Rd
+2025-04-11 17:11:17 [http-nio-8080-exec-3] DEBUG com.openclassrooms.safetynet.service.ServiceUtils - Calculating age for person: Eric Cadigan
+2025-04-11 17:11:17 [http-nio-8080-exec-3] DEBUG com.openclassrooms.safetynet.service.ServiceUtils - Age calculated for Eric Cadigan: 79 years
+2025-04-11 17:11:17 [http-nio-8080-exec-3] DEBUG com.openclassrooms.safetynet.service.ServiceUtils - Retrieving medicalHistory for person : Eric
+2025-04-11 17:11:17 [http-nio-8080-exec-3] DEBUG com.openclassrooms.safetynet.service.ServiceUtils - Medical history retrieved for Eric
+2025-04-11 17:11:17 [http-nio-8080-exec-3] INFO  com.openclassrooms.safetynet.service.FireService - Retrieval successful: data is ready to be sent.
+2025-04-11 17:11:17 [http-nio-8080-exec-3] INFO  com.openclassrooms.safetynet.controller.FireController - Request successful, response sent.
+2025-04-11 17:12:11 [main] INFO  com.openclassrooms.safetynet.SafetynetApplication - Starting SafetynetApplication using Java 21.0.5 with PID 20360 (C:\Workspace\eclipse-workspace\Openclassrooms_Java\Projet_5_safetynet\target\classes started by Cy in C:\Workspace\eclipse-workspace\Openclassrooms_Java\Projet_5_safetynet)
+2025-04-11 17:12:11 [main] DEBUG com.openclassrooms.safetynet.SafetynetApplication - Running with Spring Boot v3.4.3, Spring v6.2.3
+2025-04-11 17:12:11 [main] INFO  com.openclassrooms.safetynet.SafetynetApplication - No active profile set, falling back to 1 default profile: "default"
+2025-04-11 17:12:13 [main] INFO  com.openclassrooms.safetynet.SafetynetApplication - Started SafetynetApplication in 3.156 seconds (process running for 4.193)
+2025-04-11 17:12:29 [http-nio-8080-exec-1] INFO  com.openclassrooms.safetynet.controller.FireController - Request received for /fire with address: 951 LoneTree Rd.
+2025-04-11 17:12:29 [http-nio-8080-exec-1] INFO  com.openclassrooms.safetynet.service.FireService - Starting to retrieve persons who lived at this address : 
+2025-04-11 17:12:29 [http-nio-8080-exec-1] DEBUG com.openclassrooms.safetynet.service.ServiceUtils - Retrieving persons at address: 951 LoneTree Rd
+2025-04-11 17:12:29 [http-nio-8080-exec-1] DEBUG com.openclassrooms.safetynet.service.ServiceUtils - 1 persons found at address: 951 LoneTree Rd
+2025-04-11 17:12:29 [http-nio-8080-exec-1] DEBUG com.openclassrooms.safetynet.service.ServiceUtils - Calculating age for person: Eric Cadigan
+2025-04-11 17:12:29 [http-nio-8080-exec-1] DEBUG com.openclassrooms.safetynet.service.ServiceUtils - Age calculated for Eric Cadigan: 79 years
+2025-04-11 17:12:29 [http-nio-8080-exec-1] DEBUG com.openclassrooms.safetynet.service.ServiceUtils - Retrieving medicalHistory for person : Eric
+2025-04-11 17:12:29 [http-nio-8080-exec-1] DEBUG com.openclassrooms.safetynet.service.ServiceUtils - Medical history retrieved for Eric
+2025-04-11 17:12:29 [http-nio-8080-exec-1] INFO  com.openclassrooms.safetynet.service.FireService - Retrieval successful: data is ready to be sent.
+2025-04-11 17:12:29 [http-nio-8080-exec-1] INFO  com.openclassrooms.safetynet.controller.FireController - Request successful, response sent.
+2025-04-11 17:18:46 [main] INFO  com.openclassrooms.safetynet.SafetynetApplication - Starting SafetynetApplication using Java 21.0.5 with PID 16520 (C:\Workspace\eclipse-workspace\Openclassrooms_Java\Projet_5_safetynet\target\classes started by Cy in C:\Workspace\eclipse-workspace\Openclassrooms_Java\Projet_5_safetynet)
+2025-04-11 17:18:46 [main] DEBUG com.openclassrooms.safetynet.SafetynetApplication - Running with Spring Boot v3.4.3, Spring v6.2.3
+2025-04-11 17:18:46 [main] INFO  com.openclassrooms.safetynet.SafetynetApplication - No active profile set, falling back to 1 default profile: "default"
+2025-04-11 17:18:49 [main] INFO  com.openclassrooms.safetynet.SafetynetApplication - Started SafetynetApplication in 3.135 seconds (process running for 4.211)
+2025-04-11 17:19:03 [http-nio-8080-exec-2] INFO  com.openclassrooms.safetynet.controller.FireController - Request received for /fire with address: 951 LoneTree Rd.
+2025-04-11 17:19:03 [http-nio-8080-exec-2] INFO  com.openclassrooms.safetynet.service.FireService - Starting to retrieve persons who lived at this address : 
+2025-04-11 17:19:03 [http-nio-8080-exec-2] DEBUG com.openclassrooms.safetynet.service.ServiceUtils - Retrieving persons at address: 951 LoneTree Rd
+2025-04-11 17:19:03 [http-nio-8080-exec-2] DEBUG com.openclassrooms.safetynet.service.ServiceUtils - 1 persons found at address: 951 LoneTree Rd
+2025-04-11 17:19:03 [http-nio-8080-exec-2] DEBUG com.openclassrooms.safetynet.service.ServiceUtils - Calculating age for person: Eric Cadigan
+2025-04-11 17:19:03 [http-nio-8080-exec-2] DEBUG com.openclassrooms.safetynet.service.ServiceUtils - Age calculated for Eric Cadigan: 79 years
+2025-04-11 17:19:03 [http-nio-8080-exec-2] DEBUG com.openclassrooms.safetynet.service.ServiceUtils - Retrieving medicalHistory for person : Eric
+2025-04-11 17:19:03 [http-nio-8080-exec-2] DEBUG com.openclassrooms.safetynet.service.ServiceUtils - Medical history retrieved for Eric
+2025-04-11 17:19:03 [http-nio-8080-exec-2] INFO  com.openclassrooms.safetynet.service.FireService - Retrieval successful: data is ready to be sent.
+2025-04-11 17:19:03 [http-nio-8080-exec-2] INFO  com.openclassrooms.safetynet.controller.FireController - Request successful, response sent.
+2025-04-11 17:19:49 [http-nio-8080-exec-4] INFO  com.openclassrooms.safetynet.controller.MedicalRecordController - Request DELETE received for /medicalRecord with firstName : Xavier and lastName : Petit.
+2025-04-11 17:19:49 [http-nio-8080-exec-4] ERROR com.openclassrooms.safetynet.service.MedicalRecordService - MedicalRecord not found : Xavier Petit
+2025-04-11 17:27:56 [http-nio-8080-exec-5] INFO  com.openclassrooms.safetynet.controller.FireController - Request received for /fire with address: 1509 Cul.
+2025-04-11 17:27:56 [http-nio-8080-exec-5] INFO  com.openclassrooms.safetynet.service.FireService - Starting to retrieve persons who lived at this address : 
+2025-04-11 17:27:56 [http-nio-8080-exec-5] DEBUG com.openclassrooms.safetynet.service.ServiceUtils - Retrieving persons at address: 1509 Cul
+2025-04-11 17:27:56 [http-nio-8080-exec-5] DEBUG com.openclassrooms.safetynet.service.ServiceUtils - 0 persons found at address: 1509 Cul
+2025-04-11 17:27:56 [http-nio-8080-exec-5] INFO  com.openclassrooms.safetynet.service.FireService - Retrieval successful: data is ready to be sent.
+2025-04-11 17:27:56 [http-nio-8080-exec-5] INFO  com.openclassrooms.safetynet.controller.FireController - Request successful, response sent.
+2025-04-11 17:28:02 [http-nio-8080-exec-7] INFO  com.openclassrooms.safetynet.controller.FireController - Request received for /fire with address: 1509 Culver St.
+2025-04-11 17:28:02 [http-nio-8080-exec-7] INFO  com.openclassrooms.safetynet.service.FireService - Starting to retrieve persons who lived at this address : 
+2025-04-11 17:28:02 [http-nio-8080-exec-7] DEBUG com.openclassrooms.safetynet.service.ServiceUtils - Retrieving persons at address: 1509 Culver St
+2025-04-11 17:28:02 [http-nio-8080-exec-7] DEBUG com.openclassrooms.safetynet.service.ServiceUtils - 5 persons found at address: 1509 Culver St
+2025-04-11 17:28:02 [http-nio-8080-exec-7] DEBUG com.openclassrooms.safetynet.service.ServiceUtils - Calculating age for person: John Boyd
+2025-04-11 17:28:02 [http-nio-8080-exec-7] DEBUG com.openclassrooms.safetynet.service.ServiceUtils - Age calculated for John Boyd: 41 years
+2025-04-11 17:28:02 [http-nio-8080-exec-7] DEBUG com.openclassrooms.safetynet.service.ServiceUtils - Retrieving medicalHistory for person : John
+2025-04-11 17:28:02 [http-nio-8080-exec-7] DEBUG com.openclassrooms.safetynet.service.ServiceUtils - Medical history retrieved for John
+2025-04-11 17:28:02 [http-nio-8080-exec-7] DEBUG com.openclassrooms.safetynet.service.ServiceUtils - Calculating age for person: Jacob Boyd
+2025-04-11 17:28:02 [http-nio-8080-exec-7] DEBUG com.openclassrooms.safetynet.service.ServiceUtils - Age calculated for Jacob Boyd: 36 years
+2025-04-11 17:28:02 [http-nio-8080-exec-7] DEBUG com.openclassrooms.safetynet.service.ServiceUtils - Retrieving medicalHistory for person : Jacob
+2025-04-11 17:28:02 [http-nio-8080-exec-7] DEBUG com.openclassrooms.safetynet.service.ServiceUtils - Medical history retrieved for Jacob
+2025-04-11 17:28:02 [http-nio-8080-exec-7] DEBUG com.openclassrooms.safetynet.service.ServiceUtils - Calculating age for person: Tenley Boyd
+2025-04-11 17:28:02 [http-nio-8080-exec-7] DEBUG com.openclassrooms.safetynet.service.ServiceUtils - Age calculated for Tenley Boyd: 13 years
+2025-04-11 17:28:02 [http-nio-8080-exec-7] DEBUG com.openclassrooms.safetynet.service.ServiceUtils - Retrieving medicalHistory for person : Tenley
+2025-04-11 17:28:02 [http-nio-8080-exec-7] DEBUG com.openclassrooms.safetynet.service.ServiceUtils - Medical history retrieved for Tenley
+2025-04-11 17:28:02 [http-nio-8080-exec-7] DEBUG com.openclassrooms.safetynet.service.ServiceUtils - Calculating age for person: Roger Boyd
+2025-04-11 17:28:02 [http-nio-8080-exec-7] DEBUG com.openclassrooms.safetynet.service.ServiceUtils - Age calculated for Roger Boyd: 7 years
+2025-04-11 17:28:02 [http-nio-8080-exec-7] DEBUG com.openclassrooms.safetynet.service.ServiceUtils - Retrieving medicalHistory for person : Roger
+2025-04-11 17:28:02 [http-nio-8080-exec-7] DEBUG com.openclassrooms.safetynet.service.ServiceUtils - Medical history retrieved for Roger
+2025-04-11 17:28:02 [http-nio-8080-exec-7] DEBUG com.openclassrooms.safetynet.service.ServiceUtils - Calculating age for person: Felicia Boyd
+2025-04-11 17:28:02 [http-nio-8080-exec-7] DEBUG com.openclassrooms.safetynet.service.ServiceUtils - Age calculated for Felicia Boyd: 39 years
+2025-04-11 17:28:02 [http-nio-8080-exec-7] DEBUG com.openclassrooms.safetynet.service.ServiceUtils - Retrieving medicalHistory for person : Felicia
+2025-04-11 17:28:02 [http-nio-8080-exec-7] DEBUG com.openclassrooms.safetynet.service.ServiceUtils - Medical history retrieved for Felicia
+2025-04-11 17:28:02 [http-nio-8080-exec-7] INFO  com.openclassrooms.safetynet.service.FireService - Retrieval successful: data is ready to be sent.
+2025-04-11 17:28:02 [http-nio-8080-exec-7] INFO  com.openclassrooms.safetynet.controller.FireController - Request successful, response sent.
