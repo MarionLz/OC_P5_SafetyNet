@@ -21,6 +21,11 @@ import com.openclassrooms.safetynet.DTO.phoneAlert.PhoneAlertResponseDTO;
 import com.openclassrooms.safetynet.controller.PhoneAlertController;
 import com.openclassrooms.safetynet.service.PhoneAlertService;
 
+/**
+ * Unit test class for the {@link PhoneAlertController}.
+ * This class tests the behavior of the controller's methods, specifically retrieving
+ * phone numbers of children covered by a specified fire station.
+ */
 @ExtendWith(MockitoExtension.class)
 public class PhoneAlertControllerTest {
 
@@ -32,6 +37,14 @@ public class PhoneAlertControllerTest {
     
     private MockMvc mockMvc;
 	
+    /**
+     * Tests the {@link PhoneAlertController#getPhoneNumbersCoveredByStation(String)} method to verify
+     * the retrieval of phone numbers for children covered by a specified fire station.
+     * This method simulates a GET HTTP request and checks that the response matches the expected JSON 
+     * format returned by the service.
+     *
+     * @throws Exception If an error occurs while executing the request.
+     */
 	@Test
 	public void testGetPhoneNumbersCoveredByStation_Success() throws Exception {
 		

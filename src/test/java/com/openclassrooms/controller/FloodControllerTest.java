@@ -24,6 +24,12 @@ import com.openclassrooms.safetynet.DTO.flood.StationDTO;
 import com.openclassrooms.safetynet.controller.FloodController;
 import com.openclassrooms.safetynet.service.FloodService;
 
+/**
+ * Unit test for the {@link FloodController} class.
+ * This test verifies the functionality of the FloodController's methods
+ * for handling requests related to flood stations, including retrieving 
+ * the households served by specific stations during a flood event.
+ */
 @ExtendWith(MockitoExtension.class)
 public class FloodControllerTest {
 	
@@ -35,6 +41,14 @@ public class FloodControllerTest {
     
     private MockMvc mockMvc;
 	
+    /**
+     * Tests the {@link FloodController#getHouseholdsByStations(List)} method.
+     * This test simulates a GET request to the '/flood/stations' endpoint to retrieve
+     * the households served by specific flood stations and verifies the response content
+     * and HTTP status.
+     *
+     * @throws Exception if an error occurs while performing the request
+     */
 	@Test
 	public void testGetHouseholdsServedByStation_Success() throws Exception {
 		

@@ -1,8 +1,5 @@
 package com.openclassrooms.safetynet.service;
 
-import java.time.LocalDate;
-import java.time.Period;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -17,75 +14,80 @@ import com.openclassrooms.safetynet.DTO.childAlert.ChildAlertResponseDTO;
 import com.openclassrooms.safetynet.DTO.childAlert.ChildDTO;
 import com.openclassrooms.safetynet.model.DataModel;
 
+/**
+ * Service responsible for handling logic related to the /childAlert endpoint.
+ * It provides functionalities to retrieve children and their family members at a given address.
+ */
 @Service
 public class ChildAlertService {
 
-	private final DataModel dataModel;
+    private final DataModelService dataModelService;
     private static final Logger logger = LogManager.getLogger(ChildAlertService.class);
     
-	@Autowired
-	public ChildAlertService(DataModelService dataModelService) {
-		
-		this.dataModel = dataModelService.getDataModel();
-	}	
-	
-	private int getAge(PersonIdentityDTO person) {
-		
-        logger.debug("Calculating age for person: {} {}", person.getFirstName(), person.getLastName());
+    /**
+     * Constructs the service with injected DataModelService.
+     *
+     * @param dataModelService the data model service providing access to application data
+     */
+    @Autowired
+    public ChildAlertService(DataModelService dataModelService) {
+        this.dataModelService = dataModelService;
+    }
 
-		String birthdate = dataModel.getMedicalrecords().stream()
-				.filter(medicalRecord -> person.getFirstName().equals(medicalRecord.getFirstName())
-						&& person.getLastName().equals(medicalRecord.getLastName()))
-				.map(medicalRecord -> medicalRecord.getBirthdate())
-				.findFirst().orElse("");
-		
-		LocalDate birthdateLocalDate = LocalDate.parse(birthdate, DateTimeFormatter.ofPattern("MM/dd/yyyy"));
-	    LocalDate today = LocalDate.now();
-	    int age = Period.between(birthdateLocalDate, today).getYears();
-	    
-        logger.debug("Age calculated for {} {}: {} years", person.getFirstName(), person.getLastName(), age);
+    /**
+     * Retrieves the internal data model from the service.
+     *
+     * @return the current DataModel
+     */
+    private DataModel getDataModel() {
+        return dataModelService.getDataModel();
+    }
 
-		return age;
-	}
-	
-	public List<PersonIdentityDTO> getPersonsAtAddress(String address) {
-		
+    /**
+     * Returns all persons living at a given address.
+     *
+     * @param address the address to search
+     * @return list of PersonIdentityDTO representing the persons at the address
+     */
+    public List<PersonIdentityDTO> getPersonsAtAddress(String address) {
         logger.debug("Retrieving persons at address: {}", address);
         
-		List<PersonIdentityDTO> personsAtAddress = dataModel.getPersons().stream()
-				.filter(person -> address.equals(person.getAddress()))
-				.map(person -> new PersonIdentityDTO(person.getFirstName(), person.getLastName()))
-				.collect(Collectors.toList());
-		
+        List<PersonIdentityDTO> personsAtAddress = getDataModel().getPersons().stream()
+                .filter(person -> address.equals(person.getAddress()))
+                .map(person -> new PersonIdentityDTO(person.getFirstName(), person.getLastName()))
+                .collect(Collectors.toList());
+
         logger.debug("{} persons found at address: {}", personsAtAddress.size(), address);
-        
-		return personsAtAddress;
-	}
-	
-	public ChildAlertResponseDTO getChildrenAtAddress(String address) {
-		
+        return personsAtAddress;
+    }
+
+    /**
+     * Returns children (<18 years old) living at the given address, along with other household members.
+     *
+     * @param address the address to search
+     * @return a ChildAlertResponseDTO containing the list of children and other family members
+     */
+    public ChildAlertResponseDTO getChildrenAtAddress(String address) {
         logger.debug("Retrieving children and family members at address: {}", address);
 
-		List<PersonIdentityDTO> personsAtAddress = getPersonsAtAddress(address);
-		List<ChildDTO> children = new ArrayList<>();
-		List<PersonIdentityDTO> otherFamilyMembers = new ArrayList<>();
-		
-		for (PersonIdentityDTO person : personsAtAddress) {
-			int age = getAge(person);
-			if (age < 18) {
-				children.add(new ChildDTO(person.getFirstName(), person.getLastName(), String.valueOf(age)));
-			}
-			else {
-				otherFamilyMembers.add(new PersonIdentityDTO(person.getFirstName(), person.getLastName()));
-			}
-		}
-		
-	    if (children.isEmpty()) {
-	        return new ChildAlertResponseDTO(new ArrayList<>(), new ArrayList<>());
-	    }
-	    
+        List<PersonIdentityDTO> personsAtAddress = getPersonsAtAddress(address);
+        List<ChildDTO> children = new ArrayList<>();
+        List<PersonIdentityDTO> otherFamilyMembers = new ArrayList<>();
+
+        for (PersonIdentityDTO person : personsAtAddress) {
+            int age = ServiceUtils.getAge(person.getFirstName(), person.getLastName(), getDataModel().getMedicalrecords());
+            if (age < 18) {
+                children.add(new ChildDTO(person.getFirstName(), person.getLastName(), String.valueOf(age)));
+            } else {
+                otherFamilyMembers.add(new PersonIdentityDTO(person.getFirstName(), person.getLastName()));
+            }
+        }
+
+        if (children.isEmpty()) {
+            return new ChildAlertResponseDTO(new ArrayList<>(), new ArrayList<>());
+        }
+
         logger.debug("Child retrieval completed: {} children and {} other family members found.", children.size(), otherFamilyMembers.size());
-        
-		return new ChildAlertResponseDTO(children, otherFamilyMembers);
-	}
+        return new ChildAlertResponseDTO(children, otherFamilyMembers);
+    }
 }

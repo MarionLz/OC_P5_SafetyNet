@@ -2,6 +2,10 @@ package com.openclassrooms.safetynet.DTO;
 
 import lombok.Data;
 
+/**
+ * Data Transfer Object (DTO) representing the medical history of an individual.
+ * It contains information about the person's medications and allergies.
+ */
 @Data
 public class MedicalHistoryDTO {
 	

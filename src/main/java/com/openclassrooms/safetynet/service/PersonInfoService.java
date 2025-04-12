@@ -1,8 +1,5 @@
 package com.openclassrooms.safetynet.service;
 
-import java.time.LocalDate;
-import java.time.Period;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,78 +14,68 @@ import com.openclassrooms.safetynet.DTO.personInfo.PersonInfoResponseDTO;
 import com.openclassrooms.safetynet.model.DataModel;
 import com.openclassrooms.safetynet.model.Person;
 
+/**
+ * Service class for retrieving information about persons based on their last name.
+ * Provides details such as address, age, email, medications, and allergies for persons with the same last name.
+ */
 @Service
 public class PersonInfoService {
 
-	private final DataModel dataModel;
+    private final DataModelService dataModelService;
     private static final Logger logger = LogManager.getLogger(PersonInfoService.class);
-    
-    
+
+    /**
+     * Constructor for PersonInfoService.
+     *
+     * @param dataModelService Service used to access the current in-memory data model.
+     */
     @Autowired
-	public PersonInfoService(DataModelService dataModelService) {
-		
-		this.dataModel = dataModelService.getDataModel();
-	}
-    
-	private int getAge(String firstName, String lastName) {
-		
-        logger.debug("Calculating age for person: {} {}", firstName, lastName);
+    public PersonInfoService(DataModelService dataModelService) {
+        this.dataModelService = dataModelService;
+    }
 
-		String birthdate = dataModel.getMedicalrecords().stream()
-				.filter(medicalRecord -> firstName.equals(medicalRecord.getFirstName())
-						&& lastName.equals(medicalRecord.getLastName()))
-				.map(medicalRecord -> medicalRecord.getBirthdate())
-				.findFirst().orElse("");
-		
-		LocalDate birthdateLocalDate = LocalDate.parse(birthdate, DateTimeFormatter.ofPattern("MM/dd/yyyy"));
-	    LocalDate today = LocalDate.now();
-	    int age = Period.between(birthdateLocalDate, today).getYears();
-	    
-        logger.debug("Age calculated for {} {}: {} years", firstName, lastName, age);
+    /**
+     * Returns the current data model containing all data.
+     *
+     * @return the {@link DataModel}
+     */
+    private DataModel getDataModel() {
+        return dataModelService.getDataModel();
+    }
 
-		return age;
-	}
-    
-	private MedicalHistoryDTO getMedicalHistory(String firstName, String lastName) {
-		
-        logger.debug("Retrieving medicalHistory for person : {} {}", firstName, lastName);
-
-		MedicalHistoryDTO medicalHistory = dataModel.getMedicalrecords().stream()
-				.filter(medicalRecord -> firstName.equals(medicalRecord.getFirstName())
-						&& lastName.equals(medicalRecord.getLastName()))
-				.map(medicalRecord -> new MedicalHistoryDTO(medicalRecord.getMedications(), medicalRecord.getAllergies()))
-				.findFirst().orElse(new MedicalHistoryDTO(new String[0], new String[0]));
-		
-        logger.debug("Medical history retrieved for {} {}", firstName, lastName);
-
-		return medicalHistory;
-	}
-	
+    /**
+     * Retrieves detailed information for persons with the same last name.
+     * Includes address, age, email, medications, and allergies.
+     *
+     * @param lastName the last name to filter persons by
+     * @return a {@link PersonInfoResponseDTO} containing information for all matching persons
+     */
     public PersonInfoResponseDTO getPersonInfoWithLastName(String lastName) {
-    	
-    	List<Person> persons = dataModel.getPersons();
-    	List<PersonInfoPersonIdentityDTO> personsWithSameLastName = new ArrayList<>();
-    	
-    	for (Person person : persons) {
-    		if (person.getLastName().equals(lastName)) {
-    			
-    			int age = getAge(person.getFirstName(), lastName);
-    			MedicalHistoryDTO medicalHistory = getMedicalHistory(person.getFirstName(), lastName);
-    			personsWithSameLastName.add(
-    					new PersonInfoPersonIdentityDTO(
-    							lastName,
-    							person.getAddress(),
-    							String.valueOf(age),
-    							person.getEmail(),
-    							medicalHistory.getMedications(),
-    							medicalHistory.getAllergies()
-    					)
-    			);
-    		}
-    	}
-    	
-    	PersonInfoResponseDTO response = new PersonInfoResponseDTO(personsWithSameLastName);
-    	
-    	return response;
+        logger.debug("Retrieving persons with lastName: {}", lastName);
+        DataModel dataModel = getDataModel();
+        List<Person> persons = dataModel.getPersons();
+        List<PersonInfoPersonIdentityDTO> personsWithSameLastName = new ArrayList<>();
+
+        for (Person person : persons) {
+            if (person.getLastName().equals(lastName)) {
+                int age = ServiceUtils.getAge(person.getFirstName(), lastName, dataModel.getMedicalrecords());
+                MedicalHistoryDTO medicalHistory = ServiceUtils.getMedicalHistory(person.getFirstName(), lastName, dataModel.getMedicalrecords());
+
+                personsWithSameLastName.add(
+                    new PersonInfoPersonIdentityDTO(
+                        lastName,
+                        person.getAddress(),
+                        String.valueOf(age),
+                        person.getEmail(),
+                        medicalHistory.getMedications(),
+                        medicalHistory.getAllergies()
+                    )
+                );
+            }
+        }
+
+        PersonInfoResponseDTO response = new PersonInfoResponseDTO(personsWithSameLastName);
+        logger.debug("Retrieval successful: {} persons found with lastName: {}.", personsWithSameLastName.size(), lastName);
+        return response;
     }
 }

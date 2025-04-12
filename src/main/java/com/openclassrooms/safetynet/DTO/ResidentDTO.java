@@ -4,6 +4,11 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 
 import lombok.Data;
 
+/**
+ * Data Transfer Object (DTO) representing a resident's information.
+ * This includes the resident's last name, phone number, age, medications, and allergies.
+ * Fields with null values are excluded from JSON serialization.
+ */
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ResidentDTO {

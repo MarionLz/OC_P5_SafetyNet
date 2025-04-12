@@ -19,6 +19,11 @@ import com.openclassrooms.safetynet.model.Person;
 import com.openclassrooms.safetynet.service.CommunityEmailService;
 import com.openclassrooms.safetynet.service.DataModelService;
 
+/**
+ * Unit test class for {@link CommunityEmailService}.
+ * This class contains tests to validate the functionality of retrieving community emails
+ * for persons living in a specified city.
+ */
 @ExtendWith(MockitoExtension.class)
 public class CommunityEmailServiceTest {
 	
@@ -29,6 +34,10 @@ public class CommunityEmailServiceTest {
 	
 	CommunityEmailService communityEmailService;
 	
+    /**
+     * Sets up the test environment by initializing the data model and CommunityEmailService
+     * before each test method is executed.
+     */
 	@BeforeEach
 	private void setUp() {
 		
@@ -37,6 +46,11 @@ public class CommunityEmailServiceTest {
 		communityEmailService = new CommunityEmailService(dataModelService);
 	}
 	
+    /**
+     * Tests the successful retrieval of community emails for all persons living in a specified city.
+     * This test checks if the service correctly returns the list of email addresses of people
+     * living in a given city.
+     */
 	@Test
 	public void testGetCommunityEmails_Success() {
 		

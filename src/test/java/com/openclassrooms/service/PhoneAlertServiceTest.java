@@ -21,6 +21,10 @@ import com.openclassrooms.safetynet.model.Person;
 import com.openclassrooms.safetynet.service.DataModelService;
 import com.openclassrooms.safetynet.service.PhoneAlertService;
 
+/**
+ * Unit test class for {@link PhoneAlertService}.
+ * This class tests the functionality of getting phone numbers covered by a specific fire station.
+ */
 @ExtendWith(MockitoExtension.class)
 public class PhoneAlertServiceTest {
 
@@ -31,6 +35,10 @@ public class PhoneAlertServiceTest {
 	
 	PhoneAlertService phoneAlertService;
 	
+    /**
+     * Sets up the test environment before each test method is executed.
+     * Initializes the phoneAlertService, mock data, and data model.
+     */
 	@BeforeEach
 	private void setUp() {
 		
@@ -39,6 +47,10 @@ public class PhoneAlertServiceTest {
 		phoneAlertService = new PhoneAlertService(dataModelService);
 	}
 	
+    /**
+     * Tests the successful retrieval of phone numbers covered by a given fire station.
+     * Verifies that the correct phone numbers are returned for the fire station.
+     */
 	@Test
 	public void testGetPhoneNumbersCoveredByStation_Success() {
 		

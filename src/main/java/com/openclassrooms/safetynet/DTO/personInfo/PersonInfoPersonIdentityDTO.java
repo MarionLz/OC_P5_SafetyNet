@@ -2,6 +2,10 @@ package com.openclassrooms.safetynet.DTO.personInfo;
 
 import lombok.Data;
 
+/**
+ * Data Transfer Object (DTO) representing the detailed identity and medical information 
+ * of a person, including their last name, address, age, email, medications, and allergies.
+ */
 @Data
 public class PersonInfoPersonIdentityDTO {
 

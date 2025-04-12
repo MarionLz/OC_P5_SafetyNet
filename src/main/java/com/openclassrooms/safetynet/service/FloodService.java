@@ -1,8 +1,5 @@
 package com.openclassrooms.safetynet.service;
 
-import java.time.LocalDate;
-import java.time.Period;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -20,108 +17,94 @@ import com.openclassrooms.safetynet.DTO.flood.HouseholdDTO;
 import com.openclassrooms.safetynet.DTO.flood.StationDTO;
 import com.openclassrooms.safetynet.model.DataModel;
 
+/**
+ * Service class that handles flood-related requests.
+ * It retrieves households covered by specified fire station numbers.
+ */
 @Service
 public class FloodService {
 
-	private final DataModel dataModel;
+    private final DataModelService dataModelService;
     private static final Logger logger = LogManager.getLogger(FloodService.class);
-    
-    
+
+    /**
+     * Constructor for FloodService.
+     *
+     * @param dataModelService service to access the data model
+     */
     @Autowired
-	public FloodService(DataModelService dataModelService) {
-		
-		this.dataModel = dataModelService.getDataModel();
-	}
-    
+    public FloodService(DataModelService dataModelService) {
+        this.dataModelService = dataModelService;
+    }
+
+    /**
+     * Gets the current in-memory data model.
+     *
+     * @return the {@link DataModel}
+     */
+    private DataModel getDataModel() {
+        return dataModelService.getDataModel();
+    }
+
+    /**
+     * Retrieves a list of addresses covered by a given fire station number.
+     *
+     * @param station the station number
+     * @return a list of addresses
+     */
     private List<String> getFirestationAdresses(String station) {
-		
-		logger.debug("Starting to retrieve firestation addresses for station {}.", station);
-		List<String> stationAddresses = dataModel.getFirestations().stream()
+        logger.debug("Starting to retrieve firestation addresses for station {}.", station);
+        List<String> stationAddresses = getDataModel().getFirestations().stream()
             .filter(firestation -> firestation.getStation().equals(station))
             .map(firestation -> firestation.getAddress())
             .collect(Collectors.toList());
-		logger.debug("Retrieval successful: {} addresses found for station {}.", stationAddresses.size(), station);
-		return stationAddresses;
-	}
-    
-    private List<PersonIdentityDTO> getPersonsIdentity(String address) {
-    	
-        logger.debug("Retrieving persons at address: {}", address);
-        
-		List<PersonIdentityDTO> personsIdentity = dataModel.getPersons().stream()
-				.filter(person -> address.equals(person.getAddress()))
-				.map(person -> new PersonIdentityDTO(person.getFirstName(), person.getLastName(), person.getPhone()))
-				.collect(Collectors.toList());
-		
-        logger.debug("{} persons found at address: {}", personsIdentity.size(), address);
-        
-		return personsIdentity;
-	}
-    
-	private int getAge(PersonIdentityDTO person) {
-			
-        logger.debug("Calculating age for person: {} {}", person.getFirstName(), person.getLastName());
+        logger.debug("Retrieval successful: {} addresses found for station {}.", stationAddresses.size(), station);
+        return stationAddresses;
+    }
 
-		String birthdate = dataModel.getMedicalrecords().stream()
-				.filter(medicalRecord -> person.getFirstName().equals(medicalRecord.getFirstName())
-						&& person.getLastName().equals(medicalRecord.getLastName()))
-				.map(medicalRecord -> medicalRecord.getBirthdate())
-				.findFirst().orElse("");
-		
-		LocalDate birthdateLocalDate = LocalDate.parse(birthdate, DateTimeFormatter.ofPattern("MM/dd/yyyy"));
-	    LocalDate today = LocalDate.now();
-	    int age = Period.between(birthdateLocalDate, today).getYears();
-	    
-        logger.debug("Age calculated for {} {}: {} years", person.getFirstName(), person.getLastName(), age);
-
-		return age;
-	}
-	
-	private MedicalHistoryDTO getMedicalHistory(PersonIdentityDTO person) {
-		
-        logger.debug("Retrieving medicalHistory for person : {}", person);
-
-		MedicalHistoryDTO medicalHistory = dataModel.getMedicalrecords().stream()
-				.filter(medicalRecord -> person.getFirstName().equals(medicalRecord.getFirstName())
-						&& person.getLastName().equals(medicalRecord.getLastName()))
-				.map(medicalRecord -> new MedicalHistoryDTO(medicalRecord.getMedications(), medicalRecord.getAllergies()))
-				.findFirst().orElse(new MedicalHistoryDTO(new String[0], new String[0]));
-		
-        logger.debug("Medical history retrieved for {}", person);
-
-		return medicalHistory;
-	}
-    
+    /**
+     * Retrieves households by fire station numbers. Each household includes residents with personal details and medical info.
+     *
+     * @param stationNumbers list of fire station numbers
+     * @return a {@link FloodResponseDTO} containing all households grouped by station
+     */
     public FloodResponseDTO getHouseholds(List<String> stationNumbers) {
-    	
-    	List<StationDTO> stations = new ArrayList<>();
-    	
-    	for(String stationNumber : stationNumbers) {
-    		
-    		List<HouseholdDTO> households = new ArrayList<>();
-    		List<String> addresses = getFirestationAdresses(stationNumber);
-    		
-    		for(String address : addresses) {
-    			
-    			List<ResidentDTO> residents = new ArrayList<>();
-    	    	List<PersonIdentityDTO> personsIdentity = getPersonsIdentity(address);
-   
-    	    	for (PersonIdentityDTO personIdentity : personsIdentity) {
-    	    		
-    	    		int age = getAge(personIdentity);
-    	    		MedicalHistoryDTO medicalHistory = getMedicalHistory(personIdentity);
-    	    		residents.add(new ResidentDTO(personIdentity.getLastName(), personIdentity.getPhone(),
-    	    						String.valueOf(age), medicalHistory.getMedications(), medicalHistory.getAllergies()));
-    	    	}
-    	    	
-    	    	households.add(new HouseholdDTO(address, residents));
-    		}
-    		
-    		stations.add(new StationDTO(stationNumber, households));
-    	}
-    	
-    	FloodResponseDTO response = new FloodResponseDTO(stations);
-    	
-    	return response;
+        logger.debug("Starting to retrieve households for stations {}.", stationNumbers);
+
+        DataModel dataModel = getDataModel();
+        List<StationDTO> stations = new ArrayList<>();
+
+        for (String stationNumber : stationNumbers) {
+
+            List<HouseholdDTO> households = new ArrayList<>();
+            List<String> addresses = getFirestationAdresses(stationNumber);
+
+            for (String address : addresses) {
+
+                List<ResidentDTO> residents = new ArrayList<>();
+                List<PersonIdentityDTO> personsIdentity = ServiceUtils.getPersonsIdentity(address, dataModel.getPersons());
+
+                for (PersonIdentityDTO personIdentity : personsIdentity) {
+                    int age = ServiceUtils.getAge(personIdentity.getFirstName(), personIdentity.getLastName(), dataModel.getMedicalrecords());
+                    MedicalHistoryDTO medicalHistory = ServiceUtils.getMedicalHistory(personIdentity.getFirstName(), personIdentity.getLastName(), dataModel.getMedicalrecords());
+
+                    residents.add(new ResidentDTO(
+                        personIdentity.getLastName(),
+                        personIdentity.getPhone(),
+                        String.valueOf(age),
+                        medicalHistory.getMedications(),
+                        medicalHistory.getAllergies()
+                    ));
+                }
+
+                households.add(new HouseholdDTO(address, residents));
+            }
+
+            stations.add(new StationDTO(stationNumber, households));
+        }
+
+        FloodResponseDTO response = new FloodResponseDTO(stations);
+        logger.debug("Retrieval successful for households covered by stations {}.", stationNumbers);
+        return response;
     }
 }

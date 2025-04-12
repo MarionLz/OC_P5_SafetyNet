@@ -27,6 +27,11 @@ import com.openclassrooms.safetynet.repository.IDataWriterRepository;
 import com.openclassrooms.safetynet.service.DataModelService;
 import com.openclassrooms.safetynet.service.MedicalRecordService;
 
+/**
+ * Unit test class for {@link MedicalRecordService}.
+ * This class contains tests for the medical record-related functionalities, such as
+ * adding, updating, and deleting medical records, as well as handling duplicate and missing records.
+ */
 @ExtendWith(MockitoExtension.class)
 public class MedicalRecordServiceTest {
 
@@ -40,6 +45,10 @@ public class MedicalRecordServiceTest {
 	private List<MedicalRecord> medicalRecords;
 	private DataModel dataModel;
 	
+    /**
+     * Sets up the test environment by initializing the service and mock data
+     * before each test method is executed.
+     */
 	@BeforeEach
 	void setUp() {
 		medicalRecordService = new MedicalRecordService(writerRepository, dataModelService);
@@ -53,6 +62,10 @@ public class MedicalRecordServiceTest {
         when(dataModelService.getDataModel()).thenReturn(dataModel);
 	}
 	
+    /**
+     * Tests the successful addition of a new medical record.
+     * Verifies that the medical record is added to the data model and saved via the writer repository.
+     */
 	@Test
 	public void testAddMedicalRecord_Success() {
 		
@@ -64,6 +77,10 @@ public class MedicalRecordServiceTest {
 		verify(writerRepository, times(1)).saveData();
 	}
 	
+    /**
+     * Tests adding a medical record that already exists in the system.
+     * Verifies that the appropriate exception is thrown when trying to add a duplicate medical record.
+     */
     @Test
     public void testAddMedicalRecord_WhenMedicalRecordAlreadyExists_ShouldThrowException() {
     	
@@ -78,6 +95,10 @@ public class MedicalRecordServiceTest {
         verify(writerRepository, never()).saveData();
     }
 	
+    /**
+     * Tests the successful update of an existing medical record.
+     * Verifies that the record is updated in the data model and saved.
+     */
 	@Test
 	public void testUpdateMedicalRecord_Success() {
 		
@@ -89,6 +110,10 @@ public class MedicalRecordServiceTest {
 		verify(writerRepository, times(1)).saveData();
 	}
 	
+    /**
+     * Tests the update of a non-existent medical record.
+     * Verifies that the appropriate exception is thrown when trying to update a record that does not exist.
+     */
 	@Test
     public void testUpdateMedicalRecord_WhenMedicalRecordNotFound_ShouldThrowException() {
 
@@ -103,6 +128,10 @@ public class MedicalRecordServiceTest {
         verify(writerRepository, never()).saveData();
     }
 	
+    /**
+     * Tests the successful deletion of a medical record.
+     * Verifies that the record is removed from the data model and saved.
+     */
 	@Test
     public void testDeleteMedicalRecord_Success() {
 
@@ -113,6 +142,10 @@ public class MedicalRecordServiceTest {
         verify(writerRepository).saveData();
     }
 	
+    /**
+     * Tests the deletion of a non-existent medical record.
+     * Verifies that the appropriate exception is thrown when trying to delete a record that does not exist.
+     */
 	@Test
 	public void testDeleteMedicalRecord_WhenMedicalRecordNotFound_ShouldThrowException() {
 		

@@ -26,6 +26,10 @@ import com.openclassrooms.safetynet.repository.IDataWriterRepository;
 import com.openclassrooms.safetynet.service.DataModelService;
 import com.openclassrooms.safetynet.service.PersonService;
 
+/**
+ * Unit test class for {@link PersonService}.
+ * This class tests the functionalities of adding, updating, and deleting persons in the system.
+ */
 @ExtendWith(MockitoExtension.class)
 public class PersonServiceTest {
 	
@@ -39,6 +43,10 @@ public class PersonServiceTest {
 	private List<Person> persons;
 	private DataModel dataModel;
 	
+    /**
+     * Sets up the test environment before each test method is executed.
+     * Initializes the personService, mock data, and data model.
+     */
 	@BeforeEach
 	void setUp() {
 		personService = new PersonService(writerRepository, dataModelService);
@@ -52,6 +60,10 @@ public class PersonServiceTest {
         when(dataModelService.getDataModel()).thenReturn(dataModel);
 	}
 	
+    /**
+     * Tests the successful addition of a person to the data model.
+     * Verifies that the person is added and the data is saved.
+     */
 	@Test
 	public void testAddPerson_Success() {
 		
@@ -63,6 +75,10 @@ public class PersonServiceTest {
 		verify(writerRepository, times(1)).saveData();
 	}
 	
+    /**
+     * Tests the scenario where an attempt is made to add a person that already exists.
+     * Verifies that a {@link ResourceAlreadyExistsException} is thrown.
+     */
     @Test
     public void testAddPerson_WhenPersonAlreadyExists_ShouldThrowException() {
     	
@@ -79,6 +95,10 @@ public class PersonServiceTest {
         verify(writerRepository, never()).saveData();
     }
 	
+    /**
+     * Tests the successful update of an existing person.
+     * Verifies that the person's information is updated and the data is saved.
+     */
 	@Test
 	public void testUpdatePerson_Success() {
 		
@@ -91,6 +111,10 @@ public class PersonServiceTest {
 		verify(writerRepository, times(1)).saveData();
 	}
 	
+    /**
+     * Tests the scenario where an attempt is made to update a person that does not exist.
+     * Verifies that a {@link ResourceNotFoundException} is thrown.
+     */
 	@Test
     public void testUpdatePerson_WhenPersonNotFound_ShouldThrowException() {
 
@@ -106,6 +130,10 @@ public class PersonServiceTest {
         verify(writerRepository, never()).saveData();
     }
 	
+    /**
+     * Tests the successful deletion of a person.
+     * Verifies that the person is removed from the data model and the data is saved.
+     */
 	@Test
     public void testDeletePerson_Success() {
 
@@ -116,6 +144,10 @@ public class PersonServiceTest {
         verify(writerRepository).saveData();
     }
 	
+    /**
+     * Tests the scenario where an attempt is made to delete a person that does not exist.
+     * Verifies that a {@link ResourceNotFoundException} is thrown.
+     */
 	@Test
 	public void testDeletePerson_WhenPersonNotFound_ShouldThrowException() {
 		

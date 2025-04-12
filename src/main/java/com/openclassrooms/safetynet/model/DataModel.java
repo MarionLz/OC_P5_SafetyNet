@@ -6,6 +6,11 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
 
+/**
+ * Represents the data model containing lists of persons, firestations, and medical records.
+ * This class is used to encapsulate the data for various entities in the system and ensure 
+ * that the required fields are properly validated.
+ */
 @Data
 public class DataModel {
 

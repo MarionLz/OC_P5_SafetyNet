@@ -20,6 +20,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.openclassrooms.safetynet.controller.CommunityEmailController;
 import com.openclassrooms.safetynet.service.CommunityEmailService;
 
+/**
+ * Unit test for the {@link CommunityEmailController} class.
+ * This test verifies the behavior of the CommunityEmailController's method
+ * to retrieve community email addresses for a specific city.
+ */
 @ExtendWith(MockitoExtension.class)
 public class CommunityEmailControllerTest {
 	
@@ -30,7 +35,16 @@ public class CommunityEmailControllerTest {
     private CommunityEmailController communityEmailController;
     
     private MockMvc mockMvc;
-	
+
+    /**
+     * Tests the {@link CommunityEmailController#getCommunityEmails(String)} method.
+     * This test simulates a GET request to the '/communityEmail' endpoint and verifies
+     * the response returned by the controller, including the HTTP status and content.
+     * The test mocks the service layer's response and compares the expected response
+     * with the actual output.
+     *
+     * @throws Exception if an error occurs while performing the request
+     */
 	@Test
 	public void getChildAtAddress() throws Exception {
 		

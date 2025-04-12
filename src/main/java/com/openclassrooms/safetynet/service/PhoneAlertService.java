@@ -11,41 +11,57 @@ import org.springframework.stereotype.Service;
 import com.openclassrooms.safetynet.DTO.phoneAlert.PhoneAlertResponseDTO;
 import com.openclassrooms.safetynet.model.DataModel;
 
+/**
+ * Service class for handling phone alert functionality.
+ * This class retrieves phone numbers of persons covered by a specific fire station.
+ */
 @Service
 public class PhoneAlertService {
-	
-	private final DataModel dataModel;
+    
+    private final DataModelService dataModelService;
     private static final Logger logger = LogManager.getLogger(PhoneAlertService.class);
 
+    /**
+     * Constructor for PhoneAlertService.
+     * 
+     * @param dataModelService the service that provides access to the data model
+     */
     @Autowired
-	public PhoneAlertService(DataModelService dataModelService) {
-		
-		this.dataModel = dataModelService.getDataModel();
-	}
+    public PhoneAlertService(DataModelService dataModelService) {
+        this.dataModelService = dataModelService;
+    }
     
-	private List<String> getFirestationAdresses(String firestationNumber) {
-		
-		logger.debug("Starting to retrieve firestation addresses for station {}.", firestationNumber);
-		List<String> stationAddresses = dataModel.getFirestations().stream()
-            .filter(firestation -> firestation.getStation().equals(firestationNumber))
-            .map(firestation -> firestation.getAddress())
+    /**
+     * Returns the current data model containing all persons and firestations.
+     * 
+     * @return the {@link DataModel}
+     */
+    private DataModel getDataModel() {
+        return dataModelService.getDataModel();
+    }
+    
+    /**
+     * Retrieves the phone numbers of all persons covered by a given fire station.
+     * The phone numbers are retrieved for persons whose address matches one of the addresses covered by the fire station.
+     * 
+     * @param firestationNumber the number of the fire station to query
+     * @return a {@link PhoneAlertResponseDTO} containing the list of phone numbers
+     */
+    public PhoneAlertResponseDTO getPhoneNumbersCoveredByStation(String firestationNumber) {
+        
+        logger.debug("Starting to retrieve phone numbers for station {}.", firestationNumber);
+        
+        DataModel dataModel = getDataModel();
+        
+        List<String> stationAddresses = ServiceUtils.getFirestationAdresses(firestationNumber, dataModel.getFirestations());
+        
+        List<String> response = dataModel.getPersons().stream()
+            .filter(person -> stationAddresses.contains(person.getAddress()))
+            .map(person -> person.getPhone())
             .collect(Collectors.toList());
-		logger.debug("Retrieval successful: {} addresses found for station {}.", stationAddresses.size(), firestationNumber);
-		return stationAddresses;
-	}
-	
-	public PhoneAlertResponseDTO getPhoneNumbersCoveredByStation(String firestationNumber) {
-		
-		logger.debug("Starting to retrieve phone numbers for station {}.", firestationNumber);
-		
-		List<String> stationAddresses = getFirestationAdresses(firestationNumber);
-		List<String> response = dataModel.getPersons().stream()
-	            .filter(person -> stationAddresses.contains(person.getAddress()))
-	            .map(person -> person.getPhone())
-	            .collect(Collectors.toList());
-		
-		logger.debug("Retrieval successful: {} phone numbers have been. Data is ready to be sent.", response.size());
+        
+        logger.debug("Retrieval successful: {} phone numbers have been retrieved. Data is ready to be sent.", response.size());
 
-		return new PhoneAlertResponseDTO(response);
-	}
+        return new PhoneAlertResponseDTO(response);
+    }
 }

@@ -22,6 +22,10 @@ import com.openclassrooms.safetynet.model.Person;
 import com.openclassrooms.safetynet.service.DataModelService;
 import com.openclassrooms.safetynet.service.PersonInfoService;
 
+/**
+ * Unit test class for {@link PersonInfoService}.
+ * This class tests the functionality of retrieving person information based on their last name.
+ */
 @ExtendWith(MockitoExtension.class)
 public class PersonInfoServiceTest {
 
@@ -32,6 +36,10 @@ public class PersonInfoServiceTest {
 	
 	private PersonInfoService personInfoService;
 	
+    /**
+     * Sets up the test environment by initializing the service and mock data
+     * before each test method is executed.
+     */
 	@BeforeEach
 	private void setUp() {
 		
@@ -40,6 +48,10 @@ public class PersonInfoServiceTest {
 		personInfoService = new PersonInfoService(dataModelService);
 	}
 	
+    /**
+     * Tests the retrieval of person information based on a given last name.
+     * Verifies that the correct persons with the same last name are returned, along with their associated details.
+     */
 	@Test
 	public void testGetPersonInfoByLastName_Success() {
 		
