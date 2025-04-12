@@ -63,7 +63,7 @@ public class ServiceUtils {
      */
     public static MedicalHistoryDTO getMedicalHistory(String firstName, String lastName, List<MedicalRecord> medicalRecords) {
         
-        logger.debug("Retrieving medicalHistory for person : {}", firstName, lastName);
+        logger.debug("Retrieving medicalHistory for person : {} {}", firstName, lastName);
 
         MedicalHistoryDTO medicalHistory = medicalRecords.stream()
                 .filter(medicalRecord -> firstName.equals(medicalRecord.getFirstName())
@@ -71,7 +71,7 @@ public class ServiceUtils {
                 .map(medicalRecord -> new MedicalHistoryDTO(medicalRecord.getMedications(), medicalRecord.getAllergies()))
                 .findFirst().orElse(new MedicalHistoryDTO(new String[0], new String[0]));
         
-        logger.debug("Medical history retrieved for {}", firstName, lastName);
+        logger.debug("Medical history retrieved for {} {}", firstName, lastName);
 
         return medicalHistory;
     }
