@@ -4,6 +4,10 @@ import lombok.Data;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 
+/**
+ * Represents a medical record of a person, including their personal information
+ * and medical history such as medications and allergies.
+ */
 @Data
 public class MedicalRecord {
 

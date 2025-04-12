@@ -32,6 +32,12 @@ import com.openclassrooms.safetynet.controller.FirestationController;
 import com.openclassrooms.safetynet.model.Firestation;
 import com.openclassrooms.safetynet.service.FirestationService;
 
+/**
+ * Unit test for the {@link FirestationController} class.
+ * This test verifies the functionality of the FirestationController's methods
+ * for handling requests related to fire stations, including adding, updating, 
+ * deleting, and retrieving data about fire stations and the persons they cover.
+ */
 @ExtendWith(MockitoExtension.class)
 public class FirestationControllerTest {
 
@@ -43,6 +49,10 @@ public class FirestationControllerTest {
     
     private MockMvc mockMvc;
 	
+    /**
+     * Sets up the test environment before each test case.
+     * Initializes the FirestationController and MockMvc.
+     */
     @BeforeEach
 	void setUp() {
     	
@@ -50,6 +60,14 @@ public class FirestationControllerTest {
 	    mockMvc = MockMvcBuilders.standaloneSetup(responseController).build();
     }
     
+    /**
+     * Tests the {@link FirestationController#getPersonsByStations(String)} method.
+     * This test simulates a GET request to the '/firestation' endpoint to retrieve
+     * the persons covered by a specific fire station and verifies the response content
+     * and HTTP status.
+     *
+     * @throws Exception if an error occurs while performing the request
+     */
 	@Test
 	public void testGetPersonsCoveredByStation_Success() throws Exception {
 		
@@ -71,6 +89,13 @@ public class FirestationControllerTest {
 				.andExpect(content().json(expectedJson));
 	}
 	
+    /**
+     * Tests the {@link FirestationController#addFirestation(Firestation)} method.
+     * This test simulates a POST request to the '/firestation' endpoint to add a new
+     * fire station and verifies that the service's add method is called once.
+     *
+     * @throws Exception if an error occurs while performing the request
+     */
 	@Test
 	public void testAddFirestation_Success() throws Exception {
 		
@@ -84,6 +109,13 @@ public class FirestationControllerTest {
         verify(firestationService, times(1)).addFirestation(any(Firestation.class));
 	}
 	
+    /**
+     * Tests the {@link FirestationController#updateFirestation(Firestation)} method.
+     * This test simulates a PUT request to the '/firestation' endpoint to update an existing
+     * fire station and verifies that the service's update method is called once.
+     *
+     * @throws Exception if an error occurs while performing the request
+     */
 	@Test
 	public void testUpdateFirestation_Success() throws Exception {
 				
@@ -97,6 +129,13 @@ public class FirestationControllerTest {
         verify(firestationService, times(1)).updateFirestation(any(Firestation.class));
 	}
 	
+    /**
+     * Tests the {@link FirestationController#deleteFirestation(String)} method.
+     * This test simulates a DELETE request to the '/firestation' endpoint to delete an
+     * existing fire station and verifies that the service's delete method is called once.
+     *
+     * @throws Exception if an error occurs while performing the request
+     */
 	@Test
 	public void testDeleteFirestation_Success() throws Exception {
 						

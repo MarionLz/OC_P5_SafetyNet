@@ -12,25 +12,48 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 
+/**
+ * Repository responsible for writing the current application data (DataModel) 
+ * back to the original JSON file.
+ * 
+ * This class retrieves the current data from the DataModelService and uses 
+ * Jackson to serialize and write it to disk. It is useful for persisting 
+ * any modifications made during the application runtime.
+ */
 @Repository
 public class DataWriterToJsonRepository implements IDataWriterRepository {
 	
     private static final Logger logger = LogManager.getLogger(DataWriterToJsonRepository.class);
-    
-	@Value("${data.file}")
-	private Resource jsonFile;
-	
+
+    @Value("${data.file}")
+    private Resource jsonFile;
+
     private final DataModelService dataModelService;
-	
-	public DataWriterToJsonRepository(DataModelService dataModelService) {
-		
-		this.dataModelService = dataModelService;
-	}
-	
-	public void setJsonFile(Resource jsonFile) {
-	    this.jsonFile = jsonFile;
-	}
-    
+
+    /**
+     * Constructor for DataWriterToJsonRepository.
+     * 
+     * @param dataModelService Service providing access to the current DataModel.
+     */
+    public DataWriterToJsonRepository(DataModelService dataModelService) {
+        this.dataModelService = dataModelService;
+    }
+
+    /**
+     * Allows manually setting the JSON file resource, useful for testing or dynamic configs.
+     * 
+     * @param jsonFile the JSON file resource to be written to.
+     */
+    public void setJsonFile(Resource jsonFile) {
+        this.jsonFile = jsonFile;
+    }
+
+    /**
+     * Saves the current DataModel to the configured JSON file.
+     * Uses Jackson's pretty printer for human-readable formatting.
+     * 
+     * Throws a JsonFileException if any I/O error occurs.
+     */
     public void saveData() {
         try {
             ObjectMapper objectMapper = new ObjectMapper();
@@ -40,7 +63,6 @@ public class DataWriterToJsonRepository implements IDataWriterRepository {
 
             logger.debug("Data successfully saved to JSON file: " + file.getAbsolutePath());
         } catch (IOException e) {
-        	
             logger.error("Error saving data to JSON.", e);
             throw new JsonFileException("Error saving data to JSON.");
         }

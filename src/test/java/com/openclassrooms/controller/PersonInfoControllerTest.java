@@ -23,6 +23,11 @@ import com.openclassrooms.safetynet.DTO.personInfo.PersonInfoResponseDTO;
 import com.openclassrooms.safetynet.controller.PersonInfoController;
 import com.openclassrooms.safetynet.service.PersonInfoService;
 
+/**
+ * Unit test class for the {@link PersonInfoController}.
+ * This class tests the behavior of the controller's methods, 
+ * specifically retrieving information about persons based on their last name.
+ */
 @ExtendWith(MockitoExtension.class)
 public class PersonInfoControllerTest {
 
@@ -34,6 +39,14 @@ public class PersonInfoControllerTest {
     
     private MockMvc mockMvc;
     
+    /**
+     * Tests the {@link PersonInfoController#getPersonInfoWithLastName(String)} method to verify 
+     * the retrieval of information for persons with the specified last name.
+     * This method simulates a GET HTTP request and checks that the response matches the expected JSON 
+     * format returned by the service.
+     *
+     * @throws Exception If an error occurs while executing the request.
+     */
     @Test
     public void testGetPersonInfo_Success() throws Exception {
     	

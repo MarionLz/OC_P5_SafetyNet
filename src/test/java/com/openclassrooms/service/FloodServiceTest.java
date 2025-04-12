@@ -25,6 +25,11 @@ import com.openclassrooms.safetynet.model.Person;
 import com.openclassrooms.safetynet.service.DataModelService;
 import com.openclassrooms.safetynet.service.FloodService;
 
+/**
+ * Unit test class for {@link FloodService}.
+ * This class contains tests for the flood-related functionalities, specifically
+ * retrieving the list of households and residents served by specified firestations.
+ */
 @ExtendWith(MockitoExtension.class)
 public class FloodServiceTest {
 
@@ -35,6 +40,10 @@ public class FloodServiceTest {
 	
 	FloodService floodService;
 	
+    /**
+     * Sets up the test environment by initializing the data model and mock behavior
+     * for the data model service before each test method is executed.
+     */
 	@BeforeEach
 	private void setUp() {
 		
@@ -43,6 +52,11 @@ public class FloodServiceTest {
 		floodService = new FloodService(dataModelService);
 	}
 	
+    /**
+     * Tests the successful retrieval of households served by a specific firestation.
+     * This test checks that the service correctly identifies households and their residents
+     * for the given firestations.
+     */
 	@Test
 	public void testGetHouseholds_Success() {
 	

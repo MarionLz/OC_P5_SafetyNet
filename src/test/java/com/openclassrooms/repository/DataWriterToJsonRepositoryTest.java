@@ -27,6 +27,11 @@ import com.openclassrooms.safetynet.model.Person;
 import com.openclassrooms.safetynet.repository.DataWriterToJsonRepository;
 import com.openclassrooms.safetynet.service.DataModelService;
 
+/**
+ * Unit test class for {@link DataWriterToJsonRepository}.
+ * This class tests the functionality of saving data to a JSON file, including both successful 
+ * and failure scenarios when there are issues with file access.
+ */
 @ExtendWith(MockitoExtension.class)
 public class DataWriterToJsonRepositoryTest {
 
@@ -41,6 +46,13 @@ public class DataWriterToJsonRepositoryTest {
 	
     private ObjectMapper objectMapper = new ObjectMapper();
 
+    /**
+     * Tests the successful saving of data to a JSON file.
+     * This test ensures that when the data is properly structured, the repository can save 
+     * the data into a temporary file and that the file content matches the expected structure.
+     * 
+     * @throws IOException If there is an error creating or writing to the file.
+     */
 	@Test
 	public void testSaveData_Success() throws IOException {
 		
@@ -77,6 +89,12 @@ public class DataWriterToJsonRepositoryTest {
         verify(dataModelService).getDataModel();
 	}
 	
+    /**
+     * Tests that a {@link JsonFileException} is thrown when there is an error saving data to the JSON file.
+     * This test simulates a failure in accessing the file, ensuring that the repository handles it properly.
+     * 
+     * @throws Exception If there is an unexpected error during the test execution.
+     */
 	@Test
     void testSaveData_ThrowsJsonFileException_OnIOException() throws Exception {
 

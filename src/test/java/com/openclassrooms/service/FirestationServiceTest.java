@@ -30,6 +30,12 @@ import com.openclassrooms.safetynet.repository.IDataWriterRepository;
 import com.openclassrooms.safetynet.service.DataModelService;
 import com.openclassrooms.safetynet.service.FirestationService;
 
+/**
+ * Unit test class for {@link FirestationService}.
+ * This class contains tests for adding, updating, deleting, and retrieving firestations
+ * and the persons served by them. It also includes tests for handling exceptions when
+ * firestations already exist or are not found.
+ */
 @ExtendWith(MockitoExtension.class)
 public class FirestationServiceTest {
 		
@@ -42,6 +48,10 @@ public class FirestationServiceTest {
 	private DataModel dataModel;
 	private FirestationService firestationService;
 	
+    /**
+     * Sets up the test environment by initializing the data model, firestations, and firestation service
+     * before each test method is executed.
+     */
 	@BeforeEach
 	private void setUp() {
 		
@@ -55,6 +65,11 @@ public class FirestationServiceTest {
         when(dataModelService.getDataModel()).thenReturn(dataModel);
 	}
 	
+    /**
+     * Tests the successful retrieval of persons by their assigned firestation.
+     * This test checks that the service correctly returns the list of persons
+     * and the number of adults and children for the given firestation.
+     */
 	@Test
 	public void testGetPersonsByStations_Success() {
 		
@@ -81,6 +96,10 @@ public class FirestationServiceTest {
 		assertEquals(result.getNbChildren(), 1);
 	}
 	
+    /**
+     * Tests the successful addition of a new firestation to the data model.
+     * This test checks that the new firestation is added and saved.
+     */
 	@Test
 	public void testAddPerson_Success() {
         
@@ -92,6 +111,10 @@ public class FirestationServiceTest {
 		verify(writerRepository, times(1)).saveData();
 	}
 	
+    /**
+     * Tests the exception handling when attempting to add a firestation that already exists.
+     * This test checks that a {@link ResourceAlreadyExistsException} is thrown.
+     */
 	@Test
     public void testAddFirestation_WhenFirestationAlreadyExists_ShouldThrowException() {
     	
@@ -106,6 +129,10 @@ public class FirestationServiceTest {
         verify(writerRepository, never()).saveData();
     }
 	
+    /**
+     * Tests the successful update of an existing firestation in the data model.
+     * This test checks that the firestation's details are updated and saved.
+     */
 	@Test
 	public void testUpdateFirestation_Success() {
 		
@@ -117,6 +144,10 @@ public class FirestationServiceTest {
 		verify(writerRepository, times(1)).saveData();
 	}
 	
+    /**
+     * Tests the exception handling when attempting to update a firestation that does not exist.
+     * This test checks that a {@link ResourceNotFoundException} is thrown.
+     */
 	@Test
     public void testUpdateFirestation_WhenFirestationNotFound_ShouldThrowException() {
 
@@ -131,6 +162,10 @@ public class FirestationServiceTest {
         verify(writerRepository, never()).saveData();
     }
 	
+    /**
+     * Tests the successful deletion of a firestation from the data model.
+     * This test checks that the firestation is removed and the data is saved.
+     */
 	@Test
     public void testDeleteFirestation_Success() {
 
@@ -141,6 +176,10 @@ public class FirestationServiceTest {
         verify(writerRepository).saveData();
     }
 	
+    /**
+     * Tests the exception handling when attempting to delete a firestation that does not exist.
+     * This test checks that a {@link ResourceNotFoundException} is thrown.
+     */
 	@Test
 	public void testDeleteFirestation_WhenFirestationNotFound_ShouldThrowException() {
 		

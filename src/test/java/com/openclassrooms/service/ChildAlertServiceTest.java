@@ -23,6 +23,11 @@ import com.openclassrooms.safetynet.model.Person;
 import com.openclassrooms.safetynet.service.ChildAlertService;
 import com.openclassrooms.safetynet.service.DataModelService;
 
+/**
+ * Unit test class for {@link ChildAlertService}.
+ * This class contains tests to validate the functionality of retrieving children
+ * and other family members living at a specified address based on the data model.
+ */
 @ExtendWith(MockitoExtension.class)
 public class ChildAlertServiceTest {
 	
@@ -33,6 +38,10 @@ public class ChildAlertServiceTest {
 	
 	ChildAlertService childAlert;
 	
+    /**
+     * Sets up the test environment by initializing the data model and ChildAlertService
+     * before each test method is executed.
+     */
 	@BeforeEach
 	private void setUp() {
 		
@@ -41,6 +50,11 @@ public class ChildAlertServiceTest {
 		childAlert = new ChildAlertService(dataModelService);
 	}
 	
+    /**
+     * Tests the successful retrieval of children and other family members at a specified address.
+     * This test checks that the service correctly identifies the children at the given address
+     * and differentiates them from other family members.
+     */
 	@Test
 	public void testGetChildAtAlert_Success() {
 		

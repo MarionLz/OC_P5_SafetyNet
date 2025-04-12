@@ -22,6 +22,11 @@ import com.openclassrooms.safetynet.DTO.fire.FireResponseDTO;
 import com.openclassrooms.safetynet.controller.FireController;
 import com.openclassrooms.safetynet.service.FireService;
 
+/**
+ * Unit test for the {@link FireController} class.
+ * This test verifies the behavior of the FireController's method
+ * to retrieve persons at a specific address and their related details.
+ */
 @ExtendWith(MockitoExtension.class)
 public class FireControllerTest {
 
@@ -33,6 +38,15 @@ public class FireControllerTest {
     
     private MockMvc mockMvc;
     
+    /**
+     * Tests the {@link FireController#getPersonsAtAddress(String)} method.
+     * This test simulates a GET request to the '/fire' endpoint and verifies
+     * the response returned by the controller, including the HTTP status and content.
+     * The test mocks the service layer's response and compares the expected response
+     * with the actual output.
+     *
+     * @throws Exception if an error occurs while performing the request
+     */
     @Test
     public void testGetPersonsAtAddress_Success() throws Exception {
     	

@@ -4,6 +4,10 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
+/**
+ * Represents a person with essential contact and address details, 
+ * such as name, address, phone number, and email.
+ */
 @Data
 public class Person {
 

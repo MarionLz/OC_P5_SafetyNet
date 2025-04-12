@@ -23,6 +23,11 @@ import com.openclassrooms.safetynet.model.Person;
 import com.openclassrooms.safetynet.service.DataModelService;
 import com.openclassrooms.safetynet.service.FireService;
 
+/**
+ * Unit test class for {@link FireService}.
+ * This class contains tests to validate the functionality of retrieving persons at a specific address
+ * during a fire emergency, including their age and medical records.
+ */
 @ExtendWith(MockitoExtension.class)
 public class FireServiceTest {
 
@@ -33,6 +38,10 @@ public class FireServiceTest {
 	
 	FireService fireService;
 	
+    /**
+     * Sets up the test environment by initializing the data model and FireService
+     * before each test method is executed.
+     */
 	@BeforeEach
 	private void setUp() {
 		
@@ -41,6 +50,11 @@ public class FireServiceTest {
 		fireService = new FireService(dataModelService);
 	}
 	
+    /**
+     * Tests the successful retrieval of persons living at a given address
+     * during a fire emergency. The test checks if the service correctly returns
+     * the list of persons along with their medical records and fire station number.
+     */
 	@Test
 	public void testGetPersonsAtAddress_Success() {
 		
